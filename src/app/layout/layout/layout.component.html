@@ -2,11 +2,11 @@
   <div class="row vh-100">
 
     <div class="col-auto px-0">
-      <app-sidebar></app-sidebar>
+      <app-sidebar [collapsed]="isSidebarCollapsed"></app-sidebar>
     </div>
 
     <div class="col d-flex flex-column p-0">
-      <app-header></app-header>
+      <app-header (toggle)="toggleSidebar()"></app-header>
 
       <div class="flex-grow-1 overflow-auto p-3 bg-light">
         <router-outlet></router-outlet>
