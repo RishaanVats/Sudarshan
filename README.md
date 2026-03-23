@@ -13,7 +13,7 @@ Sudarshan simulates a **war-room decision system**, enabling campaign teams to m
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/sudarshan.git
+git clone https://github.com/RishaanVats/Sudarshan.git
 cd sudarshan
 ```
 
