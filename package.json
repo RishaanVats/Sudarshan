@@ -1,6 +1,8 @@
 {
   "name": "sudarshan",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "An analytics-driven campaign intelligence dashboard for monitoring field operations, analyzing voter outreach, and enabling data-driven decision-making.",
+  "author": "Rishu Mishra",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -17,6 +19,7 @@
     "@angular/forms": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "chart.js": "^4.5.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -28,5 +31,19 @@
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
-  }
+  },
+  "keywords": [
+    "angular",
+    "dashboard",
+    "campaign-analytics",
+    "political-data",
+    "data-visualization",
+    "analytics-dashboard",
+    "json-server",
+    "frontend",
+    "typescript",
+    "monitoring-system",
+    "decision-support",
+    "sudarshan"
+  ]
 }
