@@ -16,3 +16,33 @@
 :host(.collapsed) {
   width: 80px;
 }
+
+/* :host(.collapsed) .nav-link {
+  justify-content: center;
+  padding: 10px 0;
+} */
+
+.label {
+  opacity: 1;
+  margin-left: 8px;
+  white-space: nowrap;
+  transition: opacity 0.2s ease 0.1s, margin 0.2s ease;
+}
+
+.label.hidden {
+  opacity: 0;
+  margin-left: 0;
+  pointer-events: none;
+}
+
+:host(.collapsed) .label {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.icon {
+  min-width: 24px;
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+}

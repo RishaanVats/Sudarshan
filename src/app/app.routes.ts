@@ -25,10 +25,34 @@ export const routes: Routes = [
             .then(m => m.BoothsComponent)
       },
       {
+        path: 'd2dOutreach',
+        loadComponent: () =>
+          import('./features/door-outreach/door-outreach')
+            .then(m => m.DoorOutreach)
+      },
+      {
+        path: 'voterAnalysis',
+        loadComponent: () =>
+          import('./features/voter-analysis/voter-analysis')
+            .then(m => m.VoterAnalysis)
+      },
+      {
+        path: 'influencerNetwork',
+        loadComponent: () =>
+          import('./features/influencer-network/influencer-network')
+            .then(m => m.InfluencerNetwork)
+      },
+      {
         path: 'intelligence',
         loadComponent: () =>
           import('./features/intelligence/intelligence.component')
             .then(m => m.IntelligenceComponent)
+      },
+      {
+        path: 'warRoomReports',
+        loadComponent: () =>
+          import('./features/war-room-reports/war-room-reports')
+            .then(m => m.WarRoomReports)
       },
       {
         path: '',
