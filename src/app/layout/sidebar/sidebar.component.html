@@ -1,34 +1,89 @@
 <div class="bg-dark text-white vh-100 p-3">
-
-  <h4 class="text-center mb-4">Sudarshan</h4>
-
+  <h6 class="text-uppercase d-flex px-3"><i class="bi bi-compass icon"></i>
+    <span class="label" [class.hidden]="collapsed">
+      Navigation
+    </span>
+  </h6>
+  <hr>
   <ul class="nav nav-pills flex-column gap-2">
 
     <li class="nav-item">
       <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-link text-white">
-        Dashboard
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-disc"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Campaign Overview
+        </span>
       </a>
     </li>
 
     <li class="nav-item">
       <a routerLink="/volunteers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-link text-white">
-        Volunteers
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-people"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Volunteer Operations
+        </span>
       </a>
     </li>
 
     <li class="nav-item">
       <a routerLink="/booths" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-link text-white">
-        Booths
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-bar-chart"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Booth Performance
+        </span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a routerLink="/d2dOutreach" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-house-door"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Door-to-Door Outreach
+        </span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a routerLink="/voterAnalysis" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-emoji-smile"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Voter Sentiment Analysis
+        </span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a routerLink="/influencerNetwork" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-megaphone"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Influencer Network
+        </span>
       </a>
     </li>
 
     <li class="nav-item">
       <a routerLink="/intelligence" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-link text-white">
-        Intelligence
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-eye"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Intelligence
+        </span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a routerLink="/warRoomReports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link text-white d-flex align-items-center">
+        <i class="icon bi bi-clipboard-data"></i>
+        <span class="label" [class.hidden]="collapsed">
+          War Room Reports
+        </span>
       </a>
     </li>
 
