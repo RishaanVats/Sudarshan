@@ -1,12 +1,12 @@
 <div class="container-fluid">
   <div class="row vh-100">
-    <app-header (toggle)="toggleSidebar()"></app-header>
+    <app-header class="bg-panel border-clr" (toggle)="toggleSidebar()"></app-header>
     <div class="col-auto px-0">
-      <app-sidebar [collapsed]="isSidebarCollapsed"></app-sidebar>
+      <app-sidebar class="bg-panel border-clr" [collapsed]="isSidebarCollapsed"></app-sidebar>
     </div>
 
     <div class="col d-flex flex-column p-0">
-      <div class="flex-grow-1 overflow-auto p-3 bg-light">
+      <div class="flex-grow-1 overflow-auto p-3 custom-opacity bg-canvas">
         <router-outlet></router-outlet>
       </div>
     </div>

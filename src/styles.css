@@ -1,1 +1,112 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --canvas-bg: #080C12;
+    --panel-bg: #0D1219;
+    --card-bg: #111720;
+    /* for hover state */
+    --card-alt-bg: #141D27;
+    /* table even rows */
+    --row-bg: #0F1620;
+    /* table odd rows  */
+    --row-alt-bg: #0C1219;
+    --border: #1C2A3A; /*For Card strokes*/
+    --border-light: #243344; /*For active/lighter borders*/
+    --divider: #172030; /*Rule lines: For dividers and separators*/
+    /* Text Colours */
+    --text-primary: #F1F5F9; /*Primary text color for headings and important information/ Values*/
+    --text-secondary: #94A3B8; /*Secondary text color for descriptions/body and table cells*/
+    --text-muted: #4B5E73; /*Muted text color for disabled states and labels/captions*/
+    /* Accent Colours */
+    --ac-blue: #3B82F6; /*For buttons, Primary CTA, links, and interactive elements*/
+    --ac-cyan: #06B6D4; /*For info messages and highlights, Data visualizations, accents*/
+    --ac-emerald: #10B981; /*For success messages and positive indicators*/
+    --ac-amber: #F59E0B; /*For warning messages and pending or caution indicators*/
+    --ac-rose: #F43F5E; /*For error messages and negative indicators or danger/opposition*/
+    --ac-violet: #8B5CF6; /*For influential tiers of secondary buttons, highlights, and accents*/
+    /* Dim backgrounds and borders - badge and alerts */
+    --dim-blue: #1E3A5F; 
+    --dim-cyan: #0C3544;
+    --dim-emerald: #0C2E22;
+    --dim-amber: #2E2007;
+    --dim-rose: #2D0A12;
+    --dim-violet: #1E1040;
+    /* Status indicating colours */
+    --status-cyan: #22D3EE; /* Contacted/highlighted */
+    --status-violet: #A78BFA; /* tier 1 label or Interested/engaged */
+    --status-gray: #64748B; /* Inactive/tertiary or Not contacted/neutral */
+    --status-emerald: #34D399; /* Active/ Confirmed or Converted/positive or Engaged */
+    --status-amber: #FBBF24; /* Pending/ Caution or Warm/neutral or Interested */
+    --status-rose: #F87185; /* Alert/Danger or Lost/ Negative or Unresponsive */
+
+    /* font finalization */
+    font-family: 'Calibri', sans-serif;
+}
+
+body{
+    background: var(--canvas-bg);
+    color: var(--text-primary);
+}
+
+/* --- 1. Background Utilities --- */
+.bg-canvas { background-color: var(--canvas-bg); }
+.bg-panel  { background-color: var(--panel-bg); }
+.bg-card   { background-color: var(--card-bg); }
+.bg-card-alt { background-color: var(--card-alt-bg); }
+.bg-row    { background-color: var(--row-bg); }
+.bg-row-alt { background-color: var(--row-alt-bg); }
+
+/* Accent Backgrounds */
+.bg-blue    { background-color: var(--ac-blue); }
+.bg-cyan    { background-color: var(--ac-cyan); }
+.bg-emerald { background-color: var(--ac-emerald); }
+.bg-amber   { background-color: var(--ac-amber); }
+.bg-rose    { background-color: var(--ac-rose); }
+.bg-violet  { background-color: var(--ac-violet); }
+
+/* Dim/Badge Backgrounds */
+.bg-dim-blue    { background-color: var(--dim-blue); }
+.bg-dim-cyan    { background-color: var(--dim-cyan); }
+.bg-dim-emerald { background-color: var(--dim-emerald); }
+.bg-dim-amber   { background-color: var(--dim-amber); }
+.bg-dim-rose    { background-color: var(--dim-rose); }
+.bg-dim-violet  { background-color: var(--dim-violet); }
+
+/* --- 2. Typography Utilities --- */
+.text-primary-main   { color: var(--text-primary); }
+.text-secondary-main { color: var(--text-secondary); }
+.text-muted-main     { color: var(--text-muted); }
+
+/* Accent Text */
+.text-blue    { color: var(--ac-blue); }
+.text-cyan    { color: var(--ac-cyan); }
+.text-emerald { color: var(--ac-emerald); }
+.text-amber   { color: var(--ac-amber); }
+.text-rose    { color: var(--ac-rose); }
+.text-violet  { color: var(--ac-violet); }
+
+/* Status Text */
+.status-cyan    { color: var(--status-cyan); }
+.status-violet  { color: var(--status-violet); }
+.status-gray    { color: var(--status-gray); }
+.status-emerald { color: var(--status-emerald); }
+.status-amber   { color: var(--status-amber); }
+.status-rose    { color: var(--status-rose); }
+
+/* --- 3. Border & Divider Utilities --- */
+.border-main    { border: 1px solid var(--border); }
+.border-light   { border: 1px solid var(--border-light); }
+.border-none    { border: none; }
+
+.divide-y       { border-top: 1px solid var(--divider); }
+.divide-x       { border-left: 1px solid var(--divider); }
+
+/* --- 4. Hover States --- */
+/* Background Hovers */
+.hover-bg-card:hover     { background-color: var(--card-alt-bg); transition: 0.2s; }
+.hover-bg-blue:hover     { filter: brightness(1.1); transition: 0.2s; cursor: pointer; }
+.hover-bg-emerald:hover  { filter: brightness(1.1); transition: 0.2s; cursor: pointer; }
+.hover-bg-rose:hover     { filter: brightness(1.1); transition: 0.2s; cursor: pointer; }
+
+/* Text Hovers */
+.hover-text-primary-main:hover { color: var(--text-primary); transition: 0.2s; }
+.hover-text-blue-main:hover    { color: var(--status-cyan); transition: 0.2s; cursor: pointer; }
