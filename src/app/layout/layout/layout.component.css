@@ -1,0 +1,7 @@
+.border-clr{
+    border: 1px solid var(--border);
+}
+
+.custom-opacity {
+    --bs-bg-opacity: 1;
+}
