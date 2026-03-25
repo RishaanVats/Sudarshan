@@ -1,1 +1,46 @@
-<p>volunteers works!</p>
+<h5>Volunteer Operations</h5>
+<hr>
+<div class="d-flex flex-wrap gap-2">
+
+    <!-- <div class="kpi-card">
+        <hr class="card-top-line">
+        <p class="card-title">Registered</p>
+        <h1 class="card-count">4,812</h1>
+        <div class="trend-indicator">
+            <span class="arrow">
+                @if(positive){
+                <i class="bi bi-arrow-up"></i>
+                } @else {
+                <i class="bi bi-arrow-down"></i>
+                }
+            </span>
+            <span class="trend-text">+148 this week</span>
+        </div>
+    </div> -->
+
+
+
+    @for (card of kpiCards; track card.title) {
+    <div class="kpi-card" [ngStyle]="{'border-bottom': '2px solid ' + card.themeVar }">
+        <hr class="card-top-line" [ngStyle]="{ 'border-top': '4px solid ' + card.themeVar }">
+        <p class="card-title">{{ card.title }}</p>
+        <h1 class="card-count">{{ card.count }}</h1>
+        <div class="trend-indicator" [ngStyle]="{ color: card.trendVar }">
+            <span class="arrow">
+                @if (card.isPositive) {
+                <i class="bi bi-arrow-up"></i>
+                } @else {
+                <i class="bi bi-arrow-down"></i>
+                }
+            </span>
+            <span class="trend-text">
+                {{ card.trendText }}
+            </span>
+        </div>
+    </div>
+    }
+
+
+
+
+</div>
