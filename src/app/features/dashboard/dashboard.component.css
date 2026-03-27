@@ -9,6 +9,11 @@
     border-bottom: 2px solid var(--ac-blue);
 }
 
+.kpi-card:hover {
+    background-color: var(--card-alt-bg);
+    transition: 0.2s;
+}
+
 .card-title {
     color: var(--status-gray);
     font-size: 0.75rem;
@@ -63,11 +68,56 @@
     padding: 20px 20px 50px 20px;
 }
 
-.chart-place canvas{
+.chart-place:hover, tr:hover {
+    background-color: var(--card-alt-bg);
+    transition: 0.2s;
+}
+
+.chart-place canvas {
     height: 160px;
+}
+
+.info-place{
+    position: relative;
+    width: auto;
+    min-width: 280px;
+    height: 200px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 20px 50px 20px;
 }
 
 .title-seperator {
     border-top: 2px solid var(--border);
     margin: 10px 0;
+}
+
+.perform-table {
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+    padding: 20px 20px 10px 20px;
+    border: 2px solid var(--border);
+}
+
+table,
+th,
+td {
+    border: 1px solid var(--border);
+    border-collapse: collapse;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+}
+
+table tr th:first-child,
+table tr td:first-child {
+  min-width: 130px; /* Adjust the value as needed */
+  width: auto;
+  text-wrap-mode: wrap;
+}
+
+.overflow-test{
+    height: 100vh;
+    overflow-y:auto;
 }
