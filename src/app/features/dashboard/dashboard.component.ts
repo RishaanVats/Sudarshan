@@ -14,6 +14,49 @@ Chart.register(chartDataLabels);
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements AfterViewInit {
+
+  boothIntell: Array<{
+    booth: string;
+    totalVoters: number;
+    contacted: number;
+    supporters: number;
+    undecided: number;
+    coverage: number;
+  }> = [
+    {
+      booth: 'Booth 42 - Paschim Tola',
+      totalVoters: 3241,
+      contacted: 2918,
+      supporters: 1842,
+      undecided: 612,
+      coverage: 90.1,
+    },
+    {
+      booth: 'Booth 17 - Ramrekha Ghat',
+      totalVoters: 2890,
+      contacted: 2400,
+      supporters: 1510,
+      undecided: 480,
+      coverage: 83.0,
+    },
+    {
+      booth: 'Booth 32 - Rameshwar Colony',
+      totalVoters: 4102,
+      contacted: 3200,
+      supporters: 1960,
+      undecided: 710,
+      coverage: 78.0,
+    },
+    {
+      booth: 'Booth 06 - Churchgate',
+      totalVoters: 2650,
+      contacted: 1900,
+      supporters: 1100,
+      undecided: 440,
+      coverage: 71.7,
+    },
+  ];
+
   kpiCards = [
     {
       title: 'Total Volunteers',
@@ -79,7 +122,7 @@ export class DashboardComponent implements AfterViewInit {
       id: 'volunteerActivityChart',
       type: 'line',
       legendNeeded: false,
-      data: [120, 150, 180, 220, 300, 450, 600],
+      data: [120, 190, 150, 250, 300, 450, 560],
       labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
     },
     {
@@ -119,7 +162,7 @@ export class DashboardComponent implements AfterViewInit {
             borderRadius: 4,
             layout: {
               padding: {
-                bottom: 20, // Add specific extra space at the bottom for bars
+                bottom: 0, // Add specific extra space at the bottom for bars
               },
             },
             backgroundColor: ['#3B82F6'],
