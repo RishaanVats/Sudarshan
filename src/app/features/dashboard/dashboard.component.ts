@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ChangeDetectorRef } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
@@ -20,6 +20,17 @@ interface Volunteer {
   [key: string]: any;
 }
 
+interface boothProgress {
+  id: number;
+  booth: number;
+  boothName: string;
+  targetVoters: number;
+  votersReached: number;
+  supportersIdentified: number;
+  undecided: number;
+  coverage: number;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -29,6 +40,7 @@ interface Volunteer {
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   volunteers: Volunteer[] = []; // Using the interface here
+  boothProgress: boothProgress[] = [];
 
   onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
   onlyCoordinators: Volunteer[] = []; // Only those with role "Coordinator"
@@ -36,12 +48,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   onlySocialMedia: Volunteer[] = []; // Only those with role "Social Media"
   onlyFieldOrganizers: Volunteer[] = []; // Only those with role "Field Organizer"
 
-  constructor(private sudarshanService: SudarshanService) {}
+  constructor(
+    private sudarshanService: SudarshanService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     this.loadData();
     this.initCharts();
   }
+
   loadData() {
     this.sudarshanService.getVolunteers().subscribe({
       next: (data: Volunteer[]) => {
@@ -61,41 +77,33 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }),
         ];
 
-        // // Segregate into specific lists
+        // Segregate into specific lists
         // this.onlyVolunteers = this.volunteers.filter((v) => v.role === 'Volunteer');
         // this.onlyCoordinators = this.volunteers.filter((v) => v.role === 'Coordinator');
         // this.onlyBoothWorkers = this.volunteers.filter((v) => v.role === 'Booth Worker');
         // this.onlyFieldOrganizers = this.volunteers.filter((v) => v.role === 'Field Organizer');
         // this.onlySocialMedia = this.volunteers.filter((v) => v.role === 'Social Media');
 
-        // console.log('Coordinators:', this.onlyCoordinators.length);
-        // console.log('Volunteers:', this.onlyVolunteers.length);
-        // console.log('Booth Worker:', this.onlyBoothWorkers.length);
-        // console.log('Field Organizer:', this.onlyFieldOrganizers.length);
-        // console.log('Social Media:', this.onlySocialMedia.length);
-
-        // this.updateKpiCards();
-
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
         console.log('getVolunteers called... ', this.volunteers);
       },
       error: (err) => {
         console.error('Error fetching volunteers', err);
       },
     });
-  }
 
-  // Added this helper method to update the counts in the kpiCards array
-  // private updateKpiCards() {
-  //   this.kpiCards = this.kpiCards.map((card) => {
-  //     if (card.title === 'Total Volunteers') {
-  //       return { ...card, count: this.onlyVolunteers.length.toString() };
-  //     }
-  //     if (card.title === 'Total Coordinators') {
-  //       return { ...card, count: this.onlyCoordinators.length.toString() };
-  //     }
-  //     return card;
-  //   });
-  // }
+    this.sudarshanService.getBoothProgress().subscribe({
+      next: (data: boothProgress[]) => {
+        this.boothProgress = data;
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching Booth Progress', err);
+      },
+    });
+  }
 
   boothIntell: Array<{
     booth: string;
@@ -142,17 +150,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   kpiCards = [
     {
       title: 'Total Volunteers',
-      count: 10,
+      count: 0,
       trendText: '+148 this week',
       isPositive: true,
-      // Provide the string name of global variable
+      // Provided the string name of global variable
       themeVar: 'var(--ac-blue)',
       trendVar: 'var(--ac-emerald)',
     },
     {
       title: 'Active Today',
-      count: '1,247',
-      trendText: '+92% vs daily avg',
+      count: '107',
+      trendText: '+22% vs daily avg',
       isPositive: true,
       themeVar: 'var(--ac-cyan)',
       trendVar: 'var(--ac-emerald)',
@@ -227,8 +235,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ];
 
   ngAfterViewInit() {
-    console.log(this.volunteers);
-
     // Initializing charts here because the <canvas> elements are now in the DOM
     this.initCharts();
   }
