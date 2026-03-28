@@ -1,10 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
+import { SudarshanService } from '../../core/services/sudarshan.service';
+
 Chart.register(chartDataLabels);
+
+interface Volunteer {
+  active: boolean;
+  booth: number;
+  id: number;
+  name: string;
+  phone: number;
+  role: string;
+  isCoordinator?: boolean;
+  isVolunteer?: boolean;
+  [key: string]: any;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +27,75 @@ Chart.register(chartDataLabels);
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements AfterViewInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
+  volunteers: Volunteer[] = []; // Using the interface here
+
+  onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
+  onlyCoordinators: Volunteer[] = []; // Only those with role "Coordinator"
+  onlyBoothWorkers: Volunteer[] = []; // Only thise with role "Booth Worker"
+  onlySocialMedia: Volunteer[] = []; // Only those with role "Social Media"
+  onlyFieldOrganizers: Volunteer[] = []; // Only those with role "Field Organizer"
+
+  constructor(private sudarshanService: SudarshanService) {}
+
+  ngOnInit() {
+    this.loadData();
+    this.initCharts();
+  }
+  loadData() {
+    this.sudarshanService.getVolunteers().subscribe({
+      next: (data: Volunteer[]) => {
+        this.volunteers = data.map((val: Volunteer) => ({
+          ...val,
+          isCoordinator: val.role === 'Coordinator',
+          isVolunteer: val.role === 'Volunteer',
+        }));
+
+        // Force a reference change so the UI 'sees' the update
+        this.kpiCards = [
+          ...this.kpiCards.map((card) => {
+            if (card.title === 'Total Volunteers') {
+              return { ...card, count: this.volunteers.length.toString() };
+            }
+            return card;
+          }),
+        ];
+
+        // // Segregate into specific lists
+        // this.onlyVolunteers = this.volunteers.filter((v) => v.role === 'Volunteer');
+        // this.onlyCoordinators = this.volunteers.filter((v) => v.role === 'Coordinator');
+        // this.onlyBoothWorkers = this.volunteers.filter((v) => v.role === 'Booth Worker');
+        // this.onlyFieldOrganizers = this.volunteers.filter((v) => v.role === 'Field Organizer');
+        // this.onlySocialMedia = this.volunteers.filter((v) => v.role === 'Social Media');
+
+        // console.log('Coordinators:', this.onlyCoordinators.length);
+        // console.log('Volunteers:', this.onlyVolunteers.length);
+        // console.log('Booth Worker:', this.onlyBoothWorkers.length);
+        // console.log('Field Organizer:', this.onlyFieldOrganizers.length);
+        // console.log('Social Media:', this.onlySocialMedia.length);
+
+        // this.updateKpiCards();
+
+        console.log('getVolunteers called... ', this.volunteers);
+      },
+      error: (err) => {
+        console.error('Error fetching volunteers', err);
+      },
+    });
+  }
+
+  // Added this helper method to update the counts in the kpiCards array
+  // private updateKpiCards() {
+  //   this.kpiCards = this.kpiCards.map((card) => {
+  //     if (card.title === 'Total Volunteers') {
+  //       return { ...card, count: this.onlyVolunteers.length.toString() };
+  //     }
+  //     if (card.title === 'Total Coordinators') {
+  //       return { ...card, count: this.onlyCoordinators.length.toString() };
+  //     }
+  //     return card;
+  //   });
+  // }
 
   boothIntell: Array<{
     booth: string;
@@ -60,10 +142,10 @@ export class DashboardComponent implements AfterViewInit {
   kpiCards = [
     {
       title: 'Total Volunteers',
-      count: '4,812',
+      count: 10,
       trendText: '+148 this week',
       isPositive: true,
-      // Provide the string name of your global variable
+      // Provide the string name of global variable
       themeVar: 'var(--ac-blue)',
       trendVar: 'var(--ac-emerald)',
     },
@@ -115,6 +197,7 @@ export class DashboardComponent implements AfterViewInit {
     type: 'line' | 'bar' | 'pie' | 'doughnut';
     legendNeeded: boolean;
     data: number[] | string[];
+
     labels: string[];
   }> = [
     {
@@ -144,6 +227,15 @@ export class DashboardComponent implements AfterViewInit {
   ];
 
   ngAfterViewInit() {
+    console.log(this.volunteers);
+
+    // Initializing charts here because the <canvas> elements are now in the DOM
+    this.initCharts();
+  }
+
+  private initCharts() {
+    // Moved chart creation logic here so it only runs once data is ready
+
     this.kpiCharts.forEach((chart) => {
       setTimeout(() => {
         const typeOverrides: any = {

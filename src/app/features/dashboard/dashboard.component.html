@@ -3,6 +3,8 @@
     <hr>
     <div class="d-flex flex-wrap gap-2">
         <!-- KPI Cards -->
+        @if(kpiCards){
+            {{kpiCards | json}}
         @for (card of kpiCards; track card.title) {
         <div class="kpi-card hover-bg-card" [ngStyle]="{'border-bottom': '2px solid ' + card.themeVar }">
             <hr class="card-top-line" [ngStyle]="{ 'border-top': '4px solid ' + card.themeVar }">
@@ -21,6 +23,7 @@
                 </span>
             </div>
         </div>
+        }
         }
 
     </div>
@@ -57,7 +60,8 @@
                     <td>{{booth.contacted}}</td>
                     <td>{{booth.supporters}}</td>
                     <td>{{booth.undecided}}</td>
-                    <td [style.color]="booth.coverage > 80 ? 'var(--ac-emerald)' : 'var(--ac-rose)'">{{booth.coverage}}</td>
+                    <td [style.color]="booth.coverage > 80 ? 'var(--ac-emerald)' : 'var(--ac-rose)'">{{booth.coverage}}
+                    </td>
                 </tr>
                 }
 
