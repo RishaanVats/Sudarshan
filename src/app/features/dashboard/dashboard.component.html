@@ -1,4 +1,4 @@
-<div class="overflow-test">
+<div>
     <h5>Campaign Overview</h5>
     <hr>
     <div class="d-flex flex-wrap gap-2">
@@ -40,28 +40,35 @@
         <div class="perform-table bg-card" style="width: 65%;">
             <p class="card-title">Booth Intelligence - Top performers</p>
             <hr class="title-seperator">
-            <table class="bg-row">
-                <tr class="card-title bg-row-alt text-center text-wrap">
-                    <th>Booth</th>
-                    <th>Total Voters</th>
-                    <th>Contacted</th>
-                    <th>Supporters</th>
-                    <th>Undecided</th>
-                    <th>Coverage %age</th>
-                </tr>
+            <div class="table-wrapper">
+                <table class="bg-row">
+                    <thead>
+                        <tr class="card-title bg-row-alt text-center text-wrap">
+                            <th>Booth</th>
+                            <th>Total Voters</th>
+                            <th>Contacted</th>
+                            <th>Supporters</th>
+                            <th>Undecided</th>
+                            <th>Coverage %age</th>
+                        </tr>
+                    </thead>
 
-                @for(booth of boothIntell ;track booth.booth){
-                <tr class="bg-row text-center">
-                    <td class="text-start">{{booth.booth}}</td>
-                    <td>{{booth.totalVoters}}</td>
-                    <td>{{booth.contacted}}</td>
-                    <td>{{booth.supporters}}</td>
-                    <td>{{booth.undecided}}</td>
-                    <td [style.color]="booth.coverage > 80 ? 'var(--ac-emerald)' : 'var(--ac-rose)'">{{booth.coverage}}</td>
-                </tr>
-                }
-
-            </table>
+                    <tbody class="table-body">
+                        @for(booth of boothProgress ;track booth.id){
+                        <tr class="bg-row text-center">
+                            <td class="text-start">{{booth.booth}} - {{booth.boothName}}</td>
+                            <td>{{booth.targetVoters}}</td>
+                            <td>{{booth.votersReached}}</td>
+                            <td>{{booth.supportersIdentified}}</td>
+                            <td>{{booth.undecided}}</td>
+                            <td [style.color]="booth.coverage > 80 ? 'var(--ac-emerald)' : 'var(--ac-rose)'">
+                                {{booth.coverage}}&percnt;
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="bg-card info-place" style="width: 30%;">
             <p class="card-title">Strategic Alerts</p>
