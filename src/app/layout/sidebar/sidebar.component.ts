@@ -15,6 +15,8 @@ import { Input } from '@angular/core';
 export class SidebarComponent {
   @Input() collapsed: boolean = false;
 
+  currYear = new Date().getFullYear();  // Current year for Copyright label
+
   @HostBinding('class.collapsed') get isCollapsed() {
   return this.collapsed;
 }
