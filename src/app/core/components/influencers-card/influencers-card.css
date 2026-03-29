@@ -1,0 +1,81 @@
+.influencers-card {
+    min-width: 250px;
+    width: auto;
+    border-radius: 10px;
+    padding: 15px 15px 5px 15px;
+    border: 2px solid var(--border);
+}
+
+.person-dp {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    border-width: 5px solid #000;
+}
+
+.dp-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-width: 4px;
+    border-style: solid;
+}
+
+.person-name {
+    font-size: 12pt;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.person-role {
+    font-size: 11pt;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+.person-status {
+    font-size: 11pt;
+    border-width: 3px;
+    border-style: solid;
+    width: 90px;
+    height: 30px;
+    text-align: center;
+    border-radius: 7px;
+    text-transform: capitalize;
+}
+
+.person-reach {
+    font-size: 10pt;
+    color: var(--text-secondary);
+}
+
+.status-confirmed {
+    color: var(--status-emerald);
+    background-color: var(--dim-emerald);
+    border-color: var(--ac-emerald);
+}
+
+.status-pending {
+    color: var(--status-amber);
+    background-color: var(--dim-amber);
+    border-color: var(--ac-amber);
+}
+
+.status-contacted {
+    color: var(--status-cyan);
+    background-color: var(--dim-cyan);
+    border-color: var(--ac-cyan);
+}
+
+.status-vip {
+    color: var(--status-rose);
+    background-color: var(--dim-rose);
+    border-color: var(--ac-rose);
+}
+
+.status-new-lead {
+    color: var(--status-violet);
+    background-color: var(--dim-violet);
+    border-color: var(--ac-violet);
+}

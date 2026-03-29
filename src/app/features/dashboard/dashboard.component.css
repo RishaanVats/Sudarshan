@@ -186,3 +186,7 @@ table tr td:first-child {
     border-color: var(--ac-emerald);
     background-color: var(--dim-emerald);
 }
+
+.influencers-section-head{
+    margin-top: 30px;
+}

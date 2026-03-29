@@ -1,0 +1,23 @@
+<div class="bg-card border-main influencers-card d-flex justify-content-between gap-2">
+    <div class="person-dp">
+        @if(person.dpUrl){
+        <img src="{{person.dpUrl}}" alt="{{person.name + '\'s profile picture'}}" class="rounded-circle dp-img"
+        [ngClass]="statusMap[person.status.toLowerCase()] || defaultStatusClass">
+        } @else {
+        <div class="dp-img bg-panel text-white d-flex align-items-center justify-content-center"
+        [ngClass]="statusMap[person.status.toLowerCase()] || defaultStatusClass">
+            {{ person.dpWord }}
+        </div>
+        }
+
+    </div>
+    <div>
+        <h6 class="person-name">{{person.name}}</h6>
+        <p class="person-role">{{person.role}}</p>
+        <div class="d-flex justify-content-between gap-2">
+            <div class="person-status" [ngClass]="statusMap[person.status.toLowerCase()] || defaultStatusClass">{{
+                person.status }}</div>
+            <div class="person-reach">{{ person.reach }} reach</div>
+        </div>
+    </div>
+</div>
