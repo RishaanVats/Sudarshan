@@ -1,14 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+import { SudarshanService } from '../../core/services/sudarshan.service';
+import { ChangeDetectorRef } from '@angular/core';
+
+import { KpiCards } from '../../core/components/kpi-cards/kpi-cards';
+
 @Component({
   selector: 'app-volunteers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, KpiCards],
   templateUrl: './volunteers.component.html',
   styleUrls: ['./volunteers.component.css'],
 })
 export class VolunteersComponent {
+  constructor(
+    private sudarshanService: SudarshanService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+
   kpiCards = [
     {
       title: 'Registered',
