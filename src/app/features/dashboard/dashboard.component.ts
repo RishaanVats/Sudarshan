@@ -7,6 +7,7 @@ import chartDataLabels from 'chartjs-plugin-datalabels';
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../core/components/kpi-cards/kpi-cards';
 import { Charts } from '../../core/components/charts/charts';
+import { InfluencersCard } from '../../core/components/influencers-card/influencers-card';
 
 Chart.register(chartDataLabels);
 
@@ -36,7 +37,7 @@ interface boothProgress {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, KpiCards, Charts],
+  imports: [CommonModule, KpiCards, Charts, InfluencersCard],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
@@ -87,7 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
-        console.log('getVolunteers called... ', this.volunteers);
+        // console.log('getVolunteers called... ', this.volunteers);
       },
       error: (err) => {
         console.error('Error fetching volunteers', err);
@@ -258,7 +259,51 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       reportedBy: 'Manager 3',
     },
   ];
-  ngAfterViewInit() {
+
+  topInfluencers = [
+    {
+      id: 1,
+      name: 'Dr Amara Sayyed',
+      role: 'Doctor',
+      status: 'Contacted',
+      contact: '9876543210',
+      location: 'Sector 12, Patna',
+      reach: '1.5K',
+      dpUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
+    },
+    {
+      id: 2,
+      name: 'Rahul Kumar',
+      role: 'Local Leader',
+      status: 'VIP',
+      contact: '9876543210',
+      location: 'Sector 22, Patna',
+      reach: '3.2K',
+      dpUrl: '',
+    },
+    {
+      id: 3,
+      name: 'Muralidhar Sharma',
+      role: 'Business Owner',
+      status: 'Confirmed',
+      contact: '9876543210',
+      location: 'Sector 2, Patna',
+      reach: '2.5K',
+      dpUrl: ''
+    },
+    {
+      id: 4,
+      name: 'Dheeraj Yadav',
+      role: 'Commmunity Organizer',
+      status: 'New Lead',
+      contact: '9876543210',
+      location: 'Sector 15, Patna',
+      reach: '1.1K',
+      dpUrl: 'https://randomuser.me/api/portraits/men/47.jpg',
+    },
+  ];
+
+    ngAfterViewInit() {
     // Initializing charts here because the <canvas> elements are now in the DOM
   
   }

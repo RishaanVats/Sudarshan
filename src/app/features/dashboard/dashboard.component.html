@@ -62,4 +62,10 @@
             }
         </div>
     </div>
+    <p class="card-title influencers-section-head">Top Influencers This Week</p>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+        @for(person of topInfluencers; track person.id){
+        <app-influencers-card [person]="person"></app-influencers-card>
+        }
+    </div>
 </div>
