@@ -234,6 +234,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     },
   ];
 
+  strategicAlerts = [
+    {
+      id: 1,
+      type: 'warn',
+      msg: 'Something happened somewhere',
+      time: new Date().toLocaleString(),
+      reportedBy: 'Volunteer 3',
+    },
+    {
+      id: 2,
+      type: 'msg',
+      msg: 'Master Blaster ON',
+      time: new Date().toLocaleString(),
+      reportedBy: 'Volunteer 6',
+    },
+    {
+      id: 3,
+      type: 'info',
+      msg: 'Meeting @ War Room',
+      time: new Date().toLocaleString(),
+      reportedBy: 'Manager 3',
+    },
+  ];
   ngAfterViewInit() {
     // Initializing charts here because the <canvas> elements are now in the DOM
     this.initCharts();
