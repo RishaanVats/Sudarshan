@@ -1,0 +1,41 @@
+
+.alert-card {
+    border-radius: 10px;
+    border-width: 1px 1px 1px 4px;
+    color: var(--text-main);
+    border-style: solid;
+    font-size: 10pt;
+    padding: 5px 5px 5px 10px;
+    margin-bottom: 5px;
+}
+
+.alert-card p {
+    margin: 0;
+}
+
+.alert-high {
+    border-color: var(--ac-amber);
+    background-color: var(--dim-amber);
+}
+
+.alert-critical {
+    border-color: var(--ac-rose);
+    background-color: var(--dim-rose);
+}
+
+.alert-low {
+    border-color: var(--ac-emerald);
+    background-color: var(--dim-emerald);
+}
+
+.alert-medium {
+    border-color: var(--ac-cyan);
+    background-color: var(--dim-cyan);
+}
+
+.truncate {
+  white-space: nowrap;      /* Keeps text on one single line */
+  overflow: hidden;         /* Hides the text that overflows the container */
+  text-overflow: ellipsis;  /* Adds the "..." at the end */
+  width: 240px;             /* Or any fixed width/max-width */
+}

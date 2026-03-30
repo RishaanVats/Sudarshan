@@ -53,13 +53,11 @@
         <div class="bg-card info-place" style="width: 30%;">
             <p class="card-title">Strategic Alerts</p>
             <hr class="title-seperator">
-            @for(alert of strategicAlerts; track alert.id){
-            <div class="alerts alert-card" [class.alert-info]="alert.type === 'info'"
-                [class.alert-msg]="alert.type === 'msg'" [class.alert-warn]="alert.type === 'warn'">
-                <p><span><i class="bi bi-asterisk"></i></span>&nbsp; {{ alert.msg}}</p>
-                <p>{{alert.reportedBy}} @ {{alert.time}}</p>
+            <div class="alerts-wrapper">
+                @for(alert of warRoomAlerts; track alert.id){
+                <app-strategic-alerts [alert]="alert"></app-strategic-alerts>
+                }
             </div>
-            }
         </div>
     </div>
     <p class="card-title influencers-section-head">Top Influencers This Week</p>

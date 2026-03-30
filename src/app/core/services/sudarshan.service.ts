@@ -22,6 +22,10 @@ export class SudarshanService {
     return this.api.get('boothProgress');
   }
 
+  getWarRoomAlertsSorted(): Observable<any> {
+    return this.api.get('warroomAlerts/sorted-data');
+  }
+
   // Example: Add volunteer
   addVolunteer(data: any): Observable<any> {
     return this.api.post('volunteers', data);
