@@ -1,18 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 
-interface Influencer {
-  id: number;
-  name: string;
-  role: string;
-  status: string;
-  contact: string;
-  location: string;
-  reach: string;
-  dpUrl: string;
-  dpWord?: string;
-  [key: string]: any; // Allows any additional properties
-}
+import { Influencer } from '../../types';
 
 @Component({
   selector: 'app-influencers-card',

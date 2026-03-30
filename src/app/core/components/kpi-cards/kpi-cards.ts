@@ -1,17 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-interface Volunteer {
-  active: boolean;
-  booth: number;
-  id: number;
-  name: string;
-  phone: number;
-  role: string;
-  isCoordinator?: boolean;
-  isVolunteer?: boolean;
-  [key: string]: any;
-}
+import { Volunteer } from '../../types';
 
 @Component({
   selector: 'app-kpi-cards',

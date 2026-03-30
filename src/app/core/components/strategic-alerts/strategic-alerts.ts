@@ -1,15 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
-interface Alert {
-  id: number;
-  severity: 'critical' | 'high' | 'medium' | 'low';
-  reportedBy?: string;
-  type?: string;
-  booth?: number;
-  description: string;
-  reportedAt: string;
-}
+import { Alert } from '../../types';
 
 @Component({
   selector: 'app-strategic-alerts',

@@ -4,6 +4,8 @@ import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
+import { Volunteer, VolunteerAttendance, boothProgress } from '../../core/types';
+
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../core/components/kpi-cards/kpi-cards';
 import { Charts } from '../../core/components/charts/charts';
@@ -12,28 +14,7 @@ import { StrategicAlerts } from '../../core/components/strategic-alerts/strategi
 
 Chart.register(chartDataLabels);
 
-interface Volunteer {
-  active: boolean;
-  booth: number;
-  id: number;
-  name: string;
-  phone: number;
-  role: string;
-  isCoordinator?: boolean;
-  isVolunteer?: boolean;
-  [key: string]: any;
-}
 
-interface boothProgress {
-  id: number;
-  booth: number;
-  boothName: string;
-  targetVoters: number;
-  votersReached: number;
-  supportersIdentified: number;
-  undecided: number;
-  coverage: number;
-}
 
 @Component({
   selector: 'app-dashboard',
