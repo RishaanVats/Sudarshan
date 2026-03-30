@@ -1,0 +1,62 @@
+export interface VolunteerAttendance {
+  id: number;
+  volunteerId: number;
+  booth: number;
+  date: string; // ISO format string from server
+  status: 'Present' | 'Absent';
+}
+
+export interface Volunteer {
+  active: boolean;
+  booth: number;
+  id: number;
+  name: string;
+  phone: number;
+  role: string;
+  isCoordinator?: boolean;
+  isVolunteer?: boolean;
+  [key: string]: any;
+}
+
+export interface boothProgress {
+  id: number;
+  booth: number;
+  boothName: string;
+  targetVoters: number;
+  votersReached: number;
+  supportersIdentified: number;
+  undecided: number;
+  coverage: number;
+}
+
+export interface chartsVerify {
+  title: string;
+  id: string;
+  type: 'line' | 'bar' | 'pie' | 'doughnut';
+  legendNeeded: boolean;
+  data: number[] | string[];
+  labels: string[];
+}
+
+export interface Influencer {
+  id: number;
+  name: string;
+  role: string;
+  status: string;
+  contact: string;
+  location: string;
+  reach: string;
+  dpUrl: string;
+  dpWord?: string;
+  [key: string]: any; // Allows any additional properties
+}
+
+export interface Alert {
+  id: number;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  reportedBy?: string;
+  type?: string;
+  booth?: number;
+  description: string;
+  reportedAt: string;
+}
