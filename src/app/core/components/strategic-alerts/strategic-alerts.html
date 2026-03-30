@@ -1,0 +1,4 @@
+<div class="alerts alert-card" [ngClass]="severityMap[alert.severity] || defaultStatusClass">
+    <p class="truncate"><span><i class="bi bi-asterisk"></i></span>&nbsp; {{ alert.description}}</p>
+    <p>{{alert.reportedBy}} @ {{alert.reportedAt}}</p>
+</div>

@@ -8,6 +8,7 @@ import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../core/components/kpi-cards/kpi-cards';
 import { Charts } from '../../core/components/charts/charts';
 import { InfluencersCard } from '../../core/components/influencers-card/influencers-card';
+import { StrategicAlerts } from '../../core/components/strategic-alerts/strategic-alerts';
 
 Chart.register(chartDataLabels);
 
@@ -37,13 +38,14 @@ interface boothProgress {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, KpiCards, Charts, InfluencersCard],
+  imports: [CommonModule, KpiCards, Charts, InfluencersCard, StrategicAlerts],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   volunteers: Volunteer[] = []; // Using the interface here
   boothProgress: boothProgress[] = [];
+  warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
 
   onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
   onlyCoordinators: Volunteer[] = []; // Only those with role "Coordinator"
@@ -95,9 +97,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
     });
 
+    // Load Booth Progress from API
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
         this.boothProgress = data;
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching Booth Progress', err);
+      },
+    });
+
+    // Loiad War Room Alerts from API
+    this.sudarshanService.getWarRoomAlertsSorted().subscribe({
+      next: (data) => {
+        this.warRoomAlerts = data;
+        this.warRoomAlerts.forEach((alert: any) => {
+          alert.severity = alert.severity.toLowerCase(); // Ensure severity is lowercase for consistent CSS class mapping
+          alert.reportedAt = new Date(alert.reportedAt).toLocaleString(); // Format the date for display
+        });
+        console.log('War Room Alerts: ', data);
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
       },
@@ -239,23 +259,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   strategicAlerts = [
     {
       id: 1,
-      type: 'warn',
-      msg: 'Something happened somewhere',
-      time: new Date().toLocaleString(),
+      // Cast the variable as the specific type
+      severity: 'high' as 'low' | 'critical' | 'high' | 'medium',
+      description: 'Something happened somewhere',
+      reportedAt: new Date().toLocaleString(),
       reportedBy: 'Volunteer 3',
     },
     {
       id: 2,
-      type: 'msg',
-      msg: 'Master Blaster ON',
-      time: new Date().toLocaleString(),
+      severity: 'critical' as 'low' | 'critical' | 'high' | 'medium',
+      description: 'Master Blaster ON',
+      reportedAt: new Date().toLocaleString(),
       reportedBy: 'Volunteer 6',
     },
     {
       id: 3,
-      type: 'info',
-      msg: 'Meeting @ War Room',
-      time: new Date().toLocaleString(),
+      severity: 'medium' as 'low' | 'critical' | 'high' | 'medium',
+      description: 'Meeting @ War Room',
+      reportedAt: new Date().toLocaleString(),
       reportedBy: 'Manager 3',
     },
   ];
@@ -289,7 +310,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       contact: '9876543210',
       location: 'Sector 2, Patna',
       reach: '2.5K',
-      dpUrl: ''
+      dpUrl: '',
     },
     {
       id: 4,
@@ -303,8 +324,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     },
   ];
 
-    ngAfterViewInit() {
+  ngAfterViewInit() {
     // Initializing charts here because the <canvas> elements are now in the DOM
-  
   }
 }
