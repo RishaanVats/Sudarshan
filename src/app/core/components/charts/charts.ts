@@ -4,15 +4,7 @@ import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
-interface chartsVerify {
-  title: string;
-  id: string;
-  type: 'line' | 'bar' | 'pie' | 'doughnut';
-  legendNeeded: boolean;
-  data: number[] | string[];
-
-  labels: string[];
-}
+import { chartsVerify } from '../../types';
 
 @Component({
   selector: 'app-charts',

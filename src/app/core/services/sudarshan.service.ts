@@ -9,17 +9,69 @@ import { ApiService } from './api.service';
 export class SudarshanService {
   constructor(private api: ApiService) {}
 
-  // Example: Get all volunteers
+
+  // --- Core Entities ---
   getVolunteers(): Observable<any> {
     return this.api.get('volunteers');
+  }
+
+  getBooths(): Observable<any> {
+    return this.api.get('booths');
+  }
+
+  getEvents(): Observable<any> {
+    return this.api.get('events');
+  }
+
+  getIssues(): Observable<any> {
+    return this.api.get('issues');
   }
 
   getDailyActive(): Observable<any> {
     return this.api.get('dailyActivity');
   }
 
+  // --- Field Operations ---
+  getDoorToDoorVisits(): Observable<any> {
+    return this.api.get('doorToDoorVisits');
+  }
+
+  getVolunteerAttendance(): Observable<any> {
+    return this.api.get('volunteerAttendance');
+  }
+
+  getVoterFeedback(): Observable<any> {
+    return this.api.get('voterFeedback');
+  }
+
   getBoothProgress(): Observable<any> {
     return this.api.get('boothProgress');
+  }
+
+  // --- Intelligence & Management ---
+  getInfluencerRecommendations(): Observable<any> {
+    return this.api.get('influencerRecommendations');
+  }
+
+  getOppositionActivity(): Observable<any> {
+    return this.api.get('oppositionActivity');
+  }
+
+  getManagerReports(): Observable<any> {
+    return this.api.get('managerReports');
+  }
+
+  // --- Strategy & Monitoring ---
+  getCampaignTimeline(): Observable<any> {
+    return this.api.get('campaignTimeline');
+  }
+
+  getWarroomAlerts(): Observable<any> {
+    return this.api.get('warroomAlerts');
+  }
+
+  getAnalytics(): Observable<any> {
+    return this.api.get('analytics');
   }
 
   getWarRoomAlertsSorted(): Observable<any> {
