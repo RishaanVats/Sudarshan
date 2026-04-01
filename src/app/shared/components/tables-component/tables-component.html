@@ -1,0 +1,25 @@
+<div class="perform-table bg-card">
+    <p class="card-title">Booth Intelligence - Top performers</p>
+    <hr class="title-seperator">
+    <div class="table-wrapper">
+        <table class="bg-row">
+            <thead>
+                <tr class="card-title bg-row-alt text-center text-wrap">
+                    @for(header of tableData[0]; track header){
+                        <th>{{header?header:'N/A'}}</th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody class="table-body">
+                @for(row of tableData.slice(1); track row[0]){
+                <tr class="bg-row text-center">
+                    @for(cell of row; track cell){
+                        <td>{{cell}}</td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -11,19 +11,21 @@ import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
 import { InfluencersCard } from '../../shared/components/influencers-card/influencers-card';
 import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
+import { TablesComponent } from '../../shared/components/tables-component/tables-component';
 
 Chart.register(chartDataLabels);
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, KpiCards, Charts, InfluencersCard, StrategicAlerts],
+  imports: [CommonModule, KpiCards, Charts, InfluencersCard, StrategicAlerts, TablesComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   volunteers: Volunteer[] = []; // Using the interface here
   boothProgress: boothProgress[] = [];
+  // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
 
   onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
@@ -79,7 +81,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // Load Booth Progress from API
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
+
+
         this.boothProgress = data;
+        // this.boothProgressTable = this.transformToTableRobust(data);
+        // console.log('Booth Progress: ', this.boothProgressTable);
+
+
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
       },
@@ -105,6 +113,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
     });
   }
+
+//   transformToTableRobust<T extends object>(data: T[]): any[][] {
+//   if (data.length === 0) return [];
+
+//   // 1. Get all unique keys from all objects (in case some are missing in the first one)
+//   const allKeys = Array.from(new Set(data.flatMap(obj => Object.keys(obj)))) as (keyof T)[];
+
+//   // 2. Map each object, filling in undefined/null for missing keys
+//   const rows = data.map((obj) => 
+//     allKeys.map((key) => (key in obj ? obj[key] : null)) 
+//   );
+
+//   // 3. Return headers + data rows
+//   return [allKeys, ...rows];
+// }
 
   boothIntell: Array<{
     booth: string;

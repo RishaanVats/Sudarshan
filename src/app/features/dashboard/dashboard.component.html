@@ -17,7 +17,8 @@
     </div>
 
     <div class="d-flex flex-wrap gap-2 mt-3">
-        <div class="perform-table bg-card" style="width: 65%;">
+        <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress" [excludedKeys]="['id']" style="width: 68%;"></app-tables-component>
+        <!-- <div class="perform-table bg-card" style="width: 65%;">
             <p class="card-title">Booth Intelligence - Top performers</p>
             <hr class="title-seperator">
             <div class="table-wrapper">
@@ -49,7 +50,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> -->
         <div class="bg-card info-place" style="width: 30%;">
             <p class="card-title">Strategic Alerts</p>
             <hr class="title-seperator">
