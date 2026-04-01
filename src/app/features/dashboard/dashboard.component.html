@@ -17,39 +17,11 @@
     </div>
 
     <div class="d-flex flex-wrap gap-2 mt-3">
-        <div class="perform-table bg-card" style="width: 65%;">
-            <p class="card-title">Booth Intelligence - Top performers</p>
-            <hr class="title-seperator">
-            <div class="table-wrapper">
-                <table class="bg-row">
-                    <thead>
-                        <tr class="card-title bg-row-alt text-center text-wrap">
-                            <th>Booth</th>
-                            <th>Total Voters</th>
-                            <th>Contacted</th>
-                            <th>Supporters</th>
-                            <th>Undecided</th>
-                            <th>Coverage %age</th>
-                        </tr>
-                    </thead>
+        <!-- Booth Intelligence Table -->
+        <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress"
+            [excludedKeys]="['id']" style="width: 6%;"></app-tables-component>
 
-                    <tbody class="table-body">
-                        @for(booth of boothProgress ;track booth.id){
-                        <tr class="bg-row text-center">
-                            <td class="text-start">{{booth.booth}} - {{booth.boothName}}</td>
-                            <td>{{booth.targetVoters}}</td>
-                            <td>{{booth.votersReached}}</td>
-                            <td>{{booth.supportersIdentified}}</td>
-                            <td>{{booth.undecided}}</td>
-                            <td [style.color]="booth.coverage > 80 ? 'var(--ac-emerald)' : 'var(--ac-rose)'">
-                                {{booth.coverage}}&percnt;
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <!-- Strategic Alerts Place -->
         <div class="bg-card info-place" style="width: 30%;">
             <p class="card-title">Strategic Alerts</p>
             <hr class="title-seperator">

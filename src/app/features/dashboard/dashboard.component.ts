@@ -11,19 +11,21 @@ import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
 import { InfluencersCard } from '../../shared/components/influencers-card/influencers-card';
 import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
+import { TablesComponent } from '../../shared/components/tables-component/tables-component';
 
 Chart.register(chartDataLabels);
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, KpiCards, Charts, InfluencersCard, StrategicAlerts],
+  imports: [CommonModule, KpiCards, Charts, InfluencersCard, StrategicAlerts, TablesComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   volunteers: Volunteer[] = []; // Using the interface here
   boothProgress: boothProgress[] = [];
+  // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
 
   onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
@@ -60,12 +62,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }),
         ];
 
-        // Segregate into specific lists
-        // this.onlyVolunteers = this.volunteers.filter((v) => v.role === 'Volunteer');
-        // this.onlyCoordinators = this.volunteers.filter((v) => v.role === 'Coordinator');
-        // this.onlyBoothWorkers = this.volunteers.filter((v) => v.role === 'Booth Worker');
-        // this.onlyFieldOrganizers = this.volunteers.filter((v) => v.role === 'Field Organizer');
-        // this.onlySocialMedia = this.volunteers.filter((v) => v.role === 'Social Media');
 
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
@@ -79,7 +75,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // Load Booth Progress from API
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
+
         this.boothProgress = data;
+
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
       },
@@ -105,6 +103,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
     });
   }
+
 
   boothIntell: Array<{
     booth: string;

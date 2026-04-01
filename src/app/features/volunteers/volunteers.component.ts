@@ -143,6 +143,6 @@ export class VolunteersComponent implements OnInit {
 
     // Debugging output as requested (Comma separated string)
     const countString = limitedData.map((record) => record.presentCount).join(', ');
-    console.log('Processed Chart Data (Counts):', countString);
+    // console.log('Processed Chart Data (Counts):', countString);
   }
 }
