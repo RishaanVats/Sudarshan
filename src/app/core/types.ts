@@ -36,6 +36,7 @@ export interface chartsVerify {
   legendNeeded: boolean;
   data: number[] | string[];
   labels: string[];
+  width?: string; // Optional width property for layout control
 }
 
 export interface Influencer {
