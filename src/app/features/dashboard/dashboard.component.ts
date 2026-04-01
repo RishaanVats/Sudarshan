@@ -7,14 +7,12 @@ import chartDataLabels from 'chartjs-plugin-datalabels';
 import { Volunteer, VolunteerAttendance, boothProgress } from '../../core/types';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
-import { KpiCards } from '../../core/components/kpi-cards/kpi-cards';
-import { Charts } from '../../core/components/charts/charts';
-import { InfluencersCard } from '../../core/components/influencers-card/influencers-card';
-import { StrategicAlerts } from '../../core/components/strategic-alerts/strategic-alerts';
+import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
+import { Charts } from '../../shared/components/charts/charts';
+import { InfluencersCard } from '../../shared/components/influencers-card/influencers-card';
+import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
 
 Chart.register(chartDataLabels);
-
-
 
 @Component({
   selector: 'app-dashboard',
@@ -90,7 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
     });
 
-    // Loiad War Room Alerts from API
+    // Load War Room Alerts from API
     this.sudarshanService.getWarRoomAlertsSorted().subscribe({
       next: (data) => {
         this.warRoomAlerts = data;
@@ -209,6 +207,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     legendNeeded: boolean;
     data: number[] | string[];
     labels: string[];
+    width?: string; // Optional width for layout control in percentage or fixed units (e.g., '400px')
   }> = [
     {
       title: 'Volunteer Activity - 30 days',
@@ -217,6 +216,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       legendNeeded: false,
       data: [120, 190, 150, 250, 300, 450, 560],
       labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
+      width: '32%', // Optional: specify width for better layout control
     },
     {
       title: 'Door-to-Door Outreach - This Week',
@@ -225,6 +225,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       legendNeeded: false,
       data: [50, 75, 100, 150, 200, 250, 318],
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      width: '32%', // Optional: specify width for better layout control
     },
     {
       title: 'Voter Sentiment Distribution',
@@ -233,6 +234,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       legendNeeded: true,
       data: [38, 29, 18, 15],
       labels: ['Positive', 'Neutral', 'Negative', 'Unknown'],
+      width: '30%', // Optional: specify width for better layout control
     },
   ];
 

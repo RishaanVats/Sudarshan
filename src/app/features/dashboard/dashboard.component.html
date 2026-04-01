@@ -12,7 +12,7 @@
     <div class="d-flex flex-wrap gap-2 mt-3">
         <!-- Charts Place -->
         @for (chart of kpiCharts; track chart.title) {
-        <app-charts [chart]="chart"></app-charts>
+        <app-charts [chart]="chart" [ngStyle]="{'width' : chart.width}"></app-charts>
         }
     </div>
 
