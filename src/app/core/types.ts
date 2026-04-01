@@ -60,3 +60,16 @@ export interface Alert {
   description: string;
   reportedAt: string;
 }
+
+export interface AttendanceRecord {
+  id: number;
+  volunteerId: number;
+  booth: number;
+  date: string; // ISO String
+  status: "Present" | "Absent";
+}
+
+export interface DailyAttendanceCount {
+  date: string;
+  presentCount: number;
+}

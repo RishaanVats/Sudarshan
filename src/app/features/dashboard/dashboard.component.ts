@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           alert.severity = alert.severity.toLowerCase(); // Ensure severity is lowercase for consistent CSS class mapping
           alert.reportedAt = new Date(alert.reportedAt).toLocaleString(); // Format the date for display
         });
-        console.log('War Room Alerts: ', data);
+        // console.log('War Room Alerts: ', data);
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
       },
@@ -208,7 +208,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     type: 'line' | 'bar' | 'pie' | 'doughnut';
     legendNeeded: boolean;
     data: number[] | string[];
-
     labels: string[];
   }> = [
     {
