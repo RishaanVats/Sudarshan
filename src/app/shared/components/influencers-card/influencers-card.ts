@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 
-import { Influencer } from '../../types';
+import { Influencer } from '../../../core/types';
 
 @Component({
   selector: 'app-influencers-card',
