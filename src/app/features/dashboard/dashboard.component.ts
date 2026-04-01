@@ -62,12 +62,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }),
         ];
 
-        // Segregate into specific lists
-        // this.onlyVolunteers = this.volunteers.filter((v) => v.role === 'Volunteer');
-        // this.onlyCoordinators = this.volunteers.filter((v) => v.role === 'Coordinator');
-        // this.onlyBoothWorkers = this.volunteers.filter((v) => v.role === 'Booth Worker');
-        // this.onlyFieldOrganizers = this.volunteers.filter((v) => v.role === 'Field Organizer');
-        // this.onlySocialMedia = this.volunteers.filter((v) => v.role === 'Social Media');
 
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
@@ -82,11 +76,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
 
-
         this.boothProgress = data;
-        // this.boothProgressTable = this.transformToTableRobust(data);
-        // console.log('Booth Progress: ', this.boothProgressTable);
-
 
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
@@ -114,20 +104,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
-//   transformToTableRobust<T extends object>(data: T[]): any[][] {
-//   if (data.length === 0) return [];
-
-//   // 1. Get all unique keys from all objects (in case some are missing in the first one)
-//   const allKeys = Array.from(new Set(data.flatMap(obj => Object.keys(obj)))) as (keyof T)[];
-
-//   // 2. Map each object, filling in undefined/null for missing keys
-//   const rows = data.map((obj) => 
-//     allKeys.map((key) => (key in obj ? obj[key] : null)) 
-//   );
-
-//   // 3. Return headers + data rows
-//   return [allKeys, ...rows];
-// }
 
   boothIntell: Array<{
     booth: string;
