@@ -36,6 +36,7 @@ export interface chartsVerify {
   legendNeeded: boolean;
   data: number[] | string[];
   labels: string[];
+  width?: string; // Optional width property for layout control
 }
 
 export interface Influencer {
@@ -59,4 +60,17 @@ export interface Alert {
   booth?: number;
   description: string;
   reportedAt: string;
+}
+
+export interface AttendanceRecord {
+  id: number;
+  volunteerId: number;
+  booth: number;
+  date: string; // ISO String
+  status: "Present" | "Absent";
+}
+
+export interface DailyAttendanceCount {
+  date: string;
+  presentCount: number;
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
-import { Alert } from '../../types';
+import { Alert } from '../../../core/types';
 
 @Component({
   selector: 'app-strategic-alerts',

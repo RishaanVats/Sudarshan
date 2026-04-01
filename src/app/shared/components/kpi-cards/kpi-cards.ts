@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Volunteer } from '../../types';
+import { Volunteer } from '../../../core/types';
 
 @Component({
   selector: 'app-kpi-cards',

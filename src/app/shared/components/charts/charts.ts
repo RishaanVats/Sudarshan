@@ -4,18 +4,19 @@ import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
-import { chartsVerify } from '../../types';
+import { chartsVerify } from '../../../core/types';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-charts',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './charts.html',
   styleUrl: './charts.css',
 })
 export class Charts implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
-  }
+}
   @Input() chart = {} as chartsVerify;
 
   constructor(private cdr: ChangeDetectorRef) {}

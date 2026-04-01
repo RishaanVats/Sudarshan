@@ -39,7 +39,7 @@ tr:hover {
     padding: 20px 20px 20px 20px;
 }
 
-.title-seperator {
+.title-separator {
     border-top: 2px solid var(--border);
     margin: 10px 0;
 }

@@ -1,6 +1,6 @@
 .chart-place {
     position: relative;
-    width: 30%;
+    width: 100%;
     min-width: 320px;
     height: 200px;
     background-color: var(--card-bg);
