@@ -6,12 +6,13 @@ import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
 
 // Assuming these types are defined in your core/types file
-import { VolunteerAttendance, AttendanceRecord, DailyAttendanceCount } from '../../core/types';
+import { VolunteerAttendance, AttendanceRecord, DailyAttendanceCount, Volunteer } from '../../core/types';
+import { TablesComponent } from "../../shared/components/tables-component/tables-component";
 
 @Component({
   selector: 'app-volunteers',
   standalone: true,
-  imports: [CommonModule, KpiCards, Charts],
+  imports: [CommonModule, KpiCards, Charts, TablesComponent],
   templateUrl: './volunteers.component.html',
   styleUrls: ['./volunteers.component.css'],
 })
@@ -21,7 +22,11 @@ export class VolunteersComponent implements OnInit {
   public dailyVolunnteerChecks: DailyAttendanceCount[] = [];
   public attendanceRecord: AttendanceRecord[] = [];
 
-  // Mock data for KPI Cards (as per your original file)
+  volunteersData: Volunteer[] = [];
+
+
+
+  // Mock data for KPI Cards 
   public kpiCards = [
     {
       title: 'Registered',
@@ -72,6 +77,7 @@ export class VolunteersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAttendanceData();
+    this.loadVolunteersData();
   }
 
   private loadAttendanceData(): void {
@@ -90,6 +96,20 @@ export class VolunteersComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error fetching volunteer attendance:', err),
+    });
+  }
+
+  private loadVolunteersData(): void {
+    this.sudarshanService.getVolunteers().subscribe({
+      next: (data: Volunteer[]) => {
+        data.forEach((volunteer) => {
+          volunteer['lastSync'] = new Date(volunteer['lastSync']).toLocaleString(); // Set the last sync time
+        });
+        this.volunteersData = data;
+        
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Error fetching volunteers data:', err),
     });
   }
 

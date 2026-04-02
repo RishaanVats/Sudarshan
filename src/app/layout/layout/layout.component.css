@@ -1,16 +1,27 @@
-html, body {
+html,
+body {
   height: 100%;
-  overflow: hidden; /* important */
+  overflow: hidden;
+  /* important */
 }
 
-.border-clr{
-    border: 1px solid var(--border);
+.border-clr {
+  border: 1px solid var(--border);
 }
 
 .custom-opacity {
-    --bs-bg-opacity: 1;
+  --bs-bg-opacity: 1;
 }
 
 .flex-grow-1 {
   scrollbar-width: thin;
+}
+
+.sidebar-positioning {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* Takes up the full viewport height */
+  overflow-y: hidden;
+  /* Adds a scrollbar to sidebar */
 }

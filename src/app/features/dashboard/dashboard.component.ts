@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   boothProgress: boothProgress[] = [];
   // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
+  influencerRecommendations: any[] = []; // Define an interface if you have a specific structure for influencers
 
   onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
   onlyCoordinators: Volunteer[] = []; // Only those with role "Coordinator"
@@ -62,7 +63,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }),
         ];
 
-
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
         // console.log('getVolunteers called... ', this.volunteers);
@@ -75,7 +75,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // Load Booth Progress from API
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
-
         this.boothProgress = data;
 
         // FORCE THE UI TO REFRESH
@@ -102,8 +101,23 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Error fetching Booth Progress', err);
       },
     });
-  }
 
+    this.sudarshanService.getTopInfluencerRecommendations().subscribe({
+      next: (data) => {
+        // console.log('Influencer Recommendations: ', data);
+        this.influencerRecommendations = data;
+        this.influencerRecommendations.forEach((influencer: any) => {
+          influencer.status = influencer.status.toLowerCase(); // Ensure status is lowercase for consistent CSS class mapping
+          influencer.reach = influencer.estimatedInfluence.toLocaleString(); // Format reach with commas
+        });
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching Influencer Recommendations', err);
+      },
+    });
+  }
 
   boothIntell: Array<{
     booth: string;

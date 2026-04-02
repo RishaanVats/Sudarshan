@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HostBinding } from '@angular/core';
 
-import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,6 +13,7 @@ import { Input } from '@angular/core';
 })
 export class SidebarComponent {
   @Input() collapsed: boolean = false;
+  @Output() toggle = new EventEmitter<void>();
 
   currYear = new Date().getFullYear();  // Current year for Copyright label
 

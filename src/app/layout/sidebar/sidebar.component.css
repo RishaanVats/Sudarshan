@@ -59,3 +59,14 @@
   text-align: center;
   font-size: 18px;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+
+.navigation{
+padding: 10px 0;
+margin: 0;
+font-size: large;
+}

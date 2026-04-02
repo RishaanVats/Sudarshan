@@ -19,13 +19,13 @@
     <div class="d-flex flex-wrap gap-2 mt-3">
         <!-- Booth Intelligence Table -->
         <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress"
-            [excludedKeys]="['id']" style="width: 6%;"></app-tables-component>
+            [excludedKeys]="['id']" style="width: 66%;"></app-tables-component>
 
         <!-- Strategic Alerts Place -->
         <div class="bg-card info-place" style="width: 30%;">
             <p class="card-title">Strategic Alerts</p>
             <hr class="title-seperator">
-            <div class="alerts-wrapper">
+            <div class="alerts-wrapper pe-1">
                 @for(alert of warRoomAlerts; track alert.id){
                 <app-strategic-alerts [alert]="alert"></app-strategic-alerts>
                 }
@@ -33,8 +33,8 @@
         </div>
     </div>
     <p class="card-title influencers-section-head">Top Influencers This Week</p>
-    <div class="d-flex flex-wrap gap-2 mt-3">
-        @for(person of topInfluencers; track person.id){
+    <div class="d-flex flex-wrap gap-2 mt-3 scroll-y pb-2">
+        @for(person of influencerRecommendations; track person.id){
         <app-influencers-card [person]="person"></app-influencers-card>
         }
     </div>

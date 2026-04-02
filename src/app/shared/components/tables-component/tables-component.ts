@@ -12,7 +12,7 @@ export class TablesComponent {
   @Input() title: string = 'Table Title';
   @Input() set dataForTable(value: any[]) {
     this.tableData = this.transformToTableRobust(value);
-    console.log('Transformed Table Data: ', this.tableData);
+    // console.log('Transformed Table Data: ', this.tableData);
   }
   @Input() excludedKeys: string[] = []; // Keys to exclude from the table
 
