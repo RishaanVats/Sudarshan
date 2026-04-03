@@ -4,7 +4,7 @@ import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
-import { Volunteer, VolunteerAttendance, boothProgress } from '../../core/types';
+import { Volunteer, VolunteerAttendance, boothProgress, chartsVerify } from '../../core/types';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
@@ -12,6 +12,7 @@ import { Charts } from '../../shared/components/charts/charts';
 import { InfluencersCard } from '../../shared/components/influencers-card/influencers-card';
 import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
+import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 Chart.register(chartDataLabels);
 
@@ -28,6 +29,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
   influencerRecommendations: any[] = []; // Define an interface if you have a specific structure for influencers
+  dailyActivity: any[] = []; // Define an interface if you have a specific structure for daily activity data
+
+  mapData: chartsVerify[] = [];
+  doortoDoorData: any[] = [];
+  voterFeedback: any[] = []; // Define an interface if you have a specific structure for voter feedback
+  voterSentiment: Record<string, number> = {}; // To store sentiment counts
 
   onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
   onlyCoordinators: Volunteer[] = []; // Only those with role "Coordinator"
@@ -42,6 +49,40 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loadData();
+  }
+
+  mapDataReady() {
+    this.mapData = [
+      {
+        title: 'Volunteer Activity - 30 days',
+        id: 'volunteerActivityChart',
+        type: 'line',
+        legendNeeded: false,
+        data: this.dailyActivity.map((entry) => entry.votersReached),
+        labels: this.dailyActivity.map((entry) => entry.date),
+        width: '32%', // Optional: specify width for better layout control
+      },
+      {
+        title: 'Door-to-Door Outreach - This Week',
+        id: 'doorOutreachChart',
+        type: 'bar',
+        legendNeeded: false,
+        data: this.doortoDoorData.map((entry) => entry.housesVisited),
+        labels: this.doortoDoorData.map((entry) => entry.date),
+        width: '32%', // Optional: specify width for better layout control
+      },
+      {
+        title: 'Voter Sentiment Distribution',
+        id: 'voterSentimentChart',
+        type: 'doughnut',
+        legendNeeded: true,
+        data: Object.values(this.voterSentiment),
+        labels: Object.keys(this.voterSentiment),
+        width: '30%', // Optional: specify width for better layout control
+      },
+    ];
+
+    this.cdr.detectChanges(); // Ensure the UI updates with the new chart data
   }
 
   loadData() {
@@ -115,6 +156,121 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         console.error('Error fetching Influencer Recommendations', err);
+      },
+    });
+
+    this.sudarshanService.getDailyActive().subscribe({
+      next: (data) => {
+        data.map((entry: any) => {
+          entry.date = new Date(entry.date).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            timeZone: 'UTC',
+          }); // Format date for display
+          return entry;
+        });
+        this.dailyActivity = data;
+        this.dailyActivity.sort(
+          (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ); // Sort by date ascending
+        // console.log('Daily Activity: ', this.dailyActivity);
+        // console.log(this.dailyActivity.map((entry) => entry.votersReached));
+        // console.log('Daily Activity: ', data);
+
+        this.mapDataReady(); // Prepare chart data after daily activity is loaded
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching dailyActivity data', err);
+      },
+    });
+
+    this.sudarshanService.getDoorToDoorVisits().subscribe({
+      next: (data) => {
+        // Process door-to-door data if needed
+        interface VolunteerData {
+          date: string; // "2026-03-24T21:46:55.208Z"
+          housesVisited: number;
+          [key: string]: any;
+        }
+
+        const getRecentAccumulatedData = (data: VolunteerData[]) => {
+          // 1. Accumulate housesVisited by the full YYYY-MM-DD string
+          const grouped = data.reduce(
+            (acc, curr) => {
+              const isoDate = curr.date.split('T')[0]; // "2026-03-24"
+              acc[isoDate] = (acc[isoDate] || 0) + curr.housesVisited;
+              return acc;
+            },
+            {} as Record<string, number>,
+          );
+
+          // 2. Sort by date string (Descending) and take the top 7
+          return (
+            Object.entries(grouped)
+              .sort((a, b) => b[0].localeCompare(a[0]))
+              .slice(0, 7)
+              // 3. Final reduction to the "DD/MM" format for the UI
+              .map(([fullDate, totalHouses]) => {
+                const [year, month, day] = fullDate.split('-');
+                return {
+                  date: `${day}/${month}`,
+                  housesVisited: totalHouses,
+                };
+              })
+          );
+        };
+
+        this.doortoDoorData = getRecentAccumulatedData(data);
+        // console.log('Door-to-Door Visits: ', data);
+        console.log('Door-to-Door Visits: ', this.doortoDoorData);
+
+        this.mapDataReady(); // Prepare chart data after data is loaded
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching door-to-door visits data', err);
+      },
+    });
+
+    this.sudarshanService.getVoterFeedback().subscribe({
+      next: (data) => {
+        this.voterFeedback = data;
+        // console.log('Voter Feedback: ', data);
+        interface VoterFeedbackItem {
+          sentiment: string;
+          // Add other properties if known, e.g., id?: number; message?: string;
+        }
+
+        this.voterSentiment = (data as VoterFeedbackItem[]).reduce(
+          (acc, { sentiment }) => {
+            acc[sentiment] = (acc[sentiment] || 0) + 1;
+            return acc;
+          },
+          {} as Record<string, number>,
+        );
+
+        const totalSentiments = Object.values(this.voterSentiment).reduce(
+          (sum, count) => sum + count,
+          0,
+        );
+
+        const percentages = Object.fromEntries(
+          Object.entries(this.voterSentiment).map(([key, value]) => [
+            key,
+            Math.round((value / totalSentiments) * 100),
+          ]),
+        );
+
+        this.voterSentiment = percentages; // Update voterSentiment to hold percentage values for the chart
+        this.mapDataReady(); // Update charts with new sentiment data
+        // FORCE THE UI TO REFRESH
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching voter feedback data', err);
       },
     });
   }
@@ -210,69 +366,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       isPositive: false,
       themeVar: 'var(--ac-rose)',
       trendVar: 'var(--ac-rose)',
-    },
-  ];
-
-  kpiCharts: Array<{
-    title: string;
-    id: string;
-    type: 'line' | 'bar' | 'pie' | 'doughnut';
-    legendNeeded: boolean;
-    data: number[] | string[];
-    labels: string[];
-    width?: string; // Optional width for layout control in percentage or fixed units (e.g., '400px')
-  }> = [
-    {
-      title: 'Volunteer Activity - 30 days',
-      id: 'volunteerActivityChart',
-      type: 'line',
-      legendNeeded: false,
-      data: [120, 190, 150, 250, 300, 450, 560],
-      labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'],
-      width: '32%', // Optional: specify width for better layout control
-    },
-    {
-      title: 'Door-to-Door Outreach - This Week',
-      id: 'doorOutreachChart',
-      type: 'bar',
-      legendNeeded: false,
-      data: [50, 75, 100, 150, 200, 250, 318],
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      width: '32%', // Optional: specify width for better layout control
-    },
-    {
-      title: 'Voter Sentiment Distribution',
-      id: 'voterSentimentChart',
-      type: 'doughnut',
-      legendNeeded: true,
-      data: [38, 29, 18, 15],
-      labels: ['Positive', 'Neutral', 'Negative', 'Unknown'],
-      width: '30%', // Optional: specify width for better layout control
-    },
-  ];
-
-  strategicAlerts = [
-    {
-      id: 1,
-      // Cast the variable as the specific type
-      severity: 'high' as 'low' | 'critical' | 'high' | 'medium',
-      description: 'Something happened somewhere',
-      reportedAt: new Date().toLocaleString(),
-      reportedBy: 'Volunteer 3',
-    },
-    {
-      id: 2,
-      severity: 'critical' as 'low' | 'critical' | 'high' | 'medium',
-      description: 'Master Blaster ON',
-      reportedAt: new Date().toLocaleString(),
-      reportedBy: 'Volunteer 6',
-    },
-    {
-      id: 3,
-      severity: 'medium' as 'low' | 'critical' | 'high' | 'medium',
-      description: 'Meeting @ War Room',
-      reportedAt: new Date().toLocaleString(),
-      reportedBy: 'Manager 3',
     },
   ];
 

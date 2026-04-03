@@ -6,8 +6,18 @@ import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
 
 // Assuming these types are defined in your core/types file
-import { VolunteerAttendance, AttendanceRecord, DailyAttendanceCount, Volunteer } from '../../core/types';
-import { TablesComponent } from "../../shared/components/tables-component/tables-component";
+import {
+  VolunteerAttendance,
+  AttendanceRecord,
+  DailyAttendanceCount,
+  Volunteer,
+} from '../../core/types';
+import { TablesComponent } from '../../shared/components/tables-component/tables-component';
+import { map } from 'rxjs';
+
+interface ZoneMap {
+  [key: string]: number;
+}
 
 @Component({
   selector: 'app-volunteers',
@@ -21,12 +31,11 @@ export class VolunteersComponent implements OnInit {
   public kpiCharts: any[] = [];
   public dailyVolunnteerChecks: DailyAttendanceCount[] = [];
   public attendanceRecord: AttendanceRecord[] = [];
+  private sortedPercentages: any[] = [];
 
   volunteersData: Volunteer[] = [];
 
-
-
-  // Mock data for KPI Cards 
+  // Mock data for KPI Cards
   public kpiCards = [
     {
       title: 'Registered',
@@ -90,9 +99,6 @@ export class VolunteersComponent implements OnInit {
         // Process the raw records into the DailyAttendanceCount format
         this.dailyVolunnteerChecks = this.processAttendanceData(this.attendanceRecord);
 
-        // Map to the chart once data is processed
-        this.plotVolunteerAttendanceChart();
-
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error fetching volunteer attendance:', err),
@@ -106,7 +112,33 @@ export class VolunteersComponent implements OnInit {
           volunteer['lastSync'] = new Date(volunteer['lastSync']).toLocaleString(); // Set the last sync time
         });
         this.volunteersData = data;
-        
+
+        const zoneCounts = this.volunteersData.reduce((acc: ZoneMap, curr) => {
+          const zone = curr['zone'];
+          // If the zone exists in our accumulator, increment it; otherwise, set to 1
+          acc[zone] = (acc[zone] || 0) + 1;
+          return acc;
+        }, {} as ZoneMap);
+
+        // 2. Map the counts to percentages
+        const zonePercentages = Object.keys(zoneCounts).map((zoneName) => {
+          const count = zoneCounts[zoneName];
+          const percentage = ((count / this.volunteersData.length) * 100).toFixed(1); // Keep 1 decimal point
+
+          return {
+            zone: zoneName,
+            count: count,
+            percentage: `${percentage}%`,
+          };
+        });
+
+        this.sortedPercentages = zonePercentages.sort((a, b) => {
+          return a.zone.localeCompare(b.zone, undefined, { numeric: true });
+        });
+
+        // Map to the chart once data is processed
+        this.plotVolunteerAttendanceChart();
+        // console.log(zoneCounts, zonePercentages, sortedPercentages);
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error fetching volunteers data:', err),
@@ -155,8 +187,8 @@ export class VolunteersComponent implements OnInit {
         id: 'volunteerDistribution',
         type: 'doughnut',
         legendNeeded: true,
-        data: [120, 90, 60, 30], // Mock data for distribution
-        labels: ['Zone A', 'Zone B', 'Zone C', 'Zone D'],
+        data: [...this.sortedPercentages.map((item) => item.count)], 
+        labels: [...this.sortedPercentages.map((item) => item.zone)],
         width: '25%', // Optional
       },
     ];

@@ -55,8 +55,8 @@ export class Charts implements OnInit, AfterViewInit {
           borderWidth: 2,
           hoverOffset: 10,
           cutout: '50%',
-          backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E'],
-          borderColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E'],
+          backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6', '#EC4899'], // Extended palette for more segments
+          borderColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6', '#EC4899'],
         },
       };
 
