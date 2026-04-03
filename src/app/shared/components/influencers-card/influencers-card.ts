@@ -18,7 +18,7 @@ export class InfluencersCard implements OnInit {
       for (let i = 0; i < this.person.name.split(' ').length; i++) {
         this.person.dpWord += this.person.name.split(' ')[i][0];
       }
-      // console.log(this.person.dpUrl);
+      console.log(this.person.dpUrl);
     }
   }
 

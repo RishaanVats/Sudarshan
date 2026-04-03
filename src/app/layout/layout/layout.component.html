@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row vh-100">
     <app-header class="bg-panel border-clr" (toggle)="toggleSidebar()"></app-header>
-    <div class="col-auto px-0">
-      <app-sidebar class="bg-panel border-clr" [collapsed]="isSidebarCollapsed"></app-sidebar>
+    <div class="col-auto px-0 sidebar-positioning">
+      <app-sidebar class="bg-panel border-clr" [collapsed]="isSidebarCollapsed" (toggle)="toggleSidebar()"></app-sidebar>
     </div>
 
     <div class="col d-flex flex-column p-0 h-100">

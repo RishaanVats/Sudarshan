@@ -9,9 +9,13 @@
     </div>
 
     <!-- KPI Charts sections -->
-    <div class="d-flex gap-2 w-100 mt-3 flex-wrap">
+    <div class="d-flex gap-2 w-100 mt-2 flex-wrap">
         @for (chart of kpiCharts; track chart.title) {
             <app-charts [chart]="chart" [ngStyle]="{ 'width': chart.width }"></app-charts>
         }
+    </div>
+
+    <div class="w-100 mt-1">
+        <app-tables-component [title]="'Volunteer Roster - Details'" [dataForTable]="volunteersData" [excludedKeys]="['id']" style="width: 100%;"></app-tables-component>
     </div>
 </div>

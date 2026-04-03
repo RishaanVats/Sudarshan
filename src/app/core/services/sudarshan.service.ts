@@ -53,6 +53,10 @@ export class SudarshanService {
     return this.api.get('influencerRecommendations');
   }
 
+    getTopInfluencerRecommendations(): Observable<any> {
+    return this.api.get('influencerRecommendations?_sort=estimatedInfluence&_order=desc&_limit=12');
+  }
+
   getOppositionActivity(): Observable<any> {
     return this.api.get('oppositionActivity');
   }

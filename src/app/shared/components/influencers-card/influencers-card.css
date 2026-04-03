@@ -1,5 +1,5 @@
 .influencers-card {
-    min-width: 250px;
+    min-width: 230px;
     width: auto;
     border-radius: 10px;
     padding: 15px 15px 5px 15px;
@@ -78,4 +78,11 @@
     color: var(--status-violet);
     background-color: var(--dim-violet);
     border-color: var(--ac-violet);
+}
+
+.truncate-name {
+  white-space: nowrap;      /* Keeps text on one single line */
+  overflow: hidden;         /* Hides the text that overflows the container */
+  text-overflow: ellipsis;  /* Adds the "..." at the end */
+  width: 160px;             /* Or any fixed width/max-width */
 }
