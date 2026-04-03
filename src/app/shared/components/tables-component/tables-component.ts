@@ -43,4 +43,9 @@ export class TablesComponent {
     // 4. Return the clean headers + data rows
     return [displayHeaders, ...rows];
   }
+
+  trackByDynamic(index: number, item: any): string | number {
+  return item.id || index || item.name; // Unique identifier
+}
+
 }
