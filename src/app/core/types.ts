@@ -98,3 +98,4 @@ export interface VoterFeedbackItem {
   sentiment: string;
   // Add other properties if known, e.g., id?: number; message?: string;
 }
+

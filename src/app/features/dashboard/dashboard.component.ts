@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   signal,
   computed,
+  effect,
 } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
@@ -13,13 +14,14 @@ import chartDataLabels from 'chartjs-plugin-datalabels';
 
 import {
   Volunteer,
-  VolunteerAttendance,
   boothProgress,
   chartsVerify,
   kpiCards,
   DailyActivity,
   doorToDoorData,
+  Alert,
   VoterFeedbackItem,
+  Influencer,
 } from '../../core/types';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
@@ -43,14 +45,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   boothProgress = signal<boothProgress[]>([]); // Using the interface here
 
   // boothProgressTable: any[][] = []; // Stores transformed table data
-  warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
-  influencerRecommendations: any[] = []; // Define an interface if you have a specific structure for influencers
+  warRoomAlerts = signal<Alert[]>([]); // Define an interface if ever want a specific structure for alerts
+  influencerRecommendations = signal<Influencer[]>([]); // Define an interface if you have a specific structure for influencers
   dailyActivity = signal<DailyActivity[]>([]);
   totalInfluencersRecommended: any;
 
   // kpiCards: any[] = [];
   analytics: any = []; // Define an interface if you have a specific structure for analytics data
-  mapData: chartsVerify[] = [];
   doortoDoorData = signal<doorToDoorData[]>([]);
   voterFeedback: any[] = []; // Define an interface if you have a specific structure for voter feedback
   voterSentiment = signal<Record<string, number>>({});
@@ -70,45 +71,52 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(
     private sudarshanService: SudarshanService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+    effect(() => {
+      console.log(`The current mapData is:`, this.mapData());
+    });
+  }
 
   ngOnInit() {
     this.loadData();
+    console.log(this.mapData());
   }
 
-  mapDataReady() {
-    this.mapData = [
-      {
-        title: 'Volunteer Activity - 30 days',
-        id: 'volunteerActivityChart',
-        type: 'line',
-        legendNeeded: false,
-        data: this.dailyActivity().map((entry) => entry.votersReached),
-        labels: this.dailyActivity().map((entry) => entry.date),
-        width: '32%', // Optional: specify width for better layout control
-      },
-      {
-        title: 'Door-to-Door Outreach - This Week',
-        id: 'doorOutreachChart',
-        type: 'bar',
-        legendNeeded: false,
-        data: this.doortoDoorData().map((entry) => entry.housesVisited),
-        labels: this.doortoDoorData().map((entry) => entry.date),
-        width: '32%', // Optional: specify width for better layout control
-      },
-      {
-        title: 'Voter Sentiment Distribution',
-        id: 'voterSentimentChart',
-        type: 'doughnut',
-        legendNeeded: true,
-        data: Object.values(this.voterSentiment()),
-        labels: Object.keys(this.voterSentiment()),
-        width: '30%', // Optional: specify width for better layout control
-      },
-    ];
+    mapData = computed<chartsVerify[]>(() => {
+      const daily = this.dailyActivity() ?? [];
+      const door = this.doortoDoorData() ?? [];
+      const sentiment = this.voterSentiment() ?? {};
 
-    // this.cdr.detectChanges(); // Ensure the UI updates with the new chart data
-  }
+      return [
+        {
+          title: 'Volunteer Activity - 30 days',
+          id: 'volunteerActivityChart',
+          type: 'line',
+          legendNeeded: false,
+          data: daily.map((e) => e.votersReached),
+          labels: daily.map((e) => e.date),
+          width: '32%',
+        },
+        {
+          title: 'Door-to-Door Outreach - This Week',
+          id: 'doorOutreachChart',
+          type: 'bar',
+          legendNeeded: false,
+          data: door.map((e) => e.housesVisited),
+          labels: door.map((e) => e.date),
+          width: '32%',
+        },
+        {
+          title: 'Voter Sentiment Distribution',
+          id: 'voterSentimentChart',
+          type: 'doughnut',
+          legendNeeded: true,
+          data: Object.values(sentiment),
+          labels: Object.keys(sentiment),
+          width: '30%',
+        },
+      ];
+    });
 
   kpiCardsData = computed<kpiCards[]>(() => {
     return [
@@ -203,13 +211,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     // Load War Room Alerts from API
     this.sudarshanService.getWarRoomAlertsSorted().subscribe({
-      next: (data) => {
-        this.warRoomAlerts = data;
-        this.warRoomAlerts.forEach((alert: any) => {
+      next: (data: Alert[]) => {
+        data.forEach((alert: any) => {
           alert.severity = alert.severity.toLowerCase(); // Ensure severity is lowercase for consistent CSS class mapping
           alert.reportedAt = new Date(alert.reportedAt).toLocaleString(); // Format the date for display
         });
-        // console.log('War Room Alerts: ', data);
+
+        this.warRoomAlerts.set(data);
+        console.log('War Room Alerts: ', this.warRoomAlerts());
         // FORCE THE UI TO REFRESH
         // this.cdr.detectChanges();
       },
@@ -219,13 +228,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
 
     this.sudarshanService.getTopInfluencerRecommendations().subscribe({
-      next: (data) => {
+      next: (data: Influencer[]) => {
         // console.log('Influencer Recommendations: ', data);
-        this.influencerRecommendations = data;
-        this.influencerRecommendations.forEach((influencer: any) => {
+        data.forEach((influencer: any) => {
           influencer.status = influencer.status.toLowerCase(); // Ensure status is lowercase for consistent CSS class mapping
           influencer.reach = influencer.estimatedInfluence.toLocaleString(); // Format reach with commas
         });
+
+        this.influencerRecommendations.set(data);
         // FORCE THE UI TO REFRESH
         // this.cdr.detectChanges();
       },
@@ -263,7 +273,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime(),
         ); // Sort by date ascending
 
-        this.mapDataReady(); // Prepare chart data after daily activity is loaded
+        // this.mapDataReady(); // Prepare chart data after daily activity is loaded
       },
       error: (err) => {
         console.error('Error fetching dailyActivity data', err);
@@ -312,7 +322,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         // console.log('Door-to-Door Visits: ', data);
         console.log('Door-to-Door Visits: ', this.doortoDoorData());
 
-        this.mapDataReady(); // Prepare chart data after data is loaded
+        // this.mapDataReady(); // Prepare chart data after data is loaded
         // FORCE THE UI TO REFRESH
         // this.cdr.detectChanges();
       },
@@ -341,10 +351,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         );
 
         this.voterSentiment.set(percentages);
-        this.mapDataReady();
+        // this.mapDataReady();
         console.log(this.voterSentiment());
 
-        this.cdr.detectChanges();
+        // this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching voter feedback data', err);
