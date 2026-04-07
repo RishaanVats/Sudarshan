@@ -1,10 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit, OnInit, ChangeDetectorRef, signal, computed } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  OnInit,
+  ChangeDetectorRef,
+  signal,
+  computed,
+} from '@angular/core';
 import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
-import { Volunteer, VolunteerAttendance, boothProgress, chartsVerify, kpiCards } from '../../core/types';
+import {
+  Volunteer,
+  VolunteerAttendance,
+  boothProgress,
+  chartsVerify,
+  kpiCards,
+  DailyActivity,
+  doorToDoorData,
+  VoterFeedbackItem,
+} from '../../core/types';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
@@ -29,15 +45,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
   influencerRecommendations: any[] = []; // Define an interface if you have a specific structure for influencers
-  dailyActivity: any[] = []; // Define an interface if you have a specific structure for daily activity data
+  dailyActivity = signal<DailyActivity[]>([]);
   totalInfluencersRecommended: any;
 
   // kpiCards: any[] = [];
   analytics: any = []; // Define an interface if you have a specific structure for analytics data
   mapData: chartsVerify[] = [];
-  doortoDoorData: any[] = [];
+  doortoDoorData = signal<doorToDoorData[]>([]);
   voterFeedback: any[] = []; // Define an interface if you have a specific structure for voter feedback
-  voterSentiment: Record<string, number> = {}; // To store sentiment counts
+  voterSentiment = signal<Record<string, number>>({});
 
   totalVolunteerCount = signal(0);
   activeVolunteerCount = signal(0);
@@ -47,12 +63,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   influencersIdentified = signal(0);
   oppositionEvents = signal(0);
 
-
-
   totalBoothCount = signal(0);
   totalEventCount = signal(0);
   totalIssueCount = signal(0);
-
 
   constructor(
     private sudarshanService: SudarshanService,
@@ -70,8 +83,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         id: 'volunteerActivityChart',
         type: 'line',
         legendNeeded: false,
-        data: this.dailyActivity.map((entry) => entry.votersReached),
-        labels: this.dailyActivity.map((entry) => entry.date),
+        data: this.dailyActivity().map((entry) => entry.votersReached),
+        labels: this.dailyActivity().map((entry) => entry.date),
         width: '32%', // Optional: specify width for better layout control
       },
       {
@@ -79,8 +92,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         id: 'doorOutreachChart',
         type: 'bar',
         legendNeeded: false,
-        data: this.doortoDoorData.map((entry) => entry.housesVisited),
-        labels: this.doortoDoorData.map((entry) => entry.date),
+        data: this.doortoDoorData().map((entry) => entry.housesVisited),
+        labels: this.doortoDoorData().map((entry) => entry.date),
         width: '32%', // Optional: specify width for better layout control
       },
       {
@@ -88,74 +101,75 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         id: 'voterSentimentChart',
         type: 'doughnut',
         legendNeeded: true,
-        data: Object.values(this.voterSentiment),
-        labels: Object.keys(this.voterSentiment),
+        data: Object.values(this.voterSentiment()),
+        labels: Object.keys(this.voterSentiment()),
         width: '30%', // Optional: specify width for better layout control
       },
     ];
 
-    this.cdr.detectChanges(); // Ensure the UI updates with the new chart data
+    // this.cdr.detectChanges(); // Ensure the UI updates with the new chart data
   }
 
   kpiCardsData = computed<kpiCards[]>(() => {
     return [
-    {
-      title: 'Total Volunteers',
-      count: this.totalVolunteerCount(),
-      trendText: '+148 this week', // This can be dynamic based on analytics data - will have to update the API to provide this info
-      isPositive: true,
-      // Provided the string name of global variable
-      themeVar: 'var(--ac-blue)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Active Today',
-      count: this.activeVolunteerCount(),
-      trendText: '+22% vs daily avg',
-      isPositive: true,
-      themeVar: 'var(--ac-cyan)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Booths Covered',
-      count: this.boothsCovered(),
-      trendText: '79% Coverage',
-      isPositive: true,
-      themeVar: 'var(--ac-emerald)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Voters Reached',
-      count: this.votersContacted(),
-      trendText: '+1,120 new today',
-      isPositive: true,
-      themeVar: 'var(--ac-amber)',
-      trendVar: 'var(--ac-emerald)',
-    },{
-      title: 'House Visits',
-      count: this.houseVisits(),
-      trendText: '-576 this week',
-      isPositive: false,
-      themeVar: 'var(--ac-rose)',
-      trendVar: 'var(--ac-rose)',
-    },
-    {
-      title: "Influencers ID'D",
-      count: this.influencersIdentified(),
-      trendText: '6 pending review',
-      isPositive: false,
-      themeVar: 'var(--ac-violet)',
-      trendVar: 'var(--ac-rose)',
-    },
-    {
-      title: 'Opp. Events',
-      count: this.oppositionEvents(),
-      trendText: '3 new alerts today',
-      isPositive: false,
-      themeVar: 'var(--ac-rose)',
-      trendVar: 'var(--ac-rose)',
-    },
-  ];
+      {
+        title: 'Total Volunteers',
+        count: this.totalVolunteerCount(),
+        trendText: '+148 this week', // This can be dynamic based on analytics data - will have to update the API to provide this info
+        isPositive: true,
+        // Provided the string name of global variable
+        themeVar: 'var(--ac-blue)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'Active Today',
+        count: this.activeVolunteerCount(),
+        trendText: '+22% vs daily avg',
+        isPositive: true,
+        themeVar: 'var(--ac-cyan)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'Booths Covered',
+        count: this.boothsCovered(),
+        trendText: '79% Coverage',
+        isPositive: true,
+        themeVar: 'var(--ac-emerald)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'Voters Reached',
+        count: this.votersContacted(),
+        trendText: '+1,120 new today',
+        isPositive: true,
+        themeVar: 'var(--ac-amber)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'House Visits',
+        count: this.houseVisits(),
+        trendText: '-576 this week',
+        isPositive: false,
+        themeVar: 'var(--ac-rose)',
+        trendVar: 'var(--ac-rose)',
+      },
+      {
+        title: "Influencers ID'D",
+        count: this.influencersIdentified(),
+        trendText: '6 pending review',
+        isPositive: false,
+        themeVar: 'var(--ac-violet)',
+        trendVar: 'var(--ac-rose)',
+      },
+      {
+        title: 'Opp. Events',
+        count: this.oppositionEvents(),
+        trendText: '3 new alerts today',
+        isPositive: false,
+        themeVar: 'var(--ac-rose)',
+        trendVar: 'var(--ac-rose)',
+      },
+    ];
   }); // Create a computed signal for the KPI cards data
 
   loadData() {
@@ -179,7 +193,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // Load Booth Progress from API
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
-        this.boothProgress.set( data);
+        this.boothProgress.set(data);
         // Transform booth progress data for table display if needed
       },
       error: (err) => {
@@ -197,7 +211,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         // console.log('War Room Alerts: ', data);
         // FORCE THE UI TO REFRESH
-        this.cdr.detectChanges();
+        // this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching Booth Progress', err);
@@ -213,7 +227,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           influencer.reach = influencer.estimatedInfluence.toLocaleString(); // Format reach with commas
         });
         // FORCE THE UI TO REFRESH
-        this.cdr.detectChanges();
+        // this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching Influencer Recommendations', err);
@@ -221,14 +235,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
 
     this.sudarshanService.getInfluencerRecommendations().subscribe({
-      next: (data)=>{
+      next: (data) => {
         this.totalInfluencersRecommended = data;
         this.influencersIdentified.set(data.length);
       },
-      error: (err)=>{
+      error: (err) => {
         console.error('Error fetching InfluencerRecommendations data', err);
-      }
-    })
+      },
+    });
 
     this.sudarshanService.getDailyActive().subscribe({
       next: (data) => {
@@ -240,15 +254,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }); // Format date for display
           return entry;
         });
-        const totalVotersReached = data.reduce((sum: number, entry: any) => sum + entry.votersReached, 0);
-        // this.votersContacted.set(totalVotersReached); // Update votersContacted KPI with total voters reached from daily activity data
-        // const totalHouseVisits = this.doortoDoorData.reduce((sum, entry) => sum + entry.housesVisited, 0);
-        // this.houseVisits.set(totalHouseVisits); // Update houseVisits KPI with total house visits from door-to-door data
-        this.dailyActivity = data;
-        this.dailyActivity.sort(
+        const totalVotersReached = data.reduce(
+          (sum: number, entry: any) => sum + entry.votersReached,
+          0,
+        );
+        this.dailyActivity.set(data);
+        this.dailyActivity().sort(
           (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime(),
         ); // Sort by date ascending
-
 
         this.mapDataReady(); // Prepare chart data after daily activity is loaded
       },
@@ -293,13 +306,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           );
         };
 
-        this.doortoDoorData = getRecentAccumulatedData(data);
+        const d2dData = getRecentAccumulatedData(data);
+        this.doortoDoorData.set(d2dData);
+
         // console.log('Door-to-Door Visits: ', data);
-        console.log('Door-to-Door Visits: ', this.doortoDoorData);
+        console.log('Door-to-Door Visits: ', this.doortoDoorData());
 
         this.mapDataReady(); // Prepare chart data after data is loaded
         // FORCE THE UI TO REFRESH
-        this.cdr.detectChanges();
+        // this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching door-to-door visits data', err);
@@ -307,38 +322,28 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
 
     this.sudarshanService.getVoterFeedback().subscribe({
-      next: (data) => {
-        this.analytics = data; // Store analytics data for potential use in other charts or KPIs
+      next: (data: VoterFeedbackItem[]) => {
+        this.analytics = data;
         this.voterFeedback = data;
-        // console.log('Voter Feedback: ', data);
-        interface VoterFeedbackItem {
-          sentiment: string;
-          // Add other properties if known, e.g., id?: number; message?: string;
-        }
 
-        this.voterSentiment = (data as VoterFeedbackItem[]).reduce(
-          (acc, { sentiment }) => {
-            acc[sentiment] = (acc[sentiment] || 0) + 1;
-            return acc;
-          },
-          {} as Record<string, number>,
-        );
+        // Build counts
+        const counts = data.reduce<Record<string, number>>((acc, { sentiment }) => {
+          acc[sentiment] = (acc[sentiment] ?? 0) + 1;
+          return acc;
+        }, {});
 
-        const totalSentiments = Object.values(this.voterSentiment).reduce(
-          (sum, count) => sum + count,
-          0,
-        );
+        // Calculate total
+        const total = Object.values(counts).reduce((sum, c) => sum + c, 0);
+
+        // Convert to %
         const percentages = Object.fromEntries(
-          Object.entries(this.voterSentiment).map(([key, value]) => [
-            key,
-            Math.round((value / totalSentiments) * 100),
-          ]),
+          Object.entries(counts).map(([key, value]) => [key, Math.round((value / total) * 100)]),
         );
 
-        this.voterSentiment = percentages; // Update voterSentiment to hold percentage values for the chart
-        this.mapDataReady(); // Update charts with new sentiment data
+        this.voterSentiment.set(percentages);
+        this.mapDataReady();
+        console.log(this.voterSentiment());
 
-        // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -354,24 +359,23 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.boothsCovered.set(data.summary.boothsCovered);
         this.votersContacted.set(data.outreachStats.votersReached);
         this.houseVisits.set(data.outreachStats.housesVisited);
-         // Update other KPIs as needed based on the structure of analytics data
+        // Update other KPIs as needed based on the structure of analytics data
       },
       error: (err) => {
         console.error('Error fetching analytics data', err);
-      }
+      },
     });
 
     this.sudarshanService.getOppositionActivity().subscribe({
-      next: (data)=>{
+      next: (data) => {
         const num = data.length;
         this.oppositionEvents.set(num);
       },
-      error: (err)=>{
-        console.log("Error fetching Opposition Data", err);
-      }
-    })
+      error: (err) => {
+        console.log('Error fetching Opposition Data', err);
+      },
+    });
   }
-
 
   ngAfterViewInit() {
     // Initializing charts here because the <canvas> elements are now in the DOM

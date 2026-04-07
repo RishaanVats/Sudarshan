@@ -83,3 +83,18 @@ export interface DailyAttendanceCount {
   date: string;
   presentCount: number;
 }
+
+export interface DailyActivity {
+  date: string;
+  votersReached: number;
+}
+
+export interface doorToDoorData {
+  date: string;
+  housesVisited: number;
+}
+
+export interface VoterFeedbackItem {
+  sentiment: string;
+  // Add other properties if known, e.g., id?: number; message?: string;
+}
