@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, AfterViewInit, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ChangeDetectorRef, signal, computed } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 
-import { Volunteer, VolunteerAttendance, boothProgress, chartsVerify } from '../../core/types';
+import { Volunteer, VolunteerAttendance, boothProgress, chartsVerify, kpiCards } from '../../core/types';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
@@ -12,7 +12,6 @@ import { Charts } from '../../shared/components/charts/charts';
 import { InfluencersCard } from '../../shared/components/influencers-card/influencers-card';
 import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 Chart.register(chartDataLabels);
 
@@ -25,22 +24,35 @@ Chart.register(chartDataLabels);
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   volunteers: Volunteer[] = []; // Using the interface here
-  boothProgress: boothProgress[] = [];
+  boothProgress = signal<boothProgress[]>([]); // Using the interface here
+
   // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts: any[] = []; // Define an interface if ever want a specific structure for alerts
   influencerRecommendations: any[] = []; // Define an interface if you have a specific structure for influencers
   dailyActivity: any[] = []; // Define an interface if you have a specific structure for daily activity data
+  totalInfluencersRecommended: any;
 
+  // kpiCards: any[] = [];
+  analytics: any = []; // Define an interface if you have a specific structure for analytics data
   mapData: chartsVerify[] = [];
   doortoDoorData: any[] = [];
   voterFeedback: any[] = []; // Define an interface if you have a specific structure for voter feedback
   voterSentiment: Record<string, number> = {}; // To store sentiment counts
 
-  onlyVolunteers: Volunteer[] = []; // Only those with role "Volunteers"
-  onlyCoordinators: Volunteer[] = []; // Only those with role "Coordinator"
-  onlyBoothWorkers: Volunteer[] = []; // Only thise with role "Booth Worker"
-  onlySocialMedia: Volunteer[] = []; // Only those with role "Social Media"
-  onlyFieldOrganizers: Volunteer[] = []; // Only those with role "Field Organizer"
+  totalVolunteerCount = signal(0);
+  activeVolunteerCount = signal(0);
+  boothsCovered = signal(0);
+  votersContacted = signal(0);
+  houseVisits = signal(0);
+  influencersIdentified = signal(0);
+  oppositionEvents = signal(0);
+
+
+
+  totalBoothCount = signal(0);
+  totalEventCount = signal(0);
+  totalIssueCount = signal(0);
+
 
   constructor(
     private sudarshanService: SudarshanService,
@@ -85,6 +97,67 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges(); // Ensure the UI updates with the new chart data
   }
 
+  kpiCardsData = computed<kpiCards[]>(() => {
+    return [
+    {
+      title: 'Total Volunteers',
+      count: this.totalVolunteerCount(),
+      trendText: '+148 this week', // This can be dynamic based on analytics data - will have to update the API to provide this info
+      isPositive: true,
+      // Provided the string name of global variable
+      themeVar: 'var(--ac-blue)',
+      trendVar: 'var(--ac-emerald)',
+    },
+    {
+      title: 'Active Today',
+      count: this.activeVolunteerCount(),
+      trendText: '+22% vs daily avg',
+      isPositive: true,
+      themeVar: 'var(--ac-cyan)',
+      trendVar: 'var(--ac-emerald)',
+    },
+    {
+      title: 'Booths Covered',
+      count: this.boothsCovered(),
+      trendText: '79% Coverage',
+      isPositive: true,
+      themeVar: 'var(--ac-emerald)',
+      trendVar: 'var(--ac-emerald)',
+    },
+    {
+      title: 'Voters Reached',
+      count: this.votersContacted(),
+      trendText: '+1,120 new today',
+      isPositive: true,
+      themeVar: 'var(--ac-amber)',
+      trendVar: 'var(--ac-emerald)',
+    },{
+      title: 'House Visits',
+      count: this.houseVisits(),
+      trendText: '-576 this week',
+      isPositive: false,
+      themeVar: 'var(--ac-rose)',
+      trendVar: 'var(--ac-rose)',
+    },
+    {
+      title: "Influencers ID'D",
+      count: this.influencersIdentified(),
+      trendText: '6 pending review',
+      isPositive: false,
+      themeVar: 'var(--ac-violet)',
+      trendVar: 'var(--ac-rose)',
+    },
+    {
+      title: 'Opp. Events',
+      count: this.oppositionEvents(),
+      trendText: '3 new alerts today',
+      isPositive: false,
+      themeVar: 'var(--ac-rose)',
+      trendVar: 'var(--ac-rose)',
+    },
+  ];
+  }); // Create a computed signal for the KPI cards data
+
   loadData() {
     this.sudarshanService.getVolunteers().subscribe({
       next: (data: Volunteer[]) => {
@@ -94,18 +167,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           isVolunteer: val.role === 'Volunteer',
         }));
 
-        // Force a reference change so the UI 'sees' the update
-        this.kpiCards = [
-          ...this.kpiCards.map((card) => {
-            if (card.title === 'Total Volunteers') {
-              return { ...card, count: this.volunteers.length.toString() };
-            }
-            return card;
-          }),
-        ];
+        // this.totalVolunteerCount.set(this.volunteers.length);
 
-        // FORCE THE UI TO REFRESH
-        this.cdr.detectChanges();
         // console.log('getVolunteers called... ', this.volunteers);
       },
       error: (err) => {
@@ -116,10 +179,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // Load Booth Progress from API
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data: boothProgress[]) => {
-        this.boothProgress = data;
-
-        // FORCE THE UI TO REFRESH
-        this.cdr.detectChanges();
+        this.boothProgress.set( data);
+        // Transform booth progress data for table display if needed
       },
       error: (err) => {
         console.error('Error fetching Booth Progress', err);
@@ -159,6 +220,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
     });
 
+    this.sudarshanService.getInfluencerRecommendations().subscribe({
+      next: (data)=>{
+        this.totalInfluencersRecommended = data;
+        this.influencersIdentified.set(data.length);
+      },
+      error: (err)=>{
+        console.error('Error fetching InfluencerRecommendations data', err);
+      }
+    })
+
     this.sudarshanService.getDailyActive().subscribe({
       next: (data) => {
         data.map((entry: any) => {
@@ -169,17 +240,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }); // Format date for display
           return entry;
         });
+        const totalVotersReached = data.reduce((sum: number, entry: any) => sum + entry.votersReached, 0);
+        // this.votersContacted.set(totalVotersReached); // Update votersContacted KPI with total voters reached from daily activity data
+        // const totalHouseVisits = this.doortoDoorData.reduce((sum, entry) => sum + entry.housesVisited, 0);
+        // this.houseVisits.set(totalHouseVisits); // Update houseVisits KPI with total house visits from door-to-door data
         this.dailyActivity = data;
         this.dailyActivity.sort(
           (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime(),
         ); // Sort by date ascending
-        // console.log('Daily Activity: ', this.dailyActivity);
-        // console.log(this.dailyActivity.map((entry) => entry.votersReached));
-        // console.log('Daily Activity: ', data);
+
 
         this.mapDataReady(); // Prepare chart data after daily activity is loaded
-        // FORCE THE UI TO REFRESH
-        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error fetching dailyActivity data', err);
@@ -237,6 +308,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.sudarshanService.getVoterFeedback().subscribe({
       next: (data) => {
+        this.analytics = data; // Store analytics data for potential use in other charts or KPIs
         this.voterFeedback = data;
         // console.log('Voter Feedback: ', data);
         interface VoterFeedbackItem {
@@ -256,7 +328,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           (sum, count) => sum + count,
           0,
         );
-
         const percentages = Object.fromEntries(
           Object.entries(this.voterSentiment).map(([key, value]) => [
             key,
@@ -266,6 +337,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
         this.voterSentiment = percentages; // Update voterSentiment to hold percentage values for the chart
         this.mapDataReady(); // Update charts with new sentiment data
+
         // FORCE THE UI TO REFRESH
         this.cdr.detectChanges();
       },
@@ -273,144 +345,33 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         console.error('Error fetching voter feedback data', err);
       },
     });
+
+    this.sudarshanService.getAnalytics().subscribe({
+      next: (data) => {
+        this.analytics = data; // Store analytics data for potential use in other charts or KPIs
+        this.totalVolunteerCount.set(data.summary.totalVolunteers);
+        this.activeVolunteerCount.set(data.summary.activeVolunteers);
+        this.boothsCovered.set(data.summary.boothsCovered);
+        this.votersContacted.set(data.outreachStats.votersReached);
+        this.houseVisits.set(data.outreachStats.housesVisited);
+         // Update other KPIs as needed based on the structure of analytics data
+      },
+      error: (err) => {
+        console.error('Error fetching analytics data', err);
+      }
+    });
+
+    this.sudarshanService.getOppositionActivity().subscribe({
+      next: (data)=>{
+        const num = data.length;
+        this.oppositionEvents.set(num);
+      },
+      error: (err)=>{
+        console.log("Error fetching Opposition Data", err);
+      }
+    })
   }
 
-  boothIntell: Array<{
-    booth: string;
-    totalVoters: number;
-    contacted: number;
-    supporters: number;
-    undecided: number;
-    coverage: number;
-  }> = [
-    {
-      booth: 'Booth 42 - Paschim Tola',
-      totalVoters: 3241,
-      contacted: 2918,
-      supporters: 1842,
-      undecided: 612,
-      coverage: 90.1,
-    },
-    {
-      booth: 'Booth 17 - Ramrekha Ghat',
-      totalVoters: 2890,
-      contacted: 2400,
-      supporters: 1510,
-      undecided: 480,
-      coverage: 83.0,
-    },
-    {
-      booth: 'Booth 32 - Rameshwar Colony',
-      totalVoters: 4102,
-      contacted: 3200,
-      supporters: 1960,
-      undecided: 710,
-      coverage: 78.0,
-    },
-    {
-      booth: 'Booth 06 - Churchgate',
-      totalVoters: 2650,
-      contacted: 1900,
-      supporters: 1100,
-      undecided: 440,
-      coverage: 71.7,
-    },
-  ];
-
-  kpiCards = [
-    {
-      title: 'Total Volunteers',
-      count: 0,
-      trendText: '+148 this week',
-      isPositive: true,
-      // Provided the string name of global variable
-      themeVar: 'var(--ac-blue)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Active Today',
-      count: '107',
-      trendText: '+22% vs daily avg',
-      isPositive: true,
-      themeVar: 'var(--ac-cyan)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Booths Covered',
-      count: '318/402',
-      trendText: '79% Coverage',
-      isPositive: true,
-      themeVar: 'var(--ac-emerald)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Voters Reached',
-      count: '62,491',
-      trendText: '+3,120 new today',
-      isPositive: true,
-      themeVar: 'var(--ac-amber)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: "Influencers ID'D",
-      count: '284',
-      trendText: '6 pending review',
-      isPositive: false,
-      themeVar: 'var(--ac-violet)',
-      trendVar: 'var(--ac-rose)',
-    },
-    {
-      title: 'Opp. Events',
-      count: '17',
-      trendText: '3 new alerts today',
-      isPositive: false,
-      themeVar: 'var(--ac-rose)',
-      trendVar: 'var(--ac-rose)',
-    },
-  ];
-
-  topInfluencers = [
-    {
-      id: 1,
-      name: 'Dr Amara Sayyed',
-      role: 'Doctor',
-      status: 'Contacted',
-      contact: '9876543210',
-      location: 'Sector 12, Patna',
-      reach: '1.5K',
-      dpUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
-    },
-    {
-      id: 2,
-      name: 'Rahul Kumar',
-      role: 'Local Leader',
-      status: 'VIP',
-      contact: '9876543210',
-      location: 'Sector 22, Patna',
-      reach: '3.2K',
-      dpUrl: '',
-    },
-    {
-      id: 3,
-      name: 'Muralidhar Sharma',
-      role: 'Business Owner',
-      status: 'Confirmed',
-      contact: '9876543210',
-      location: 'Sector 2, Patna',
-      reach: '2.5K',
-      dpUrl: '',
-    },
-    {
-      id: 4,
-      name: 'Dheeraj Yadav',
-      role: 'Commmunity Organizer',
-      status: 'New Lead',
-      contact: '9876543210',
-      location: 'Sector 15, Patna',
-      reach: '1.1K',
-      dpUrl: 'https://randomuser.me/api/portraits/men/47.jpg',
-    },
-  ];
 
   ngAfterViewInit() {
     // Initializing charts here because the <canvas> elements are now in the DOM

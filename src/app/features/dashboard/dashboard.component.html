@@ -3,7 +3,7 @@
     <hr>
     <div class="d-flex flex-wrap gap-2">
         <!-- KPI Cards -->
-        @for (card of kpiCards; track card.title) {
+        @for (card of kpiCardsData(); track card.title) {
         <app-kpi-cards [card]="card"></app-kpi-cards>
         }
 
@@ -18,7 +18,7 @@
 
     <div class="d-flex flex-wrap gap-2 mt-3">
         <!-- Booth Intelligence Table -->
-        <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress"
+        <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress()"
             [excludedKeys]="['id']" style="width: 66%;"></app-tables-component>
 
         <!-- Strategic Alerts Place -->

@@ -18,6 +18,15 @@ export interface Volunteer {
   [key: string]: any;
 }
 
+export interface kpiCards {
+  title: string;
+  count: number;
+  trendText: string;
+  isPositive: boolean;
+  themeVar: string;
+  trendVar: string;
+}
+
 export interface boothProgress {
   id: number;
   booth: number;
@@ -67,7 +76,7 @@ export interface AttendanceRecord {
   volunteerId: number;
   booth: number;
   date: string; // ISO String
-  status: "Present" | "Absent";
+  status: 'Present' | 'Absent';
 }
 
 export interface DailyAttendanceCount {
