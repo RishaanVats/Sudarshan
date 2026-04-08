@@ -44,13 +44,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   volunteers: Volunteer[] = []; // Using the interface here
   boothProgress = signal<boothProgress[]>([]); // Using the interface here
 
-  // boothProgressTable: any[][] = []; // Stores transformed table data
   warRoomAlerts = signal<Alert[]>([]); // Define an interface if ever want a specific structure for alerts
   influencerRecommendations = signal<Influencer[]>([]); // Define an interface if you have a specific structure for influencers
   dailyActivity = signal<DailyActivity[]>([]);
   totalInfluencersRecommended: any;
 
-  // kpiCards: any[] = [];
   analytics: any = []; // Define an interface if you have a specific structure for analytics data
   doortoDoorData = signal<doorToDoorData[]>([]);
   voterFeedback: any[] = []; // Define an interface if you have a specific structure for voter feedback
@@ -64,22 +62,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   influencersIdentified = signal(0);
   oppositionEvents = signal(0);
 
-  totalBoothCount = signal(0);
-  totalEventCount = signal(0);
-  totalIssueCount = signal(0);
 
   constructor(
     private sudarshanService: SudarshanService,
     private cdr: ChangeDetectorRef,
   ) {
     effect(() => {
-      console.log(`The current mapData is:`, this.mapData());
+      // console.log(`The current mapData is:`, this.mapData());
     });
   }
 
   ngOnInit() {
     this.loadData();
-    console.log(this.mapData());
+    // console.log(this.mapData());
   }
 
     mapData = computed<chartsVerify[]>(() => {
@@ -218,7 +213,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
 
         this.warRoomAlerts.set(data);
-        console.log('War Room Alerts: ', this.warRoomAlerts());
+        // console.log('War Room Alerts: ', this.warRoomAlerts());
         // FORCE THE UI TO REFRESH
         // this.cdr.detectChanges();
       },
@@ -320,7 +315,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.doortoDoorData.set(d2dData);
 
         // console.log('Door-to-Door Visits: ', data);
-        console.log('Door-to-Door Visits: ', this.doortoDoorData());
+        // console.log('Door-to-Door Visits: ', this.doortoDoorData());
 
         // this.mapDataReady(); // Prepare chart data after data is loaded
         // FORCE THE UI TO REFRESH
@@ -352,7 +347,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
         this.voterSentiment.set(percentages);
         // this.mapDataReady();
-        console.log(this.voterSentiment());
+        // console.log(this.voterSentiment());
 
         // this.cdr.detectChanges();
       },
@@ -382,7 +377,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.oppositionEvents.set(num);
       },
       error: (err) => {
-        console.log('Error fetching Opposition Data', err);
+        console.error('Error fetching Opposition Data', err);
       },
     });
   }
