@@ -99,3 +99,10 @@ export interface VoterFeedbackItem {
   // Add other properties if known, e.g., id?: number; message?: string;
 }
 
+export interface ZoneData {
+  zone: string;
+  count: number;
+  percentage: string;
+}
+
+

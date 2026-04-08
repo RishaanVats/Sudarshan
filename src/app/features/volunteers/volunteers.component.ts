@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, signal, computed } from '@angular/core';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
@@ -11,9 +11,12 @@ import {
   AttendanceRecord,
   DailyAttendanceCount,
   Volunteer,
+  ZoneData,
+  chartsVerify,
+  kpiCards,
 } from '../../core/types';
+
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
-import { map } from 'rxjs';
 
 interface ZoneMap {
   [key: string]: number;
@@ -27,19 +30,25 @@ interface ZoneMap {
   styleUrls: ['./volunteers.component.css'],
 })
 export class VolunteersComponent implements OnInit {
-  // 1. Definite Assignment: Initialized to prevent TS errors
-  public kpiCharts: any[] = [];
-  public dailyVolunnteerChecks: DailyAttendanceCount[] = [];
+  // Definite Assignment: Initialized to prevent TS errors
+  // public kpiCharts = signal<chartsVerify[]>([]);
+  public dailyVolunnteerChecks = signal<DailyAttendanceCount[]>([]);
   public attendanceRecord: AttendanceRecord[] = [];
-  private sortedPercentages: any[] = [];
+  private sortedPercentages = signal<ZoneData[]>([]);
 
-  volunteersData: Volunteer[] = [];
+  volunteersData = signal<Volunteer[]>([]);
+
+  constructor(
+    private sudarshanService: SudarshanService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   // Mock data for KPI Cards
-  public kpiCards = [
+  kpiCards = computed<kpiCards[]>(() => {
+    return [
     {
       title: 'Registered',
-      count: '4,812',
+      count: 4812,
       trendText: '+148 this week',
       isPositive: true,
       themeVar: 'var(--ac-blue)',
@@ -47,7 +56,7 @@ export class VolunteersComponent implements OnInit {
     },
     {
       title: 'Active Today',
-      count: '1,247',
+      count: 1247,
       trendText: '+92% vs daily avg',
       isPositive: true,
       themeVar: 'var(--ac-cyan)',
@@ -55,7 +64,7 @@ export class VolunteersComponent implements OnInit {
     },
     {
       title: 'Hours Logged',
-      count: '9,340',
+      count: 9340,
       trendText: '+1,200 today',
       isPositive: true,
       themeVar: 'var(--ac-emerald)',
@@ -63,7 +72,7 @@ export class VolunteersComponent implements OnInit {
     },
     {
       title: 'New This Week',
-      count: '148',
+      count: 148,
       trendText: '+22% vs prior week',
       isPositive: true,
       themeVar: 'var(--ac-violet)',
@@ -71,25 +80,48 @@ export class VolunteersComponent implements OnInit {
     },
     {
       title: 'Absentees Today',
-      count: '63',
+      count: 63,
       trendText: '-5.2% absence rate',
       isPositive: false,
       themeVar: 'var(--ac-rose)',
       trendVar: 'var(--ac-rose)',
     },
   ];
+});
 
-  constructor(
-    private sudarshanService: SudarshanService,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  kpiCharts = computed<chartsVerify[]>(() => {
+    return [
+      {
+        title: 'Daily Volunteer Check-Ins - Last 15 Days',
+        id: 'dailyVolunteerChecks',
+        type: 'bar',
+        legendNeeded: false,
+        data: this.dailyVolunnteerChecks()
+          .slice(0, 15)
+          .map((record) => record.presentCount),
+        labels: this.dailyVolunnteerChecks()
+          .slice(0, 15)
+          .map((record) => record.date),
+        width: '64%', // Optional: specify width for better layout control
+      },
+      {
+        title: 'Volunteer distribution by Zone',
+        id: 'volunteerDistribution',
+        type: 'doughnut',
+        legendNeeded: true,
+        data: [...this.sortedPercentages().map((item) => item.count)],
+        labels: [...this.sortedPercentages().map((item) => item.zone)],
+        width: '25%', // Optional
+      },
+    ];
+  });
 
   ngOnInit(): void {
-    this.loadAttendanceData();
-    this.loadVolunteersData();
+    this.loadData();
   }
 
-  private loadAttendanceData(): void {
+  loadData() {
+    // Fetch VolunteerAttendance data
     this.sudarshanService.getVolunteerAttendance().subscribe({
       next: (data: VolunteerAttendance) => {
         // Handle nested data structure if necessary; assuming data is the array
@@ -97,33 +129,32 @@ export class VolunteersComponent implements OnInit {
         this.attendanceRecord = rawRecords;
 
         // Process the raw records into the DailyAttendanceCount format
-        this.dailyVolunnteerChecks = this.processAttendanceData(this.attendanceRecord);
-
+        this.dailyVolunnteerChecks.set(this.processAttendanceData(this.attendanceRecord));
+        // console.log( this.attendanceRecord);
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error fetching volunteer attendance:', err),
     });
-  }
 
-  private loadVolunteersData(): void {
+    // Fetch volunteers data
     this.sudarshanService.getVolunteers().subscribe({
       next: (data: Volunteer[]) => {
         data.forEach((volunteer) => {
           volunteer['lastSync'] = new Date(volunteer['lastSync']).toLocaleString(); // Set the last sync time
         });
-        this.volunteersData = data;
+        this.volunteersData.set(data);
 
-        const zoneCounts = this.volunteersData.reduce((acc: ZoneMap, curr) => {
+        const zoneCounts = this.volunteersData().reduce((acc: ZoneMap, curr) => {
           const zone = curr['zone'];
           // If the zone exists in our accumulator, increment it; otherwise, set to 1
           acc[zone] = (acc[zone] || 0) + 1;
           return acc;
         }, {} as ZoneMap);
 
-        // 2. Map the counts to percentages
+        // Map the counts to percentages
         const zonePercentages = Object.keys(zoneCounts).map((zoneName) => {
           const count = zoneCounts[zoneName];
-          const percentage = ((count / this.volunteersData.length) * 100).toFixed(1); // Keep 1 decimal point
+          const percentage = ((count / this.volunteersData().length) * 100).toFixed(1); // Keep 1 decimal point
 
           return {
             zone: zoneName,
@@ -132,12 +163,14 @@ export class VolunteersComponent implements OnInit {
           };
         });
 
-        this.sortedPercentages = zonePercentages.sort((a, b) => {
-          return a.zone.localeCompare(b.zone, undefined, { numeric: true });
-        });
+        this.sortedPercentages.set(
+          zonePercentages.sort((a, b) => {
+            return a.zone.localeCompare(b.zone, undefined, { numeric: true });
+          }),
+        );
 
         // Map to the chart once data is processed
-        this.plotVolunteerAttendanceChart();
+        // this.plotVolunteerAttendanceChart();
         // console.log(zoneCounts, zonePercentages, sortedPercentages);
         this.cdr.detectChanges();
       },
@@ -167,34 +200,9 @@ export class VolunteersComponent implements OnInit {
       .sort((a, b) => a.date.localeCompare(b.date));
   }
 
-  plotVolunteerAttendanceChart(): void {
-    // Extract the first 15 days of data for the chart
-    const limitedData = this.dailyVolunnteerChecks.slice(0, 15);
-
-    // Update the kpiCharts array (re-assignment triggers Angular change detection)
-    this.kpiCharts = [
-      {
-        title: 'Daily Volunteer Check-Ins - Last 15 Days',
-        id: 'dailyVolunteerChecks',
-        type: 'bar',
-        legendNeeded: false,
-        data: limitedData.map((record) => record.presentCount),
-        labels: limitedData.map((record) => record.date),
-        width: '64%', // Optional: specify width for better layout control
-      },
-      {
-        title: 'Volunteer distribution by Zone',
-        id: 'volunteerDistribution',
-        type: 'doughnut',
-        legendNeeded: true,
-        data: [...this.sortedPercentages.map((item) => item.count)], 
-        labels: [...this.sortedPercentages.map((item) => item.zone)],
-        width: '25%', // Optional
-      },
-    ];
-
-    // Debugging output as requested (Comma separated string)
-    const countString = limitedData.map((record) => record.presentCount).join(', ');
-    // console.log('Processed Chart Data (Counts):', countString);
-  }
+  // plotVolunteerAttendanceChart(): void {
+  //   // Extract the first 15 days of data for the chart
+  //   // const limitedData = this.dailyVolunnteerChecks().slice(0, 15);
+  //   // Update the kpiCharts array (re-assignment triggers Angular change detection)
+  // }
 }

@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localeIn from '@angular/common/locales/en-IN';
+
+registerLocaleData(localeIn);
 
 import { Volunteer } from '../../../core/types';
 
@@ -10,6 +13,7 @@ import { Volunteer } from '../../../core/types';
   styleUrl: './kpi-cards.css',
 })
 export class KpiCards {
+  
   @Input() card: any;
 
 }
