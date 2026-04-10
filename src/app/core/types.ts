@@ -20,7 +20,7 @@ export interface Volunteer {
 
 export interface kpiCards {
   title: string;
-  count: number;
+  count: number | string;
   trendText: string;
   isPositive: boolean;
   themeVar: string;
@@ -43,9 +43,10 @@ export interface chartsVerify {
   id: string;
   type: 'line' | 'bar' | 'pie' | 'doughnut';
   legendNeeded: boolean;
-  data: number[] | string[];
-  labels: string[];
+  data: number[] | number | string | string[];
+  labels?: (number | string)[] | undefined;
   width?: string; // Optional width property for layout control
+  indexAxis?: 'x' | 'y';
 }
 
 export interface Influencer {
