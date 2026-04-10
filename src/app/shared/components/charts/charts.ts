@@ -32,7 +32,7 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chart'] && this.chart?.data?.length) {
+    if (changes['chart'] && Array.isArray(this.chart?.data) && this.chart?.data?.length) {
       this.initCharts();
     }
   }
@@ -101,6 +101,7 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
           ],
         },
         options: {
+          indexAxis: this.chart.indexAxis,
           responsive: true,
           maintainAspectRatio: false,
           ...(typeOverrides[this.chart.type]?.layout
@@ -144,7 +145,7 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
               formatter: (value: number, ctx: any) => {
                 // This shows the label name + the value
                 // const label = ctx.chart.data.labels?.[ctx.dataIndex] || '';
-                return '\n' + value + '%';
+                return '\n' + value;
               },
               font: { weight: 'bold', size: 12 },
               display: this.chart.type === 'doughnut', // Only show for doughnut

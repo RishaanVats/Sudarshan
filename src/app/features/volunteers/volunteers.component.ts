@@ -43,7 +43,7 @@ export class VolunteersComponent implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  // Mock data for KPI Cards
+  // Data for KPI Cards
   kpiCards = computed<kpiCards[]>(() => {
     return [
     {

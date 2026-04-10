@@ -62,7 +62,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   influencersIdentified = signal(0);
   oppositionEvents = signal(0);
 
-
   constructor(
     private sudarshanService: SudarshanService,
     private cdr: ChangeDetectorRef,
@@ -77,41 +76,45 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // console.log(this.mapData());
   }
 
-    mapData = computed<chartsVerify[]>(() => {
-      const daily = this.dailyActivity() ?? [];
-      const door = this.doortoDoorData() ?? [];
-      const sentiment = this.voterSentiment() ?? {};
+  mapData = computed<chartsVerify[]>(() => {
+    const daily = this.dailyActivity() ?? [];
+    const door = this.doortoDoorData() ?? [];
+    const sentiment = this.voterSentiment() ?? {};
+    for (let [key, value] of Object.entries(sentiment)) {
+      value = Number(value +'%');
+      console.log(`${key}: ${value}`);
+    }
 
-      return [
-        {
-          title: 'Volunteer Activity - 30 days',
-          id: 'volunteerActivityChart',
-          type: 'line',
-          legendNeeded: false,
-          data: daily.map((e) => e.votersReached),
-          labels: daily.map((e) => e.date),
-          width: '32%',
-        },
-        {
-          title: 'Door-to-Door Outreach - This Week',
-          id: 'doorOutreachChart',
-          type: 'bar',
-          legendNeeded: false,
-          data: door.map((e) => e.housesVisited),
-          labels: door.map((e) => e.date),
-          width: '32%',
-        },
-        {
-          title: 'Voter Sentiment Distribution',
-          id: 'voterSentimentChart',
-          type: 'doughnut',
-          legendNeeded: true,
-          data: Object.values(sentiment),
-          labels: Object.keys(sentiment),
-          width: '30%',
-        },
-      ];
-    });
+    return [
+      {
+        title: 'Volunteer Activity - 30 days',
+        id: 'volunteerActivityChart',
+        type: 'line',
+        legendNeeded: false,
+        data: daily.map((e) => e.votersReached),
+        labels: daily.map((e) => e.date),
+        width: '32%',
+      },
+      {
+        title: 'Door-to-Door Outreach - This Week',
+        id: 'doorOutreachChart',
+        type: 'bar',
+        legendNeeded: false,
+        data: door.map((e) => e.housesVisited),
+        labels: door.map((e) => e.date),
+        width: '32%',
+      },
+      {
+        title: 'Voter Sentiment Dispersal (%age)',
+        id: 'voterSentimentChart',
+        type: 'doughnut',
+        legendNeeded: true,
+        data: Object.values(sentiment),
+        labels: Object.keys(sentiment),
+        width: '30%',
+      },
+    ];
+  });
 
   kpiCardsData = computed<kpiCards[]>(() => {
     return [

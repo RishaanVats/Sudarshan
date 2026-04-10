@@ -1,7 +1,11 @@
 <div class="kpi-card hover-bg-card" [ngStyle]="{'border-bottom': '2px solid ' + card.themeVar }">
     <hr class="card-top-line" [ngStyle]="{ 'border-top': '4px solid ' + card.themeVar }">
     <p class="card-title">{{ card.title || 'N/A' }}</p>
-    <h1 class="card-count">{{ card.count || '000' | number:'':'en-IN' }}</h1>
+    <h1 class="card-count">
+        @if(typeof card.count === 'number'){
+            {{ card.count || '000' | number:'':'en-IN' }}
+        } @else{ {{card.count}} }
+            </h1>
     <div class="trend-indicator" [ngStyle]="{ color: card.trendVar }">
         <span class="arrow">
             @if (card.isPositive) {
