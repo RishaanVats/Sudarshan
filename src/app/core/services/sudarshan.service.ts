@@ -44,6 +44,14 @@ export class SudarshanService {
     return this.api.get('voterFeedback');
   }
 
+  getVoterFeedbackByZone(): Observable<any> {
+    return this.api.get('voterFeedback/byZone');
+  }
+
+  getSentimentTrend(): Observable<any> {
+    return this.api.get('sentimentTrend');
+  }
+
   getBoothProgress(): Observable<any> {
     return this.api.get('boothProgress');
   }
