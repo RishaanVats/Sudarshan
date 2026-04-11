@@ -38,6 +38,12 @@ export interface boothProgress {
   coverage: number;
 }
 
+export interface ChartDataset {
+  label: string;
+  data: number[];
+  borderColor?: string;
+}
+
 export interface chartsVerify {
   title: string;
   id: string;
@@ -45,6 +51,8 @@ export interface chartsVerify {
   legendNeeded: boolean;
   data: number[] | number | string | string[];
   labels?: (number | string)[] | undefined;
+  // 👇 NEW (for multi-line charts)
+  datasets?: ChartDataset[];
   width?: string; // Optional width property for layout control
   indexAxis?: 'x' | 'y';
 }
@@ -95,6 +103,15 @@ export interface doorToDoorData {
   housesVisited: number;
 }
 
+export interface voterFeedback {
+  id: number;
+  booth: number;
+  sentiment: string;
+  issue: string;
+  commnent: string;
+  date: string;
+}
+
 export interface VoterFeedbackItem {
   sentiment: string;
   // Add other properties if known, e.g., id?: number; message?: string;
@@ -105,5 +122,3 @@ export interface ZoneData {
   count: number;
   percentage: string;
 }
-
-

@@ -81,7 +81,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const door = this.doortoDoorData() ?? [];
     const sentiment = this.voterSentiment() ?? {};
     for (let [key, value] of Object.entries(sentiment)) {
-      value = Number(value +'%');
       console.log(`${key}: ${value}`);
     }
 

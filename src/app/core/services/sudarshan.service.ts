@@ -44,6 +44,10 @@ export class SudarshanService {
     return this.api.get('voterFeedback');
   }
 
+  getSentimentTrend(): Observable<any> {
+    return this.api.get('sentimentTrend');
+  }
+
   getBoothProgress(): Observable<any> {
     return this.api.get('boothProgress');
   }
