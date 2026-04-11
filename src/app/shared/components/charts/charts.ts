@@ -32,7 +32,15 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chart'] && Array.isArray(this.chart?.data) && this.chart?.data?.length) {
+    // if (changes['chart'] && Array.isArray(this.chart?.data) && this.chart?.data?.length) {
+    //   this.initCharts();
+    // }
+
+    if (
+      changes['chart'] &&
+      ((Array.isArray(this.chart?.data) && this.chart.data.length) ||
+        (this.chart?.datasets && this.chart.datasets.length))
+    ) {
       this.initCharts();
     }
   }
@@ -49,12 +57,12 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
         line: {
           fill: false,
           tension: 0.5,
-          borderWidth: 3,
+          borderWidth: 2,
           pointRadius: 3,
           pointHoverRadius: 6,
           spanGaps: true,
-          backgroundColor: ['#3B82F6'],
-          borderColor: ['#3B82F6'],
+          backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6', '#EC4899'], // Extended palette for more segments
+          borderColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6', '#EC4899'],
         },
         bar: {
           borderWidth: 0,
@@ -91,14 +99,20 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
         plugins: [chartDataLabels],
         data: {
           labels: this.chart.labels,
-          datasets: [
-            {
-              label: this.chart.title,
-              data: this.chart.data,
-              pointStyle: 'circle',
-              ...typeOverrides[this.chart.type], // Spreads the specific styles here
-            },
-          ],
+          datasets: this.chart.datasets?.length
+            ? this.chart.datasets.map((ds) => ({
+                ...ds,
+                pointStyle: 'circle',
+                ...typeOverrides[this.chart.type],
+              }))
+            : [
+                {
+                  label: this.chart.title,
+                  data: this.chart.data,
+                  pointStyle: 'circle',
+                  ...typeOverrides[this.chart.type],
+                },
+              ],
         },
         options: {
           indexAxis: this.chart.indexAxis,

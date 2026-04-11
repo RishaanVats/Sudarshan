@@ -42,6 +42,7 @@ export interface ChartDataset {
   label: string;
   data: number[];
   borderColor?: string;
+  backgroundColor?: string;
 }
 
 export interface chartsVerify {
@@ -49,7 +50,7 @@ export interface chartsVerify {
   id: string;
   type: 'line' | 'bar' | 'pie' | 'doughnut';
   legendNeeded: boolean;
-  data: number[] | number | string | string[];
+  data?: number[] | number | string | string[];
   labels?: (number | string)[] | undefined;
   // 👇 NEW (for multi-line charts)
   datasets?: ChartDataset[];
@@ -121,4 +122,13 @@ export interface ZoneData {
   zone: string;
   count: number;
   percentage: string;
+}
+
+export interface voterFeedbackByZone{
+  support: number, 
+  neutral: number, 
+  opposition: number, 
+  undecided: number, 
+  total?: number, 
+  supportPercent?: number 
 }
