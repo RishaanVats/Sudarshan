@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
-import { TablesComponent } from "../../shared/components/tables-component/tables-component";
+import { TablesComponent } from '../../shared/components/tables-component/tables-component';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { kpiCards, boothProgress, chartsVerify } from '../../core/types';
@@ -134,48 +134,32 @@ export class BoothsComponent {
   });
 
   kpiCharts2 = computed<chartsVerify[]>(() => {
-    const labelsArray = [];
-    for(let i = 1; i <= 10; i++){
-      labelsArray.push(i);
-    }
+    // Quick optimization for labels array
+    const labelsArray = Array.from({ length: 10 }, (_, i) => i + 1);
+
+    // Define zone configurations
+    const zoneConfigs = [
+      { key: 'zone 1', label: 'Zone 1', color: '#007bff' },
+      { key: 'zone 2', label: 'Zone 2', color: '#28a745' },
+      { key: 'zone 3', label: 'Zone 3', color: '#dc3545' },
+      { key: 'zone 4', label: 'Zone 4', color: '#ffc107' },
+      { key: 'zone 5', label: 'Zone 5', color: '#6c757d' },
+    ];
+
+    const sourceData = this.contactedVotersByZones();
+
     return [
       {
         title: 'Booth Outreach Trend - Voters Contacted',
         id: 'volunteerActivityChart',
         type: 'line',
         legendNeeded: true,
-        datasets: [
-          {
-            label: 'Zone 1',
-            data: [...(this.contactedVotersByZones()['zone 1'] ?? [])],
-            borderColor: '#007bff',
-            backgroundColor: '#007bff',
-          },
-          {
-            label: 'Zone 2',
-            data: [...(this.contactedVotersByZones()['zone 2'] ?? [])],
-            borderColor: '#28a745',
-            backgroundColor: '#28a745',
-          },
-          {
-            label: 'Zone 3',
-            data: [...(this.contactedVotersByZones()['zone 3'] ?? [])],
-            borderColor: '#dc3545',
-            backgroundColor: '#dc3545',
-          },
-          {
-            label: 'Zone 4',
-            data: [...(this.contactedVotersByZones()['zone 4'] ?? [])],
-            borderColor: '#dc3545',
-            backgroundColor: '#dc3545',
-          },
-          {
-            label: 'Zone 5',
-            data: [...(this.contactedVotersByZones()['zone 5'] ?? [])],
-            borderColor: '#dc3545',
-            backgroundColor: '#dc3545',
-          },
-        ],
+        datasets: zoneConfigs.map((config) => ({
+          label: config.label,
+          data: [...(sourceData[config.key] ?? [])],
+          borderColor: config.color,
+          backgroundColor: config.color,
+        })),
         labels: labelsArray,
         width: '95%',
       },
@@ -246,7 +230,7 @@ export class BoothsComponent {
         // Usage:
         const contactedZones = groupVotersByZone(data);
         this.contactedVotersByZones.set(contactedZones);
-        console.log(this.contactedVotersByZones());
+        // console.log(this.contactedVotersByZones());
       },
       error: (err) => {
         console.error('Failed to fetch Booths data', err);

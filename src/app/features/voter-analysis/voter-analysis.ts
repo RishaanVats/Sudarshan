@@ -182,8 +182,8 @@ export class VoterAnalysis {
 
         this.sentimentDistribution.set(sentimentDist);
 
-        console.log(sentimentDist);
-        console.log([...this.sentimentTrend().map((item) => item.supporters)]);
+        // console.log(sentimentDist);
+        // console.log([...this.sentimentTrend().map((item) => item.supporters)]);
       },
       error: (err) => {
         console.error('Error fetching Booth Progress:', err);
@@ -193,7 +193,7 @@ export class VoterAnalysis {
     this.sudarshanService.getSentimentTrend().subscribe({
       next: (data) => {
         this.sentimentTrend.set(data);
-        console.log(data);
+        // console.log(data);
       },
       error: (err) => {
         console.error('Error fetching Voter Sentiment:', err);
@@ -202,7 +202,7 @@ export class VoterAnalysis {
 
     this.sudarshanService.getVoterFeedbackByZone().subscribe({
       next: (data: Record<string, voterFeedbackByZone>) => {
-        console.log('testing API CALL at line 191: ', data);
+        // console.log('testing API CALL at line 191: ', data);
 
         const arr = Object.values(data);
         // const arr: voterFeedbackByZone[] = Object.values(data);
@@ -212,7 +212,7 @@ export class VoterAnalysis {
         });
 
         this.voterFeedbackByZones.set(arr);
-        console.log(this.voterFeedbackByZones());
+        // console.log(this.voterFeedbackByZones());
       },
       error: (err) => {
         console.error('Error in fetching Voter Feedback by zone', err);
