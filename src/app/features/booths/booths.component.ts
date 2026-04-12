@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
+import { TablesComponent } from "../../shared/components/tables-component/tables-component";
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { kpiCards, boothProgress, chartsVerify } from '../../core/types';
@@ -12,6 +13,11 @@ interface RangeCounts {
   '1-60': number; // Low
   '61-80': number; // Mid
   '81-100': number; // High
+}
+
+interface VoterData {
+  zone: string;
+  votersContacted: number;
 }
 
 @Component({
@@ -28,6 +34,7 @@ export class BoothsComponent {
   votersReached = signal(0);
   avgCoverage = signal(0);
   topTenBooths = signal<boothProgress[]>([]);
+  contactedVotersByZones = signal<Record<string, number[]>>({});
   topBooth = signal<boothProgress>({
     id: 0,
     booth: 0,
@@ -50,9 +57,9 @@ export class BoothsComponent {
   });
   segregatedCoverage = signal<RangeCounts>({
     '0': 0,
-  '1-60': 0,
-  '61-80': 0,
-  '81-100': 0
+    '1-60': 0,
+    '61-80': 0,
+    '81-100': 0,
   });
 
   // Data for KPI Cards
@@ -126,6 +133,55 @@ export class BoothsComponent {
     ];
   });
 
+  kpiCharts2 = computed<chartsVerify[]>(() => {
+    const labelsArray = [];
+    for(let i = 1; i <= 10; i++){
+      labelsArray.push(i);
+    }
+    return [
+      {
+        title: 'Booth Outreach Trend - Voters Contacted',
+        id: 'volunteerActivityChart',
+        type: 'line',
+        legendNeeded: true,
+        datasets: [
+          {
+            label: 'Zone 1',
+            data: [...(this.contactedVotersByZones()['zone 1'] ?? [])],
+            borderColor: '#007bff',
+            backgroundColor: '#007bff',
+          },
+          {
+            label: 'Zone 2',
+            data: [...(this.contactedVotersByZones()['zone 2'] ?? [])],
+            borderColor: '#28a745',
+            backgroundColor: '#28a745',
+          },
+          {
+            label: 'Zone 3',
+            data: [...(this.contactedVotersByZones()['zone 3'] ?? [])],
+            borderColor: '#dc3545',
+            backgroundColor: '#dc3545',
+          },
+          {
+            label: 'Zone 4',
+            data: [...(this.contactedVotersByZones()['zone 4'] ?? [])],
+            borderColor: '#dc3545',
+            backgroundColor: '#dc3545',
+          },
+          {
+            label: 'Zone 5',
+            data: [...(this.contactedVotersByZones()['zone 5'] ?? [])],
+            borderColor: '#dc3545',
+            backgroundColor: '#dc3545',
+          },
+        ],
+        labels: labelsArray,
+        width: '95%',
+      },
+    ];
+  });
+
   fetchData() {
     this.sudarshanService.getBoothProgress().subscribe({
       next: (data) => {
@@ -160,10 +216,40 @@ export class BoothsComponent {
         );
 
         this.segregatedCoverage.set(result);
-        console.log(this.segregatedCoverage());
+        // console.log(this.segregatedCoverage());
       },
       error: (err) => {
         console.error('Error fetching Booth Progress:', err);
+      },
+    });
+
+    this.sudarshanService.getBooths().subscribe({
+      next: (data) => {
+        //  Groups voter contact numbers by their respective zones.
+        //  This function is O(n) and scales automatically as new zones are added to the data.
+
+        const groupVotersByZone = (data: VoterData[]): Record<string, number[]> => {
+          return data.reduce(
+            (acc, { zone, votersContacted }) => {
+              // Initialize the array for a new zone if it doesn't exist yet
+              if (!acc[zone]) {
+                acc[zone] = [];
+              }
+
+              acc[zone].push(votersContacted);
+              return acc;
+            },
+            {} as Record<string, number[]>,
+          );
+        };
+
+        // Usage:
+        const contactedZones = groupVotersByZone(data);
+        this.contactedVotersByZones.set(contactedZones);
+        console.log(this.contactedVotersByZones());
+      },
+      error: (err) => {
+        console.error('Failed to fetch Booths data', err);
       },
     });
   }

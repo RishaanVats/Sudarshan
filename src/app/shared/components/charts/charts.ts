@@ -56,7 +56,7 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
       const typeOverrides: any = {
         line: {
           fill: false,
-          tension: 0.5,
+          tension: 0.4, // higher- curviewer, lesser - sharper
           borderWidth: 2,
           pointRadius: 3,
           pointHoverRadius: 6,
