@@ -6,6 +6,11 @@ A **campaign intelligence dashboard** designed to provide real-time visibility i
 
 Sudarshan simulates a **war-room decision system**, enabling campaign teams to monitor performance, analyze trends, and act on strategic insights using structured data.
 
+Deployed on **Vercel** : https://sudarshan-steel.vercel.app
+
+Note: The API might take about a minute to spin up, it sleeps on inactivity.
+(API is on deployed on render)
+
 ---
 
 # ⚡ Quick Start

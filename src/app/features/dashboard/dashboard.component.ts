@@ -80,9 +80,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const daily = this.dailyActivity() ?? [];
     const door = this.doortoDoorData() ?? [];
     const sentiment = this.voterSentiment() ?? {};
-    for (let [key, value] of Object.entries(sentiment)) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (let [key, value] of Object.entries(sentiment)) {
+    //   console.log(`${key}: ${value}`);
+    // }
 
     return [
       {
