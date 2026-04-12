@@ -12,8 +12,8 @@ Sudarshan simulates a **war-room decision system**, enabling campaign teams to m
 
 Deployed on **Vercel**: [https://sudarshandashboard.vercel.app](https://sudarshandashboard.vercel.app/)
 
-Note: The API might take about a minute to spin up, it sleeps on inactivity.
-(API is on deployed on render)
+Note: The API might take about a minute to spin up, please note that initial loading may take up to a minute due to Render’s free tier spin-up delay.
+(API is deployed on render)
 
 ---
 
