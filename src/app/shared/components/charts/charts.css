@@ -1,7 +1,7 @@
 .chart-place {
     position: relative;
     width: 100%;
-    min-width: 320px;
+    min-width: 310px;
     height: 200px;
     background-color: var(--card-bg);
     border: 2px solid var(--border);
@@ -17,6 +17,7 @@ tr:hover {
 
 .chart-place canvas {
     height: 160px;
+    /* padding-right: 8px; */
 }
 
 .title-separator {
