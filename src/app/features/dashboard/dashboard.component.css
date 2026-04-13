@@ -9,6 +9,11 @@
     padding: 20px 20px 50px 20px;
 }
 
+.chartAdjust {
+    min-width: 310px;
+    max-width: 100%;
+}
+
 .chart-place:hover,
 tr:hover {
     background-color: var(--card-alt-bg);
