@@ -105,7 +105,7 @@ export class InfluencerNetwork {
         type: 'doughnut',
         legendNeeded: true,
         data: Object.values(this.influenceStatus()),
-        labels: Object.keys(this.influenceLevel()),
+        labels: Object.keys(this.influenceStatus()),
         width: '25%', // Optional
       },
     ];
