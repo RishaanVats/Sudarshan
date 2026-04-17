@@ -24,7 +24,7 @@
 .person-name {
     font-size: 12pt;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-secondary);
     margin: 0;
 }
 
