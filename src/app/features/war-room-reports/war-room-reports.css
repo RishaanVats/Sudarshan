@@ -1,0 +1,142 @@
+.info-place {
+    position: relative;
+    width: auto;
+    min-width: 280px;
+    height: auto;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 20px 20px 20px;
+}
+
+.title-separator {
+    border-top: 2px solid var(--border);
+    margin: 10px 0;
+}
+
+.card-title {
+    color: var(--status-gray);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.alerts-wrapper {
+    max-height: 165px;
+    position: relative;
+    overflow-y: auto;
+    /* To prevent content from being hidden behind the scrollbar */
+}
+
+/* Scrollbar styling */
+.alerts-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.alerts-wrapper::-webkit-scrollbar-thumb {
+    background: #1f3a5f;
+    border-radius: 10px;
+}
+
+/* Make scroll container relative */
+
+/* Gradient overlay */
+.alerts-wrapper::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+
+    pointer-events: none;
+    /* allow scroll interaction */
+
+    background: linear-gradient(to bottom,
+            rgba(15, 34, 54, 0) 0%,
+            var(--card-bg) 100%);
+}
+
+.alerts-wrapper {
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+/* Only apply gradient when class is active */
+.alerts-wrapper.fade-bottom::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+            rgba(15, 34, 54, 0),
+            var(--card-bg));
+}
+
+.alerts-wrapper::after {
+    transition: opacity 0.2s ease;
+}
+
+.alerts-wrapper.fade-bottom::after {
+    opacity: 1;
+}
+
+.alerts-wrapper:not(.fade-bottom)::after {
+    opacity: 0;
+}
+
+.custom-chart-spacing{
+    width: 100%;
+    max-width: 810px;
+}
+
+.kpi-card {
+    border: 1px solid var(--border);
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    width: 205px;
+    height: auto;
+    padding: 20px 20px 10px 20px;
+    border: 2px solid var(--border);
+    border-top: 4px solid var(--ac-blue) 40%;
+    border-bottom: 2px solid var(--ac-blue);
+}
+
+.card-count {
+    font-family: 'Calibri', sans-serif;
+    color: var(--text-main);
+    font-size: 24pt;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+}
+
+.card-top-line {
+    position: relative;
+    top: -18px;
+    left: -20px;
+    border-radius: 20px 0px 0px 0px;
+    margin: 0px;
+    width: 45%;
+    border: 0;
+    opacity: 1;
+    border-top: 4px var(--ac-blue) solid;
+}
+
+.arrow{
+    font-weight: 700;
+}
+
+.trend-indicator{
+    color: var(--ac-emerald);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}

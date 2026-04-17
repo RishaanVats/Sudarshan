@@ -90,6 +90,10 @@ export class SudarshanService {
     return this.api.get('warroomAlerts/sorted-data');
   }
 
+  getWarRoomReports() : Observable<any>{
+    return this.api.get('warRoomReports');
+  }
+
   // Example: Add volunteer
   addVolunteer(data: any): Observable<any> {
     return this.api.post('volunteers', data);

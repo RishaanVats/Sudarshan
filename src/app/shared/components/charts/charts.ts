@@ -82,6 +82,12 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
           backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6', '#EC4899'], // Extended palette for more segments
           borderColor: ['#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6', '#EC4899'],
         },
+        radar: {
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          fill: false,
+        },
       };
 
       const ctx = document.getElementById(this.chart.id) as HTMLCanvasElement;
@@ -122,37 +128,65 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
             ? { layout: typeOverrides[this.chart.type].layout }
             : {}),
           // Crucial: Only add scales if NOT a pie/doughnut chart
-          scales: ['pie', 'doughnut'].includes(this.chart.type)
-            ? {}
-            : {
-                y: {
-                  beginAtZero: true,
-                  grace: '5%', // Adds a little breathing room at the top of the bars
-                  grid: {
-                    color: '#243344', // light grey for horizontal lines
+          scales:
+            this.chart.type === 'radar'
+              ? {
+                  r: {
+                    grid: {
+                      color: 'rgba(36, 51, 68, 0.6)',
+                    },
+                    angleLines: {
+                      color: 'rgba(36, 51, 68, 0.6)',
+                    },
+                    pointLabels: {
+                      color: '#94A3B8',
+                      font: { size: 12 },
+                    },
+                    ticks: {
+                      color: '#64748B',
+                      backdropColor: 'transparent',
+                      stepSize: 20,
+                    },
                   },
-                  border: {
-                    display: true,
-                    color: '#243344', // Color of the y-axis line
+                }
+              : ['pie', 'doughnut'].includes(this.chart.type)
+                ? {}
+                : {
+                    y: {
+                      beginAtZero: true,
+                      grace: '5%',
+                      grid: { color: '#243344' },
+                      border: { display: true, color: '#243344' },
+                    },
+                    x: {
+                      grid: {
+                        display: this.chart.type === 'line',
+                        color: '#243344',
+                        drawOnChartArea: true,
+                        drawTicks: false,
+                      },
+                      border: { display: true, color: '#243344' },
+                    },
                   },
-                },
-                x: {
-                  grid: {
-                    display: this.chart.type === 'line', // Show vertical grid lines only for line chart
-                    color: '#243344', // Light grey vertical lines
-                    drawOnChartArea: true, // Ensure they span the entire chart area
-                    drawTicks: false, // Optional: hides the tiny nub lines outside the chart
-                  },
-                  border: {
-                    display: true,
-                    color: '#243344', // Color of the x-axis line
-                  },
-                },
-              },
           plugins: {
             legend: {
               display: this.chart.legendNeeded,
               position: 'right', // Legend position at the top
+            },
+            tooltip: {
+              callbacks: {
+                label: (context: any) => {
+                  const dataset = context.dataset;
+
+                  // normalized value (0–100)
+                  const normalized = context.raw;
+
+                  // actual value
+                  const actual = dataset.rawData?.[context.dataIndex];
+
+                  return `${dataset.label}: ${actual} (${normalized}%)`;
+                },
+              },
             },
             datalabels: {
               color: '#fff',

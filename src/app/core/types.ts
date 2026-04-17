@@ -48,7 +48,7 @@ export interface ChartDataset {
 export interface chartsVerify {
   title: string;
   id: string;
-  type: 'line' | 'bar' | 'pie' | 'doughnut';
+  type: 'line' | 'bar' | 'pie' | 'doughnut' | 'radar';
   legendNeeded: boolean;
   data?: number[] | number | string | string[];
   labels?: (number | string)[] | undefined;
@@ -131,4 +131,23 @@ export interface voterFeedbackByZone{
   undecided: number, 
   total?: number, 
   supportPercent?: number 
+}
+
+export interface WarRoomReport {
+  campaignHealth: {
+    score: number;
+    status: string;
+  };
+  fieldMomentum: string;
+  criticalAlerts: number;
+  daysToElection: number;
+  radarMetrics: any[];
+  actionItems: any[];
+  tableSummary: any[];
+}
+
+export interface RadarMetric {
+  metric: string;
+  thisWeek: number;
+  lastWeek: number;
 }
