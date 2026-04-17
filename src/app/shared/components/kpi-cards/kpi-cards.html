@@ -4,7 +4,7 @@
     <h1 class="card-count">
         @if(typeof card.count === 'number'){
             {{ card.count || '000' | number:'':'en-IN' }}
-        } @else{ {{card.count}} }
+        } @else{ {{card.count || 'loading...'}} }
             </h1>
     <div class="trend-indicator" [ngStyle]="{ color: card.trendVar }">
         <span class="arrow">
