@@ -7,6 +7,7 @@ import { TablesComponent } from '../../shared/components/tables-component/tables
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { kpiCards, boothProgress, chartsVerify } from '../../core/types';
+import { interval } from 'rxjs/internal/observable/interval';
 
 interface RangeCounts {
   '0': number; // Inactive
@@ -28,7 +29,10 @@ interface VoterData {
   styleUrls: ['./booths.component.css'],
 })
 export class BoothsComponent {
-  constructor(private sudarshanService: SudarshanService) {}
+  constructor(private sudarshanService: SudarshanService) {
+    interval(10000).subscribe(() => this.fetchData());
+    // Repeat call every ten seconds to keep the data fresh
+  }
 
   boothProgress = signal<boothProgress[]>([]);
   votersReached = signal(0);

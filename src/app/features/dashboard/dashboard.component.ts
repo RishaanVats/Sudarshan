@@ -30,6 +30,7 @@ import { Charts } from '../../shared/components/charts/charts';
 import { InfluencersCard } from '../../shared/components/influencers-card/influencers-card';
 import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
+import { interval } from 'rxjs/internal/observable/interval';
 
 Chart.register(chartDataLabels);
 
@@ -69,6 +70,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     effect(() => {
       // console.log(`The current mapData is:`, this.mapData());
     });
+    interval(10000).subscribe(() => this.loadData());  
+    // Repeat call every ten seconds to keep the data fresh
   }
 
   ngOnInit() {

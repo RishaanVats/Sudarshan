@@ -7,6 +7,7 @@ import { chartsVerify, Influencer, kpiCards } from '../../core/types';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
 import { Charts } from '../../shared/components/charts/charts';
 import { CommonModule } from '@angular/common';
+import { interval } from 'rxjs/internal/observable/interval';
 
 @Component({
   selector: 'app-influencer-network',
@@ -15,7 +16,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './influencer-network.css',
 })
 export class InfluencerNetwork {
-  constructor(private sudarshanService: SudarshanService) {}
+  constructor(private sudarshanService: SudarshanService) {
+    interval(10000).subscribe(() => this.fetchData());
+    // Repeat call every ten seconds to keep the data fresh
+  }
 
   influencerData = signal<Influencer[]>([]);
   influenceLevel = signal({
@@ -24,11 +28,11 @@ export class InfluencerNetwork {
     Low: 0,
   });
   influenceStatus = signal({
-          "Confirmed": 0,
-      "Pending": 0,
-      "Contacted": 0,
-      "New Lead": 0,
-      "VIP": 0
+    Confirmed: 0,
+    Pending: 0,
+    Contacted: 0,
+    'New Lead': 0,
+    VIP: 0,
   });
 
   ngOnInit() {
@@ -134,14 +138,20 @@ export class InfluencerNetwork {
         const outreachStatus = this.influencerData().reduce(
           (acc: any, record: Influencer) => {
             const status = record.status.toLowerCase();
-            if(status === "confirmed"){acc["Confirmed"]++}
-            else if (status === "pending"){acc["Pending"]++}
-            else if (status === "contacted"){acc["Contacted"]++}
-            else if (status === "new lead"){acc["New Lead"]++}
-            else if (status === "vip"){acc["VIP"]++}
+            if (status === 'confirmed') {
+              acc['Confirmed']++;
+            } else if (status === 'pending') {
+              acc['Pending']++;
+            } else if (status === 'contacted') {
+              acc['Contacted']++;
+            } else if (status === 'new lead') {
+              acc['New Lead']++;
+            } else if (status === 'vip') {
+              acc['VIP']++;
+            }
             return acc;
           },
-          { 'Confirmed': 0, 'Pending': 0, 'Contacted': 0, 'New Lead': 0, 'VIP': 0 },
+          { Confirmed: 0, Pending: 0, Contacted: 0, 'New Lead': 0, VIP: 0 },
         );
 
         this.influenceStatus.set(outreachStatus);

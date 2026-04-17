@@ -17,6 +17,7 @@ import {
 } from '../../core/types';
 
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
+import { interval } from 'rxjs/internal/observable/interval';
 
 interface ZoneMap {
   [key: string]: number;
@@ -41,53 +42,56 @@ export class VolunteersComponent implements OnInit {
   constructor(
     private sudarshanService: SudarshanService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+    interval(10000).subscribe(() => this.loadData());
+    // Repeat call every ten seconds to keep the data fresh
+  }
 
   // Data for KPI Cards
   kpiCards = computed<kpiCards[]>(() => {
     return [
-    {
-      title: 'Registered',
-      count: 4812,
-      trendText: '+148 this week',
-      isPositive: true,
-      themeVar: 'var(--ac-blue)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Active Today',
-      count: 1247,
-      trendText: '+92% vs daily avg',
-      isPositive: true,
-      themeVar: 'var(--ac-cyan)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Hours Logged',
-      count: 9340,
-      trendText: '+1,200 today',
-      isPositive: true,
-      themeVar: 'var(--ac-emerald)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'New This Week',
-      count: 148,
-      trendText: '+22% vs prior week',
-      isPositive: true,
-      themeVar: 'var(--ac-violet)',
-      trendVar: 'var(--ac-emerald)',
-    },
-    {
-      title: 'Absentees Today',
-      count: 63,
-      trendText: '-5.2% absence rate',
-      isPositive: false,
-      themeVar: 'var(--ac-rose)',
-      trendVar: 'var(--ac-rose)',
-    },
-  ];
-});
+      {
+        title: 'Registered',
+        count: 4812,
+        trendText: '+148 this week',
+        isPositive: true,
+        themeVar: 'var(--ac-blue)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'Active Today',
+        count: 1247,
+        trendText: '+92% vs daily avg',
+        isPositive: true,
+        themeVar: 'var(--ac-cyan)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'Hours Logged',
+        count: 9340,
+        trendText: '+1,200 today',
+        isPositive: true,
+        themeVar: 'var(--ac-emerald)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'New This Week',
+        count: 148,
+        trendText: '+22% vs prior week',
+        isPositive: true,
+        themeVar: 'var(--ac-violet)',
+        trendVar: 'var(--ac-emerald)',
+      },
+      {
+        title: 'Absentees Today',
+        count: 63,
+        trendText: '-5.2% absence rate',
+        isPositive: false,
+        themeVar: 'var(--ac-rose)',
+        trendVar: 'var(--ac-rose)',
+      },
+    ];
+  });
 
   kpiCharts = computed<chartsVerify[]>(() => {
     return [
