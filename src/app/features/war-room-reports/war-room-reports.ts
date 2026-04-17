@@ -1,15 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
+
 import { SudarshanService } from '../../core/services/sudarshan.service';
+
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
 import { Charts } from '../../shared/components/charts/charts';
+import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
 
-import { chartsVerify, kpiCards, WarRoomReport, RadarMetric } from '../../core/types';
+import { chartsVerify, kpiCards, WarRoomReport, RadarMetric, Alert } from '../../core/types';
 
 @Component({
   selector: 'app-war-room-reports',
-  imports: [CommonModule, KpiCards, Charts, TablesComponent],
+  imports: [CommonModule, KpiCards, Charts, TablesComponent, StrategicAlerts],
   templateUrl: './war-room-reports.html',
   styleUrl: './war-room-reports.css',
 })
@@ -18,6 +21,9 @@ export class WarRoomReports {
 
   reportsData = signal<WarRoomReport | null>(null);
   radarMetrics = signal<RadarMetric[]>([]);
+  tableData = signal([]);
+
+  actionItems = signal<Alert[]>([]);
 
   kpiCards = computed<kpiCards[]>(() => {
     return [
@@ -125,8 +131,14 @@ export class WarRoomReports {
         console.log(data);
         this.reportsData.set(data[0]);
         this.radarMetrics.set(data[0].radarMetrics);
-        console.log(this.radarMetrics());
-        console.log(this.kpiCharts());
+
+        data[0].actionItems.forEach((alert: any) => {
+          alert.severity = alert.severity.toLowerCase(); // Ensure severity is lowercase for consistent CSS class mapping
+          alert.reportedAt = new Date(alert.reportedAt).toLocaleString(); // Format the date for display
+        });
+        this.actionItems.set(data[0].actionItems);
+
+        this.tableData.set(data[0].tableSummary);
       },
       error: (err) => {
         console.error('Faile to fetch war room reports data', err);

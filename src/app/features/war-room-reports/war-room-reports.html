@@ -10,16 +10,27 @@
 
     <!-- KPI Charts sections -->
     <div class="d-flex flex-wrap gap-2 w-100 mt-2 flex-wrap">
-        @for (chart of kpiCharts(); track chart.title) {
-        <app-charts [chart]="chart" [ngStyle]="{ 'width': chart.width }"></app-charts>
-        }
+        <div class="custom-chart-spacing">
+
+            @for (chart of kpiCharts(); track chart.title) {
+            <app-charts [chart]="chart" [ngStyle]="{ 'width': chart.width }"></app-charts>
+            }
+        </div>
+        <!-- Strategic Alerts Place -->
+        <div class="bg-card info-place" style="width: 30%;">
+            <p class="card-title">Strategic Alerts</p>
+            <hr class="title-seperator">
+            <div class="alerts-wrapper pe-1">
+                @for(alert of actionItems(); track alert.id ){
+                <app-strategic-alerts [alert]="alert"></app-strategic-alerts>
+                }
+            </div>
+        </div>
     </div>
 
     <!-- Voter Feedback Table -->
     <div class="w-100 mt-1">
-        <!-- Booth Intelligence Table -->
-        <!-- <app-tables-component [title]="'Sentiment Breakdown - By Zone'" [dataForTable]="tableData()"
-            [excludedKeys]="['id']" style="width: 90%;"></app-tables-component> -->
+        <app-tables-component [title]="'Volunteer Roster - Details'" [dataForTable]="tableData()" [excludedKeys]="['id']" style="width: 100%;"></app-tables-component>
     </div>
 
 </div>

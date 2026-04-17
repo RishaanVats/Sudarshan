@@ -2,7 +2,8 @@
     position: relative;
     width: 100%;
     min-width: 310px;
-    height: 200px;
+    min-height: 200px;
+    max-height: 260px;
     background-color: var(--card-bg);
     border: 2px solid var(--border);
     border-radius: 10px;
