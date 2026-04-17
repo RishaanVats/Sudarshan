@@ -124,13 +124,13 @@ export interface ZoneData {
   percentage: string;
 }
 
-export interface voterFeedbackByZone{
-  support: number, 
-  neutral: number, 
-  opposition: number, 
-  undecided: number, 
-  total?: number, 
-  supportPercent?: number 
+export interface voterFeedbackByZone {
+  support: number;
+  neutral: number;
+  opposition: number;
+  undecided: number;
+  total?: number;
+  supportPercent?: number;
 }
 
 export interface WarRoomReport {

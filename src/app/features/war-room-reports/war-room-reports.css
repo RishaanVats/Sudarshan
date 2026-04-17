@@ -90,9 +90,9 @@
     opacity: 0;
 }
 
-.custom-chart-spacing{
+.custom-chart-spacing {
     width: 100%;
-    max-width: 810px;
+    max-width: 720px;
 }
 
 .kpi-card {
@@ -128,11 +128,11 @@
     border-top: 4px var(--ac-blue) solid;
 }
 
-.arrow{
+.arrow {
     font-weight: 700;
 }
 
-.trend-indicator{
+.trend-indicator {
     color: var(--ac-emerald);
     margin-top: 5px;
     display: flex;
