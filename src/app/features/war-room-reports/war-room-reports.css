@@ -9,6 +9,11 @@
     padding: 20px 20px 20px 20px;
 }
 
+.info-place:hover {
+    background-color: var(--card-alt-bg);
+    transition: 0.2s;
+}
+
 .title-separator {
     border-top: 2px solid var(--border);
     margin: 10px 0;
@@ -28,6 +33,11 @@
     position: relative;
     overflow-y: auto;
     /* To prevent content from being hidden behind the scrollbar */
+}
+
+.alerts-wrapper:focus{
+    outline: 2px solid #005a9c; /* Ensure the user knows where their focus is */
+  outline-offset: 2px;
 }
 
 /* Scrollbar styling */
@@ -93,50 +103,4 @@
 .custom-chart-spacing {
     width: 100%;
     max-width: 720px;
-}
-
-.kpi-card {
-    border: 1px solid var(--border);
-    background-color: var(--card-bg);
-    border-radius: 10px;
-    width: 205px;
-    height: auto;
-    padding: 20px 20px 10px 20px;
-    border: 2px solid var(--border);
-    border-top: 4px solid var(--ac-blue) 40%;
-    border-bottom: 2px solid var(--ac-blue);
-}
-
-.card-count {
-    font-family: 'Calibri', sans-serif;
-    color: var(--text-main);
-    font-size: 24pt;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1;
-}
-
-.card-top-line {
-    position: relative;
-    top: -18px;
-    left: -20px;
-    border-radius: 20px 0px 0px 0px;
-    margin: 0px;
-    width: 45%;
-    border: 0;
-    opacity: 1;
-    border-top: 4px var(--ac-blue) solid;
-}
-
-.arrow {
-    font-weight: 700;
-}
-
-.trend-indicator {
-    color: var(--ac-emerald);
-    margin-top: 5px;
-    display: flex;
-    align-items: center;
-    font-weight: 700;
-    font-size: 0.9rem;
 }
