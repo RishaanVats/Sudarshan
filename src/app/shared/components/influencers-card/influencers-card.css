@@ -6,6 +6,11 @@
     border: 2px solid var(--border);
 }
 
+.influencers-card:hover {
+    background-color: var(--card-alt-bg);
+    transition: 0.2s;
+}
+
 .person-dp {
     width: 10px;
     height: 10px;

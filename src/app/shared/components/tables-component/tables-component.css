@@ -21,6 +21,11 @@
 
 }
 
+.perform-table:hover{
+    background-color: var(--card-alt-bg);
+    transition: 0.2s;
+}
+
 .table-wrapper {
     max-height: 220px;
     position: relative;

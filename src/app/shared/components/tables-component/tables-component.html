@@ -1,12 +1,12 @@
 <div class="perform-table bg-card">
     <p class="card-title">{{title}}</p>
     <hr class="title-seperator">
-    <div class="table-wrapper pe-1">
+    <div class="table-wrapper pe-1" tabindex="0" role="region" aria-labelledby="table - ${{ title }}">
         <table class="bg-row">
             <thead>
                 <tr class="card-title bg-row-alt text-center text-wrap">
                     @for(header of tableData[0]; track header){
-                        <th>{{header?header:'N/A'}}</th>
+                    <th>{{header?header:'N/A'}}</th>
                     }
                 </tr>
             </thead>
@@ -15,7 +15,7 @@
                 @for(row of tableData.slice(1); track row[0]){
                 <tr class="bg-row text-center">
                     @for(cell of row; track trackByDynamic($index, cell)){
-                        <td>{{cell || 'N/A'}}</td>
+                    <td>{{cell || 'N/A'}}</td>
                     }
                 </tr>
                 }
