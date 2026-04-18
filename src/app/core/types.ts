@@ -104,6 +104,19 @@ export interface doorToDoorData {
   housesVisited: number;
 }
 
+export interface doorToDoorOutreach {
+  booth: number;
+  contactRate: number;
+  date: string;
+  housesVisited: number;
+  id: number;
+  noContactDoors: number;
+  pledgesSecured: number;
+  team: string;
+  volunteerId: number;
+  votersContacted: number;
+}
+
 export interface voterFeedback {
   id: number;
   booth: number;
