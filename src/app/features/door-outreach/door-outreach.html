@@ -1,1 +1,24 @@
-<p>door-outreach works!</p>
+<h5>Door-to-Door Outreach</h5>
+<hr>
+<div class="d-flex flex-wrap gap-2">
+    <!-- KPI Cards section -->
+    <div class="d-flex flex-wrap gap-2 w-100">
+        @for (card of kpiCards(); track card.title) {
+        <app-kpi-cards [card]="card"></app-kpi-cards>
+        }
+    </div>
+
+    <!-- KPI Charts sections -->
+    <div class="d-flex flex-wrap gap-2 w-100 mt-2 flex-wrap">
+        <!-- @for (chart of kpiCharts(); track chart.title) {
+            <app-charts [chart]="chart" [ngStyle]="{ 'width': chart.width }"></app-charts>
+        } -->
+    </div>
+
+    <!-- Table Section -->
+    <div class="w-100 mt-1">
+        <!-- <app-tables-component [title]="'Top Influencers Pipeline - Descending'" [dataForTable]="influencerData()"
+            [excludedKeys]="['id']" style="width: 100%;"></app-tables-component> -->
+    </div>
+
+</div>
