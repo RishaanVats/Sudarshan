@@ -20,7 +20,7 @@
         <div class="bg-card info-place" style="width: 30%;">
             <p class="card-title">Strategic Alerts</p>
             <hr class="title-seperator">
-            <div class="alerts-wrapper pe-1">
+            <div class="alerts-wrapper pe-1" tabindex="0" role="region" aria-labelledby="strategic-Alerts-section">
                 @for(alert of actionItems(); track alert.id ){
                 <app-strategic-alerts [alert]="alert"></app-strategic-alerts>
                 }

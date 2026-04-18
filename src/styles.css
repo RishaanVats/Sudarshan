@@ -64,6 +64,7 @@ body {
 
     /* font finalization */
     font-family: 'Calibri', sans-serif;
+    font-display: swap;
 }
 
 /* --- 1. Background Utilities --- */

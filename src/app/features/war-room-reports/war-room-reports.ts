@@ -71,7 +71,7 @@ export class WarRoomReports {
     if (!reportArr.length) return [];
 
     const metrics = reportArr;
-    console.log('Metrics:', metrics);
+    // console.log('Metrics:', metrics);
 
     // ---------- NORMALIZATION HELPER ----------
     const normalize = (value: number, max: number) => {
@@ -132,7 +132,6 @@ export class WarRoomReports {
   fetchData() {
     this.sudarshanService.getWarRoomReports().subscribe({
       next: (data) => {
-        console.log(data);
         this.reportsData.set(data[0]);
         this.radarMetrics.set(data[0].radarMetrics);
 
