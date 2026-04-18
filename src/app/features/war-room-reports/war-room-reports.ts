@@ -9,6 +9,7 @@ import { Charts } from '../../shared/components/charts/charts';
 import { StrategicAlerts } from '../../shared/components/strategic-alerts/strategic-alerts';
 
 import { chartsVerify, kpiCards, WarRoomReport, RadarMetric, Alert } from '../../core/types';
+import { interval } from 'rxjs/internal/observable/interval';
 
 @Component({
   selector: 'app-war-room-reports',
@@ -17,7 +18,10 @@ import { chartsVerify, kpiCards, WarRoomReport, RadarMetric, Alert } from '../..
   styleUrl: './war-room-reports.css',
 })
 export class WarRoomReports {
-  constructor(private sudarshanService: SudarshanService) {}
+  constructor(private sudarshanService: SudarshanService) {
+    interval(10000).subscribe(() => this.fetchData());
+    // Repeat call every ten seconds to keep the data fresh
+  }
 
   reportsData = signal<WarRoomReport | null>(null);
   radarMetrics = signal<RadarMetric[]>([]);

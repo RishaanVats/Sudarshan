@@ -7,6 +7,7 @@ import { Charts } from '../../shared/components/charts/charts';
 
 import { chartsVerify, kpiCards, voterFeedback, voterFeedbackByZone } from '../../core/types';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
+import { interval } from 'rxjs/internal/observable/interval';
 
 interface sentimentTrend {
   supporters: 0;
@@ -22,7 +23,10 @@ interface sentimentTrend {
   styleUrl: './voter-analysis.css',
 })
 export class VoterAnalysis {
-  constructor(private sudarshanService: SudarshanService) {}
+  constructor(private sudarshanService: SudarshanService) {
+    interval(10000).subscribe(() => this.fetchData());
+    // Repeat call every ten seconds to keep the data fresh
+  }
   supporters = signal(0);
   opposition = signal(0);
   undecided = signal(0);

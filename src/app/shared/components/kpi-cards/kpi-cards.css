@@ -16,7 +16,7 @@
 }
 
 .card-title {
-    color: var(--status-gray);
+    color: var(--text-secondary);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 2px;
