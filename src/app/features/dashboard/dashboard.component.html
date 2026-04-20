@@ -16,19 +16,25 @@
         }
     </div>
 
-    <div class="d-flex flex-wrap gap-2 mt-3">
-        <!-- Booth Intelligence Table -->
-        <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress()"
-            [excludedKeys]="['id']" style="width: 66%;"></app-tables-component>
-
-        <!-- Strategic Alerts Place -->
-        <div class="bg-card info-place" style="width: 30%;">
-            <p class="card-title">Strategic Alerts</p>
-            <hr class="title-seperator">
-            <div class="alerts-wrapper pe-1" tabindex="0" role="region" aria-labelledby="strategic-Alerts-section">
-                @for(alert of warRoomAlerts(); track alert.id ){
-                <app-strategic-alerts [alert]="alert"></app-strategic-alerts>
-                }
+    <div class="d-flex flex-wrap gap-2 mt-3 w-100">
+        <div class="row w-100 gy-3">
+            <div class="col col-sm-auto col-xl-9 flex-grow-1">
+                <!-- Booth Intelligence Table -->
+                <app-tables-component [title]="'Booth Intelligence - Top performers'" [dataForTable]="boothProgress()"
+                    [excludedKeys]="['id']"></app-tables-component>
+            </div>
+            <div class="col col-sm-3 col-xl-3 flex-grow-1">
+                <!-- Strategic Alerts Place -->
+                <div class="bg-card info-place">
+                    <p class="card-title">Strategic Alerts</p>
+                    <hr class="title-seperator">
+                    <div class="alerts-wrapper pe-1" tabindex="0" role="region"
+                        aria-labelledby="strategic-Alerts-section">
+                        @for(alert of warRoomAlerts(); track alert.id ){
+                        <app-strategic-alerts [alert]="alert"></app-strategic-alerts>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
