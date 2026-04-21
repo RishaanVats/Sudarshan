@@ -6,7 +6,7 @@
         } @else {
         <div class="dp-img bg-panel text-white d-flex align-items-center justify-content-center"
         [ngClass]="statusMap[person.status.toLowerCase()] || defaultStatusClass">
-            {{ person.dpWord }}
+            {{ personDPWord().dpWord }}
         </div>
         }
 

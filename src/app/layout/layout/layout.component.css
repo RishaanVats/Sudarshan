@@ -25,3 +25,9 @@ body {
   overflow-y: hidden;
   /* Adds a scrollbar to sidebar */
 }
+
+.custom-header-position {
+  height: 60px;
+  display: block;
+  padding: 5px 10px;
+}
