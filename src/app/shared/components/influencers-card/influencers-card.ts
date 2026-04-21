@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, computed, Input, OnInit, signal } from '@angular/core';
 
 import { Influencer } from '../../../core/types';
 
@@ -11,14 +11,26 @@ import { Influencer } from '../../../core/types';
 })
 export class InfluencersCard implements OnInit {
   @Input() person = {} as Influencer;
+  // personDPWord = signal<Influencer>({ dpWord: 'TT' } as Influencer);
 
-  ngOnInit() {
-    if (this.person.dpUrl === '' || this.person.dpUrl === null) {
+  personDPWord = computed(() => {
+    return { dpWord: this.getDPword(this.person.name) } as Influencer;
+  });
+
+  ngOnInit() { }
+
+  getDPword(name: string): string {
+    if (!name) {
       this.person.dpWord = '';
-      for (let i = 0; i < this.person.name.split(' ').length; i++) {
-        this.person.dpWord += this.person.name.split(' ')[i][0];
-      }
-      // console.log(this.person.dpUrl);
+      return 'N/A';
+    } else {
+      this.person.dpWord = '';
+      const arr = this.person.name.split(' ');
+      const len = arr.length;
+
+      this.person.dpWord = arr[0][0] + arr[len - 1][0];
+      // console.log(this.person.dpWord);
+      return this.person.dpWord;
     }
   }
 

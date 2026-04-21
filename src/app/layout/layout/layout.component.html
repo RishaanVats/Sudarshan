@@ -1,15 +1,22 @@
-<div class="container-fluid">
-  <div class="row vh-100">
-    <app-header class="bg-panel border-clr" (toggle)="toggleSidebar()"></app-header>
-    <div class="col-auto px-0 sidebar-positioning">
-      <app-sidebar class="bg-panel border-clr" [collapsed]="isSidebarCollapsed" (toggle)="toggleSidebar()"></app-sidebar>
-    </div>
+<div>
+  <app-header class="bg-panel border-clr sticky-top custom-header-position" (toggle)="toggleSidebar()">
+  </app-header>
+</div>
 
-    <div class="col d-flex flex-column p-0 h-100">
+<div class="container-fluid">
+  <div class="row">
+    <aside class="col-auto px-0 sidebar-positioning sticky-top" style="height: calc(100vh - 56px); z-index: 1020;">
+      <app-sidebar class="bg-panel border-clr h-100 d-block" [collapsed]="isSidebarCollapsed"
+        (toggle)="toggleSidebar()">
+      </app-sidebar>
+    </aside>
+
+    <main class="col d-flex flex-column p-0" style="height: calc(100vh - 56px); overflow: hidden;">
+
       <div class="flex-grow-1 overflow-auto p-3 custom-opacity bg-canvas" role="main">
         <router-outlet></router-outlet>
       </div>
-    </div>
 
+    </main>
   </div>
 </div>
