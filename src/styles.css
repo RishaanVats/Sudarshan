@@ -262,3 +262,8 @@ body {
     transition: 0.2s;
     cursor: pointer;
 }
+
+.chartAdjust {
+    min-width: 310px;
+    max-width: 100%;
+}
