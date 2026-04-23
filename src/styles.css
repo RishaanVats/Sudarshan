@@ -267,3 +267,27 @@ body {
     min-width: 310px;
     max-width: 100%;
 }
+
+
+
+
+
+.showHamMenu {
+    display: block !important;
+}
+
+.showSideMenu {
+    display: none !important;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .showHamMenu {
+        display: none !important;
+    }
+
+    .showSideMenu {
+        display: block !important;
+        margin: 0px;
+    }
+}

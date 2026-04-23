@@ -1,3 +1,35 @@
-.ls-1{
+.ls-1 {
     letter-spacing: 0.1em;
+}
+
+.header-main {
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 100vw;
+}
+
+.home-nav {
+    text-decoration: none;
+    color: var(--text-primary);
+    padding: 5px 0px;
+}
+
+.home-nav:hover {
+    color: var(--ac-blue);
+}
+
+.hamButton{
+    border: 1px solid var(--dim-blue);
+}
+
+.hamButton:hover {
+    border: 1px solid var(--ac-blue);
+    color: var(--text-white);
+    transition: 0.2s;
+}
+
+.hamDropdown{
+    min-width: 220px;
+    padding: 0px 10px 0px 15px
 }
