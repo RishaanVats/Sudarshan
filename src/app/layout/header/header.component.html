@@ -1,13 +1,112 @@
-<header role="heading" class="navbar navbar-light d-flex align-items-center px-3">
-  
-  <button class="btn btn-outline-secondary p-0 border-0" (click)="toggle.emit()">
-    <img src="assets/images/sudarshan_logo_final_round_small.webp" alt="Sudarshan Logo" aria-label="Sudarshan Dashboard Logo" width="30" height="30">
-  </button>
-  <div>
-    <h5 class="text-primary-main text-uppercase text-center mb-0 ms-3 ls-1 fw-normal">Sudarshan</h5>
-  </div>
-  <div class="ms-auto">
-    <span class="me-3">Admin</span>
+<header role="heading" class="navbar navbar-light d-flex align-items-center">
+  <div class="d-flex header-main">
+    <div class="text-decoration-none home-nav align-self-start" >
+      <a routerLink="/" class="text-decoration-none text-primary-main home-nav">
+        <h4 class="">
+          <img src="assets/images/sudarshan_logo_final_round_small.webp" alt="Sudarshan Logo"
+            aria-label="Sudarshan Dashboard Logo" width="30" height="30" class="me-3">Sudarshan
+        </h4>
+      </a>
+    </div>
+    <div class="" style="margin-top: -10px;">
+      <p class="showSideMenu">Role: <span class="me-3">Admin</span></p>
+      <div class="ms-auto">
+
+        <div class="showHamMenu bg-panel text-white navbar navbar-expand-lg p-0">
+          <div class="container-fluid d-flex flex-column align-items-end hamDropdown">
+            <button class="navbar-toggler hamButton" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation" (click)="isMenuCollapsed = !isMenuCollapsed">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- <h6 class="text-uppercase d-flex px-3 cursor-pointer navigation nav-link text-white"><i
+          class="bi bi-compass icon"></i>
+        <span class="label" [class.hidden]="collapsed">
+          Navigation
+        </span>
+      </h6>
+      <hr class="mt-2"> -->
+            <div class="collapse navbar-collapse" [class.show]="!isMenuCollapsed" id="navbarSupportedContent">
+              <p>Role: <span class="me-3">Admin</span></p>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-disc"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Campaign Overview
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/volunteers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-people"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Volunteer Operations
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/booths" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-bar-chart"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Booth Performance
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/d2dOutreach" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-house-door"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Door-to-Door Outreach
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/voterAnalysis" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-emoji-smile"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Voter Sentiment Analysis
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/influencerNetwork" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-megaphone"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Influencer Network
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/intelligence" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-eye"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Intelligence
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/warRoomReports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                    class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-clipboard-data"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      War Room Reports
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </header>
