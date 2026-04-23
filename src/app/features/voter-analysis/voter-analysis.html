@@ -9,10 +9,24 @@
     </div>
 
     <!-- KPI Charts sections -->
-    <div class="d-flex flex-wrap gap-2 w-100 mt-2 flex-wrap">
+    <!-- <div class="d-flex flex-wrap gap-2 w-100 mt-2 flex-wrap">
         @for (chart of kpiCharts(); track chart.title) {
         <app-charts [chart]="chart" [ngStyle]="{ 'width': chart.width }"></app-charts>
         }
+    </div> -->
+
+        <div class="d-flex flex-wrap gap-2 mt-3 w-100">
+        <div class="row w-100 gy-3">
+            <div class="col col-sm-auto col-xl-8 flex-grow-1">
+                <div class="chartAdjust" style="display: flex;"><app-charts class="flex-grow-1"
+                        [chart]="kpiCharts()[0]"></app-charts></div>
+            </div>
+            <div class="col col-sm-4 col-xl-4 flex-grow-1">
+                <!-- Placeholder for another Chart  -->
+                <div class="chartAdjust" style="display: flex;"><app-charts class="flex-grow-1"
+                        [chart]="kpiCharts()[1]"></app-charts></div>
+            </div>
+        </div>
     </div>
 
     <!-- Voter Feedback Table -->
