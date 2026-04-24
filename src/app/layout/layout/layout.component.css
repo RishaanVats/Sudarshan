@@ -26,6 +26,16 @@ body {
   /* Adds a scrollbar to sidebar */
 }
 
+.sidebar-positioning::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-positioning::-webkit-scrollbar-thumb {
+    background: #1f3a5f;
+    border-radius: 10px;
+}
+
+
 .custom-header-position {
   height: 55px;
   display: block;

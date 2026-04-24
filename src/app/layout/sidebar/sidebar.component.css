@@ -8,6 +8,16 @@
   height: 100vh;
 }
 
+/* Scrollbar styling */
+.sidebar-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-wrapper::-webkit-scrollbar-thumb {
+    background: #1f3a5f;
+    border-radius: 10px;
+}
+
 .copy-label{
   /* position: sticky; */
   bottom: 0;
