@@ -21,15 +21,19 @@
 
 .hamButton{
     border: 1px solid var(--dim-blue);
+    background-color: var(--text-secondary);
+    top: -47px;
 }
 
 .hamButton:hover {
     border: 1px solid var(--ac-blue);
-    color: var(--text-white);
+    color: var(--text-secondary);
+    background-color: var(--text-primary);
     transition: 0.2s;
 }
 
 .hamDropdown{
     min-width: 220px;
-    padding: 0px 10px 0px 15px
+    padding: 0px 10px 0px 15px;
+    margin-top: 45px;
 }
