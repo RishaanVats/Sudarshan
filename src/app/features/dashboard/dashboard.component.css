@@ -109,6 +109,7 @@ table tr td:first-child {
 /* Scrollbar styling */
 .table-wrapper::-webkit-scrollbar {
     width: 6px;
+    height: 10px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {

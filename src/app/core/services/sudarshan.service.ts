@@ -36,6 +36,9 @@ export class SudarshanService {
     return this.api.get('doorToDoorVisits');
   }
 
+  getZoneOutreachPerformance(): Observable<any> {
+    return this.api.get('zonePerformanceReports');
+  }
   getVolunteerAttendance(): Observable<any> {
     return this.api.get('volunteerAttendance');
   }
@@ -61,7 +64,7 @@ export class SudarshanService {
     return this.api.get('influencerRecommendations');
   }
 
-    getTopInfluencerRecommendations(): Observable<any> {
+  getTopInfluencerRecommendations(): Observable<any> {
     return this.api.get('influencerRecommendations?_sort=estimatedInfluence&_order=desc&_limit=12');
   }
 

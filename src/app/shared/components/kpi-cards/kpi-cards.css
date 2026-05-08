@@ -61,6 +61,7 @@
 @media only screen and (max-width: 768px) {
     .kpi-card {
         width: 176px;
+        min-height: 163px;
         height: auto;
     }
 }
