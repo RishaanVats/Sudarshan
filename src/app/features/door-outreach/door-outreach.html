@@ -10,15 +10,17 @@
 
     <!-- KPI Charts sections -->
     <div class="d-flex flex-wrap gap-2 w-100 mt-2 flex-wrap">
-        <!-- @for (chart of kpiCharts(); track chart.title) {
-            <app-charts [chart]="chart" [ngStyle]="{ 'width': chart.width }"></app-charts>
-        } -->
+        @for (chart of kpiCharts(); track chart.title) {
+        <div class="chartAdjust" style="display: flex;"><app-charts [chart]="chart"
+                [ngStyle]="{ 'width': chart.width }"></app-charts>
+        </div>
+        }
     </div>
 
     <!-- Table Section -->
     <div class="w-100 mt-1">
-        <!-- <app-tables-component [title]="'Top Influencers Pipeline - Descending'" [dataForTable]="influencerData()"
-            [excludedKeys]="['id']" style="width: 100%;"></app-tables-component> -->
+        <app-tables-component [title]="'Zone Outreach Performance - till today'" [dataForTable]="zonePerformance()"
+            [excludedKeys]="['id', 'alert']" style="width: 100%;"></app-tables-component>
     </div>
 
 </div>

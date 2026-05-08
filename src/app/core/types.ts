@@ -54,7 +54,8 @@ export interface chartsVerify {
   labels?: (number | string)[] | undefined;
   // 👇 NEW (for multi-line charts)
   datasets?: ChartDataset[];
-  width?: string; // Optional width property for layout control
+  width?: string; // Optional width property for layout control,
+  isPercentage?: boolean; // Optional flag to indicate if values are percentages
   indexAxis?: 'x' | 'y';
 }
 

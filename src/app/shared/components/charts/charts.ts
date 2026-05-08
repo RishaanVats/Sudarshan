@@ -179,12 +179,12 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
                   const dataset = context.dataset;
 
                   // normalized value (0–100)
-                  const normalized = context.raw;
+                  const normalized = context.raw + (this.chart.isPercentage ? '%' : '');
 
                   // actual value
                   const actual = dataset.rawData?.[context.dataIndex];
-
-                  return `${dataset.label}: ${actual} (${normalized}%)`;
+                  const actualValue  = (actual)?(actual):'';
+                  return `${dataset.label}: ${actualValue} (${normalized})`;
                 },
               },
             },

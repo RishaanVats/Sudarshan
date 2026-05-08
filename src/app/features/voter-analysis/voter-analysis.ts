@@ -125,7 +125,7 @@ export class VoterAnalysis {
       },
       {
         title: 'Current Distribution (%age)',
-        id: 'currrentDistribution',
+        id: 'currentDistribution',
         type: 'doughnut',
         legendNeeded: true,
         data: Object.values(this.sentimentDistribution()),
