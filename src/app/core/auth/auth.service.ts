@@ -9,7 +9,7 @@ export class AuthService {
   readonly currentUser = signal<CurrentUser>({
     id: 1,
     name: 'Rishu',
-    role: Role.User
+    role: Role.Admin
   });
 
   readonly currentRole = computed(() => this.currentUser().role);
