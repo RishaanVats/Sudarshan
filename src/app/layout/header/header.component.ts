@@ -1,4 +1,11 @@
-import { Component, Output, EventEmitter, Input, inject } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -11,6 +18,7 @@ import { Role } from '../../core/auth/role.model';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {

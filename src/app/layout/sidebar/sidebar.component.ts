@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HostBinding } from '@angular/core';
@@ -12,6 +19,7 @@ import { HasRoleDirective } from '../../core/directives/has-role.directive';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, CommonModule, HasRoleDirective],
   templateUrl: './sidebar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {

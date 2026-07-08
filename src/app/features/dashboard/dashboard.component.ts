@@ -7,6 +7,7 @@ import {
   signal,
   computed,
   effect,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { ChartConfiguration } from 'chart.js';
@@ -39,6 +40,7 @@ Chart.register(chartDataLabels);
   standalone: true,
   imports: [CommonModule, KpiCards, Charts, InfluencersCard, StrategicAlerts, TablesComponent],
   templateUrl: './dashboard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
@@ -70,7 +72,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     effect(() => {
       // console.log(`The current mapData is:`, this.mapData());
     });
-    interval(10000).subscribe(() => this.loadData());  
+    interval(10000).subscribe(() => this.loadData());
     // Repeat call every ten seconds to keep the data fresh
   }
 

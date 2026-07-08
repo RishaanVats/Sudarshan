@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectorRef, OnInit, signal, computed } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  OnInit,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
@@ -28,6 +35,7 @@ interface ZoneMap {
   standalone: true,
   imports: [CommonModule, KpiCards, Charts, TablesComponent],
   templateUrl: './volunteers.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./volunteers.component.css'],
 })
 export class VolunteersComponent implements OnInit {

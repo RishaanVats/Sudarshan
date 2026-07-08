@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 
@@ -15,6 +15,7 @@ import { interval } from 'rxjs/internal/observable/interval';
   selector: 'app-war-room-reports',
   imports: [CommonModule, KpiCards, Charts, TablesComponent, StrategicAlerts],
   templateUrl: './war-room-reports.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './war-room-reports.css',
 })
 export class WarRoomReports {
