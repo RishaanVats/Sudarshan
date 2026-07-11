@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, Input, OnInit, signal } from '@angular/core';
+import { Component, computed, Input, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { Influencer } from '../../../core/types';
 
@@ -7,6 +7,7 @@ import { Influencer } from '../../../core/types';
   selector: 'app-influencers-card',
   imports: [CommonModule],
   templateUrl: './influencers-card.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './influencers-card.css',
 })
 export class InfluencersCard implements OnInit {
@@ -17,7 +18,7 @@ export class InfluencersCard implements OnInit {
     return { dpWord: this.getDPword(this.person.name) } as Influencer;
   });
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   getDPword(name: string): string {
     if (!name) {

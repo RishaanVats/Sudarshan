@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
 
@@ -13,6 +13,7 @@ import { interval } from 'rxjs/internal/observable/interval';
   selector: 'app-influencer-network',
   imports: [CommonModule, KpiCards, TablesComponent, Charts],
   templateUrl: './influencer-network.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './influencer-network.css',
 })
 export class InfluencerNetwork {

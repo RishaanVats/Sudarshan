@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
@@ -26,6 +26,7 @@ interface VoterData {
   standalone: true,
   imports: [CommonModule, KpiCards, Charts],
   templateUrl: './booths.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./booths.component.css'],
 })
 export class BoothsComponent {

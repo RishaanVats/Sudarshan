@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-tables-component',
   imports: [],
   templateUrl: './tables-component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './tables-component.css',
 })
 export class TablesComponent {
@@ -45,7 +46,6 @@ export class TablesComponent {
   }
 
   trackByDynamic(index: number, item: any): string | number {
-  return item.id || index || item.name; // Unique identifier
-}
-
+    return item.id || index || item.name; // Unique identifier
+  }
 }

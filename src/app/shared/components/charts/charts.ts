@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   OnChanges,
   SimpleChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 
 import Chart from 'chart.js/auto';
@@ -19,6 +20,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-charts',
   imports: [CommonModule],
   templateUrl: './charts.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './charts.css',
 })
 export class Charts implements OnInit, AfterViewInit, OnChanges {
@@ -183,7 +185,7 @@ export class Charts implements OnInit, AfterViewInit, OnChanges {
 
                   // actual value
                   const actual = dataset.rawData?.[context.dataIndex];
-                  const actualValue  = (actual)?(actual):'';
+                  const actualValue = actual ? actual : '';
                   return `${dataset.label}: ${actualValue} (${normalized})`;
                 },
               },

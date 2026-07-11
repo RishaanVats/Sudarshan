@@ -104,3 +104,7 @@
     width: 100%;
     max-width: 720px;
 }
+
+.border-alert {
+    border: 2px solid var(--ac-rose);
+}

@@ -9,7 +9,14 @@
       </h1>
     </div>
     <div class="" style="margin-top: 0px;">
-      <p class="showSideMenu">Role: <span class="me-3">Admin</span></p>
+      <!-- <p class="showSideMenu">Role: <span class="me-3">Admin</span></p> -->
+      <div style="width: 220px;">
+        <select class="form-select" [value]="auth.currentRole()" (change)="changeRole($event)">
+          <option [value]="roles.Guest" selected>Guest</option>
+          <option [value]="roles.User">User</option>
+          <option [value]="roles.Admin">Admin</option>
+        </select>
+      </div>
       <div class="ms-auto">
 
         <div class="showHamMenu bg-card-alt text-white navbar navbar-expand-lg p-0">
@@ -27,7 +34,14 @@
       </h6>
       <hr class="mt-2"> -->
             <div class="collapse navbar-collapse" [class.show]="!isMenuCollapsed" id="navbarSupportedContent">
-              <p class="mt-2">Role: <span class="me-3">Admin</span></p>
+              <!-- <p class="mt-2">Role: <span class="me-3">Admin</span></p> -->
+              <div style="width: 220px;">
+                <select class="form-select" [value]="auth.currentRole()" (change)="changeRole($event)">
+                  <option [value]="roles.Guest" selected>Guest</option>
+                  <option [value]="roles.User">User</option>
+                  <option [value]="roles.Admin">Admin</option>
+                </select>
+              </div>
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"

@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
@@ -20,6 +20,7 @@ interface sentimentTrend {
   selector: 'app-voter-analysis',
   imports: [CommonModule, KpiCards, Charts, TablesComponent],
   templateUrl: './voter-analysis.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './voter-analysis.css',
 })
 export class VoterAnalysis {

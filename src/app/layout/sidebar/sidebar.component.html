@@ -73,7 +73,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" *appHasRole="[roles.Admin]">
         <a routerLink="/intelligence" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="nav-link text-white d-flex align-items-center">
           <i class="icon bi bi-eye"></i>
@@ -83,7 +83,7 @@
         </a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item"  *appHasRole="[roles.Admin]">
         <a routerLink="/warRoomReports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="nav-link text-white d-flex align-items-center">
           <i class="icon bi bi-clipboard-data"></i>

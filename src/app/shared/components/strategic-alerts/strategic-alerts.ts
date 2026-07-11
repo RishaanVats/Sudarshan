@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Alert } from '../../../core/types';
 
@@ -7,6 +7,7 @@ import { Alert } from '../../../core/types';
   selector: 'app-strategic-alerts',
   imports: [CommonModule],
   templateUrl: './strategic-alerts.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './strategic-alerts.css',
 })
 export class StrategicAlerts {

@@ -1,4 +1,4 @@
-import { Component, computed, signal, effect } from '@angular/core';
+import { Component, computed, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SudarshanService } from '../../core/services/sudarshan.service';
@@ -7,12 +7,7 @@ import { KpiCards } from '../../shared/components/kpi-cards/kpi-cards';
 import { Charts } from '../../shared/components/charts/charts';
 import { TablesComponent } from '../../shared/components/tables-component/tables-component';
 
-import {
-  kpiCards,
-  chartsVerify,
-  voterFeedback,
-  doorToDoorOutreach,
-} from '../../core/types';
+import { kpiCards, chartsVerify, voterFeedback, doorToDoorOutreach } from '../../core/types';
 import { map } from 'rxjs';
 
 interface sentimentTrend {
@@ -26,6 +21,7 @@ interface sentimentTrend {
   selector: 'app-door-outreach',
   imports: [CommonModule, KpiCards, Charts, TablesComponent],
   templateUrl: './door-outreach.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './door-outreach.css',
 })
 export class DoorOutreach {
@@ -115,8 +111,8 @@ export class DoorOutreach {
         id: 'dailyDoorsKnocked',
         type: 'bar',
         legendNeeded: false,
-        data: (Object.values(this.dailyVolunteerChecks())  as number[]).slice(0, 15),
-        rawData: (Object.values(this.dailyVolunteerChecks())  as number[]).slice(0, 15),
+        data: (Object.values(this.dailyVolunteerChecks()) as number[]).slice(0, 15),
+        rawData: (Object.values(this.dailyVolunteerChecks()) as number[]).slice(0, 15),
         labels: Object.keys(this.dailyVolunteerChecks()).slice(0, 15),
         isPercentage: false,
         width: '100%', // Optional: specify width for better layout control
