@@ -40,4 +40,5 @@ body {
   height: 55px;
   display: block;
   padding: 0px 12px;
+  border-left: 5px solid var(--ac-blue);
 }
