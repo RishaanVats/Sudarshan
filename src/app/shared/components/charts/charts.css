@@ -1,6 +1,6 @@
 .chart-place {
     position: relative;
-    width: 100%;
+    /* width: 100%; */
     min-width: 310px;
     min-height: 200px;
     max-height: 260px;

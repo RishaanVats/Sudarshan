@@ -10,7 +10,7 @@
     </div>
     <div class="" style="margin-top: 0px;">
       <!-- <p class="showSideMenu">Role: <span class="me-3">Admin</span></p> -->
-      <div style="width: 220px;">
+      <div style="width: 220px;" class="showRoleSelector">
         <select class="form-select" [value]="auth.currentRole()" (change)="changeRole($event)">
           <option [value]="roles.Guest" selected>Guest</option>
           <option [value]="roles.User">User</option>

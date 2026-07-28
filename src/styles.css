@@ -266,6 +266,7 @@ body {
 .chartAdjust {
     min-width: 310px;
     max-width: 100%;
+    width: initial;
 }
 
 .showHamMenu {
@@ -276,14 +277,37 @@ body {
     display: none !important;
 }
 
+.showRoleSelector {
+    display: none !important;
+}
+
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
     .showHamMenu {
         display: none !important;
     }
 
+    .showRoleSelector {
+        display: block !important;
+    }
+
     .showSideMenu {
         display: block !important;
         margin: 0px;
+    }
+
+    /* .chart-place, .chart-place canvas {
+        min-width: 100% !important;
+        width: -webkit-fill-available !important;
+        width: -moz-available !important;
+        width: fill-available !important;
+    } */
+}
+
+@media only screen and (max-width: 1020px) {
+    .chartAdjust {
+        width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
     }
 }
