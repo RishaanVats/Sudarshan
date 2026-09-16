@@ -97,7 +97,7 @@
                     </span>
                   </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *appHasRole="[roles.Admin]">
                   <a routerLink="/intelligence" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
                     class="nav-link text-white d-flex align-items-center">
                     <i class="icon bi bi-eye"></i>
@@ -106,12 +106,21 @@
                     </span>
                   </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *appHasRole="[roles.Admin]">
                   <a routerLink="/warRoomReports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
                     class="nav-link text-white d-flex align-items-center">
                     <i class="icon bi bi-clipboard-data"></i>
                     <span class="ms-2 label" [class.hidden]="collapsed">
                       War Room Reports
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a routerLink="/weatherPlanner" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }" class="nav-link text-white d-flex align-items-center">
+                    <i class="icon bi bi-cloud-sun"></i>
+                    <span class="ms-2 label" [class.hidden]="collapsed">
+                      Weather Planner
                     </span>
                   </a>
                 </li>

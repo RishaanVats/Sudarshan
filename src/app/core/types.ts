@@ -165,3 +165,32 @@ export interface RadarMetric {
   thisWeek: number;
   lastWeek: number;
 }
+
+export interface GeoCodingResult {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  elevation?: number; // Optional
+  feature_code: string;
+  country_code: string;
+  admin1_id: number;
+  admin2_id: number;
+  admin3_id: number;
+  admin4_id: number;
+  timezone: string;
+  population?: number; // Optional
+  postcodes?: string[]; // Optional
+  country_id: number;
+  country: string;
+  admin1?: string; // Optional
+  admin2?: string; // Optional
+  admin3?: string; // Optional
+  admin4?: string; // Optional
+  [key: string]: any; // Allows for any additional properties
+}
+
+export interface GeoCodingResponse {
+  results?: GeoCodingResult[];
+  generationtime_ms?: number;
+}
