@@ -1,0 +1,38 @@
+/* Eliminates layout shifts from button elements within drop listings */
+.dropdown-item {
+  text-align: left;
+  background: none;
+  border: none;
+  width: 100%;
+}
+
+.heroDataStrip{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  min-height: 150px;
+  background-color: var(--card-alt-bg);
+  border-left: 15px solid var(--ac-emerald);
+}
+
+#errorText {
+    white-space: pre-line; /* This forces the browser to respect \n or \r\n */
+}
+
+.iconWeather{
+  font-size: 5rem;
+}
+
+.textTemperature{
+  font-size: 5rem;
+}
+
+.weatherDataMetrics{
+  font-size: 1.25rem;
+  padding: 10px 20px 10px 20px;
+  margin-top: 7px;
+  min-height: 60%;
+  border: 2px solid var(--text-muted);
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px var(--text-muted);
+}

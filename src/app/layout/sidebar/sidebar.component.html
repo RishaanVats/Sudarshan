@@ -1,10 +1,11 @@
 <nav class="sidebar-wrapper bg-panel text-white p-3 pe-2">
   <div>
-    <h6 class="text-uppercase bg-secondary d-flex px-3 cursor-pointer navigation nav-link text-white align-items-center" (click)="toggle.emit()">
-      @if(collapsed) { 
-        <i class="bi bi-box-arrow-right fs-4"></i>
+    <h6 class="text-uppercase bg-secondary d-flex px-3 cursor-pointer navigation nav-link text-white align-items-center"
+      (click)="toggle.emit()">
+      @if(collapsed) {
+      <i class="bi bi-box-arrow-right fs-4"></i>
       } @else {
-        <i class="bi bi-box-arrow-left fs-4"></i>
+      <i class="bi bi-box-arrow-left fs-4"></i>
       }
       <span class="label" [class.hidden]="collapsed">
         Navigation
@@ -83,12 +84,22 @@
         </a>
       </li>
 
-      <li class="nav-item"  *appHasRole="[roles.Admin]">
+      <li class="nav-item" *appHasRole="[roles.Admin]">
         <a routerLink="/warRoomReports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
           class="nav-link text-white d-flex align-items-center">
           <i class="icon bi bi-clipboard-data"></i>
           <span class="label" [class.hidden]="collapsed">
             War Room Reports
+          </span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a routerLink="/weatherPlanner" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link text-white d-flex align-items-center">
+          <i class="icon bi bi-cloud-sun"></i>
+          <span class="label" [class.hidden]="collapsed">
+            Weather Planner
           </span>
         </a>
       </li>

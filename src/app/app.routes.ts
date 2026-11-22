@@ -7,9 +7,8 @@ import { Role } from './core/auth/role.model';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./layout/layout/layout.component').then((m) => m.LayoutComponent),
-     // 🔴 App shell
+    loadComponent: () => import('./layout/layout/layout.component').then((m) => m.LayoutComponent),
+    // 🔴 App shell
     children: [
       {
         path: 'dashboard',
@@ -62,6 +61,12 @@ export const routes: Routes = [
         canActivate: [authGuard([Role.Admin])],
         loadComponent: () =>
           import('./features/war-room-reports/war-room-reports').then((m) => m.WarRoomReports),
+      },
+      {
+        path: 'weatherPlanner',
+        canActivate: [authGuard([Role.Admin, Role.User])],
+        loadComponent: () =>
+          import('./features/weather-planner/weather-planner').then((m) => m.WeatherPlanner),
       },
       {
         path: '',

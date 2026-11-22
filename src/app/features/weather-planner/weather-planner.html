@@ -1,0 +1,144 @@
+<h5>Weather Planner</h5>
+<hr>
+<section class="row">
+    <div class="col-md-4 col-sm-6">
+        <!-- <label for="citySearch" class="form-label fw-bold">Search City</label> -->
+        <input type="text" class="form-control" id="citySearch" placeholder="Enter city name"
+            [formControl]="searchControl" autocomplete="off" (keydown)="onKeyDown($event)">
+
+
+        <!-- Loading Spinner Overlay -->
+        @if (isLoading) {
+        <div class="spinner-border spinner-border-sm text-primary position-absolute top-50 end-0 translate-middle-y me-3"
+            role="status">
+            <p>Loading...</p>
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        }
+
+
+        <!-- API Response Options Dropdown Menu -->
+        @if (options.length > 0) {
+        <ul class="dropdown-menu show w-25 shadow-sm mt-1 position-absolute overflow-auto"
+            style="max-height: 250px; z-index: 1050;">
+            @for (city of options; track city.id; let i = $index) {
+            <li>
+                <button type="button" class="dropdown-item d-flex justify-content-between align-items-center"
+                    [ngClass]="{ 'text-white bg-primary': i === activeRowIndex }" (click)="selectOption(city)"
+                    [class.active]="i === activeRowIndex">
+                    <span>{{ city.name }}</span>
+                    <!-- <small [class.text-blue]="i === activeRowIndex" [class.text-muted]="i !== activeRowIndex">
+                        {{ city.admin1 ? city.admin1 + ', ' : '' }}{{ city.country }}
+                    </small> -->
+                </button>
+            </li>
+            }
+        </ul>
+        }
+
+        <!-- No Results State Indicator -->
+        @if (showDropdown && searchControl.value && searchControl.value.length >= 3 && options.length === 0 &&
+        !isLoading &&
+        !errorMessage) {
+        <div class="dropdown-menu show w-25 p-3 mt-1 text-muted text-center shadow-sm">
+            No locations found.
+        </div>
+        }
+
+        <!-- Error State Box -->
+        @if (errorMessage) {
+        <div class="text-danger small mt-1">
+            {{ errorMessage }}
+        </div>
+        }
+    </div>
+
+    <!-- Selection Metadata Feedback Display -->
+    @if (selectedCity) {
+    <div class="card mt-4 m-3 bg-light border-0 shadow-sm w-50">
+        <div class="card-body">
+            <h5 class="card-title text-success">✓ Selected Location</h5>
+            <p class="card-text mb-1"><strong>Name:</strong> {{ selectedCity.name }}</p>
+            <p class="card-text mb-1"><strong>Region:</strong> {{ selectedCity.admin1 || 'N/A' }}</p>
+            <p class="card-text mb-1"><strong>Country:</strong> {{ selectedCity.country }}</p>
+            <p class="card-text mb-0"><small class="text-muted">Coordinates: {{ selectedCity.latitude }}, {{
+                    selectedCity.longitude }}</small></p>
+        </div>
+    </div>
+    }
+
+    <div class="col-md-4 col-sm-6">
+        @if (selectedCity) {
+        <p> {{ selectedCity.name }}, {{ selectedCity.admin1 || 'N/A' }}, {{ selectedCity.country }}</p>
+        <span>
+            <!-- Clear / Delete Cross Button -->
+            @if (searchControl.value) {
+            <button type="button" data-bs-theme="primary" class="position-relative me-3" aria-label="Clear search"
+                (click)="clearSearch()" style="font-size: 0.8rem; z-index: 5;"><em>Clear Selection</em></button>
+            }</span>
+        }
+    </div>
+
+    <section class="row heroDataStrip mt-3 shadow-sm">
+        @if(sunny) {
+        <div class="row">
+            <div class="col-md-4 col-sm-6 p-4">
+                <i class="bi bi-brightness-high-fill iconWeather" style="color: yellow;"></i>
+                <span class="fw-bolder ms-4 textTemperature">33&deg;C</span>
+            </div>
+            <div class="col-md-8 col-sm-6">
+                <div class="weatherDataMetrics">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6">
+                            <p class="mb-1">Humidity: 60%</p>
+                            <p class="mb-1">Wind Speed: 15 km/h</p>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <p class="mb-1">Pressure: 1015 hPa</p>
+                            <p class="mb-1">Visibility: 10 km</p>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <p class="mb-1">UV Index: 7 (High)</p>
+                            <p class="mb-1">Dew Point: 20&deg;C</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+        @else if(cloudy) {
+
+        }
+        @else if(rainy) {
+
+        }
+        @else if(foggy) {
+
+        }
+        @else if(snowy) {
+
+        }
+        @else if(windy) {
+
+        }
+        @else {
+        <div class="row p-4 length-100 d-flex justify-content-center align-items-center">
+            @if(isLoading) {
+            <img src="assets/images/loading.svg" alt="Loading..." class="img-fluid" style="max-width: 100px;">
+            <div class="col-md-8">{{loadingMessage}}</div>
+            }
+            @else if(apiError) {
+            <img src="assets/images/OopsError.svg" alt="Data loading failed." class="img-fluid"
+                style="max-width: 150px;">
+            <div id="errorText" class="col-md-8">{{apiErrorMessage}}</div>
+            }
+        </div>
+        }
+    </section>
+    <div class="row p-4 d-flex justify-content-center align-items-center">
+        <img src="assets/images/OopsAlert.svg" alt="Alert Svg" class="img-fluid mt-3" style="max-width: 25%;">
+    </div>
+    <div class="p-lg-5 p-3 alert alert-secondary"><em class="fw-bold">Work in Progress: </em><span>Only partial work has been uploaded so far on this view. The
+            remaining section is under development and will be updated shortly. Inconvenience is deeply
+            regretted.</span></div>
+</section>
