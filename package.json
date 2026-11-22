@@ -11,15 +11,15 @@
     "test": "ng test"
   },
   "private": true,
-  "packageManager": "npm@10.8.2",
+  "packageManager": "npm@12.2.3",
   "dependencies": {
-    "@angular/common": "^22.0.5",
-    "@angular/compiler": "^22.0.5",
-    "@angular/core": "^22.0.5",
-    "@angular/forms": "^22.0.5",
-    "@angular/localize": "^22.0.5",
-    "@angular/platform-browser": "^22.0.5",
-    "@angular/router": "^22.0.5",
+    "@angular/common": "^22.3.0",
+    "@angular/compiler": "^22.3.0",
+    "@angular/core": "^22.3.0",
+    "@angular/forms": "^22.3.0",
+    "@angular/localize": "^22.3.0",
+    "@angular/platform-browser": "^22.3.0",
+    "@angular/router": "^22.3.0",
     "@ng-bootstrap/ng-bootstrap": "^21.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@angular/build": "^22.0.5",
     "@angular/cli": "^22.0.5",
-    "@angular/compiler-cli": "^22.0.5",
+    "@angular/compiler-cli": "^22.3.0",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.3",
@@ -55,10 +55,9 @@
   ],
   "allowScripts": {
     "@parcel/watcher@2.5.6": true,
-    "esbuild@0.28.1": true,
     "lmdb@3.5.4": true,
     "msgpackr-extract@3.0.4": true,
-    "esbuild@0.27.7": true
+    "esbuild@0.28.2": true
   },
   "overrides": {
     "@babel/core": "^7.29.6",
