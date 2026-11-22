@@ -128,10 +128,17 @@
             <div class="col-md-8">{{loadingMessage}}</div>
             }
             @else if(apiError) {
-            <img src="assets/images/OopsError.svg" alt="Data loading failed." class="img-fluid" style="max-width: 150px;">
+            <img src="assets/images/OopsError.svg" alt="Data loading failed." class="img-fluid"
+                style="max-width: 150px;">
             <div id="errorText" class="col-md-8">{{apiErrorMessage}}</div>
             }
         </div>
         }
     </section>
+    <div class="row p-4 d-flex justify-content-center align-items-center">
+        <img src="assets/images/OopsAlert.svg" alt="Alert Svg" class="img-fluid mt-3" style="max-width: 25%;">
+    </div>
+    <div class="p-lg-5 p-3 alert alert-secondary"><em class="fw-bold">Work in Progress: </em><span>Only partial work has been uploaded so far on this view. The
+            remaining section is under development and will be updated shortly. Inconvenience is deeply
+            regretted.</span></div>
 </section>
